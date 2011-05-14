@@ -1,0 +1,9 @@
+body {
+  text-align: center;
+}
+
+#box {
+  width: 780px;
+  text-align: left;
+  margin: 0 auto;
+}
