@@ -12,26 +12,26 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :index %><br />
+    <%= f.label 'Почтовый индекс' %><br />
     <%= f.text_field :index, :size => 6 %>
   </div>
   <div class="field">
-    <%= f.label :client %><br />
+    <%= f.label 'Ф.И.О. получателя' %><br />
     <%= f.text_field :client %>
   </div>
   <div class="field">
-    <%= f.label :address %><br />
+    <%= f.label 'Адрес' %><br />
     <%= f.text_area :address, :cols => 48, :rows => 3 %>
   </div>
   <div class="field">
-    <%= f.label :phone %><br />
+    <%= f.label 'Телефон' %><br />
     <%= f.text_field :phone %>
   </div>
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label 'Эл. почта' %><br />
     <%= f.text_field :email %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Сделать заказ'%>
   </div>
 <% end %>

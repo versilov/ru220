@@ -7,3 +7,12 @@ body {
   text-align: left;
   margin: 0 auto;
 }
+
+#menu {
+  font-size: 120%;
+}
+
+#footer {
+  border-top: solid 1px gray;
+  margin-top: 27px;
+}

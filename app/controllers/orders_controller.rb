@@ -44,13 +44,17 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to(@order, :notice => 'Order was successfully created.') }
+        format.html { redirect_to(done_url, :notice => 'Order was successfully created.') }
         format.xml  { render :xml => @order, :status => :created, :location => @order }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def done
+    puts 'Done!'
   end
 
   # PUT /orders/1

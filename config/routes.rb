@@ -4,6 +4,7 @@ Ru220::Application.routes.draw do
   resources :orders
   
   root :to => 'orders#new'
+  match 'done' => 'orders#done', :as => :done
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
