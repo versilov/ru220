@@ -21,7 +21,7 @@ class OrdersControllerTest < ActionController::TestCase
       post :create, :order => @order.attributes
     end
 
-    assert_redirected_to order_path(assigns(:order))
+    assert_redirected_to done_url
   end
 
   test "should show order" do
