@@ -1,9 +1,11 @@
 Ru220::Application.routes.draw do
+  
   resources :articles
-
   resources :orders
   
-  root :to => 'orders#new'
+  
+  
+  root :to => 'orders#new', :as => :new_order
   match 'done' => 'orders#done', :as => :done
 
   # The priority is based upon order of creation:

@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
         format.html { redirect_to(done_url, :notice => 'Order was successfully created.') }
         format.xml  { render :xml => @order, :status => :created, :location => @order }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "new"; logger.error "ERROR" }
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
     end
