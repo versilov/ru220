@@ -1,35 +1,49 @@
-<%= form_for(@order) do |f| %>
+<a name="order_form">&nbsp;</a>
+<%= form_for(@order, :url => '/#order_form') do |f| %>
   <% if @order.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+      <h2><%= t('activerecord.errors.template.header', :count=>@order.errors.size,
+:model=>t('.order')) %>.</h2>
 
       <ul>
       <% @order.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= raw msg %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
-    <%= f.label 'Почтовый индекс' %><br />
-    <%= f.text_field :index, :size => 6, :maxlength => 6 %>
-  </div>
-  <div class="field">
-    <%= f.label 'Ф.И.О. получателя' %><br />
+    <%= f.label :client %><br />
     <%= f.text_field :client %>
   </div>
+  
   <div class="field">
-    <%= f.label 'Адрес' %><br />
+    <%= f.label :index %><br />
+    <%= f.text_field :index, :size => 6, :maxlength => 6 %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :region %><br />
+    <%= f.text_field :region %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :address %><br />
     <%= f.text_area :address, :cols => 48, :rows => 3, 
-                    :placeholder => 'Пример: г. Ярославль, ул. Ленина, д. 3-А, кв. 12' %>
+                    :placeholder => 'Пример: ул. Ленина, д. 3-А, кв. 12' %>
   </div>
   <div class="field">
-    <%= f.label 'Телефон' %><br />
+    <%= f.label :phone %><br />
     <%= f.telephone_field :phone, :placeholder => 'Пример: +7 927 234 05 46' %>
   </div>
   <div class="field">
-    <%= f.label 'Эл. почта' %><br />
+    <%= f.label :email %><br />
     <%= f.email_field :email %>
   </div>
   <div class="actions">

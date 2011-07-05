@@ -5,7 +5,8 @@ Ru220::Application.routes.draw do
   
   
   
-  root :to => 'orders#new', :as => :new_order
+  root :to => 'orders#new', :as => :new_order, :via => :get
+  root :to => 'orders#create', :via => :post
   match 'done' => 'orders#done', :as => :done
 
   # The priority is based upon order of creation:

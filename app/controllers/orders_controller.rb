@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.xml
@@ -25,6 +27,14 @@ class OrdersController < ApplicationController
   # GET /orders/new.xml
   def new
     @order = Order.new
+    
+    @order.client = 'Смирнов Сергей Игоревич'
+    @order.index = '443096'
+    @order.region = 'Самарская обл.'
+    @order.city = 'Самара'
+    @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
+    @order.phone = '+7 916 233 03 36'
+    @order.email = 'client@mail.org'
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,15 +54,16 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to(done_url, :notice => 'Order was successfully created.') }
+        format.html { redirect_to(done_url, :notice => 'Order was successfully created.'); flash[:order_id] = @order.id }
         format.xml  { render :xml => @order, :status => :created, :location => @order }
       else
-        format.html { render :action => "new"; logger.error "ERROR" }
+        format.html { render :action => "new" }
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
     end
   end
   
+  # GET /done
   def done
     puts 'Done!'
   end

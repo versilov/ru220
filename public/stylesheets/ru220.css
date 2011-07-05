@@ -16,3 +16,27 @@ body {
   border-top: solid 1px gray;
   margin-top: 27px;
 }
+
+/********************** ORDER FORM ***********************/
+#new_order_fieldset {
+  width: 500px;
+  border: solid 1px gray;
+}
+
+#new_order_fieldset legend {
+  background-color: #5f5;
+  padding: 1px 6px;
+}
+
+#order_submit {
+  font-size: 22px;
+}
+
+
+
+/************************* DONE **************************/
+
+#order_num {
+  background-color: #5f5;
+  padding: 4px 6px;
+}

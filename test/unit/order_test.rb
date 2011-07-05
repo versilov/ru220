@@ -2,7 +2,39 @@ require 'test_helper'
 
 class OrderTest < ActiveSupport::TestCase
   # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test 'order attributes must be present' do
+    order = Order.new
+    assert order.invalid?
+    assert order.errors[:index].any?
+    assert order.errors[:city].any?
+    assert order.errors[:address].any?
+    assert order.errors[:client].any?
+    assert order.errors[:phone].any?
+    
+    # These attributes are not required.
+    assert order.errors[:email].none?
+    assert order.errors[:region].none?
+    assert order.errors[:area].none?
+  end
+  
+  test 'order index must have 6 digits' do
+    order = orders(:one)
+    assert order.valid?
+    
+    order.index = 123
+    assert order.invalid?
+    assert order.errors[:index].any?
+    
+    order.index = 1234567
+    assert order.invalid?
+    assert order.errors[:index].any?
+    
+    order.index = '123abc'
+    assert order.invalid?
+    assert order.errors[:index].any?
+    
+    order.index = 123456
+    assert order.valid?
+    assert order.errors[:index].none?
   end
 end

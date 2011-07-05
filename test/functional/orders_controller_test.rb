@@ -21,6 +21,11 @@ class OrdersControllerTest < ActionController::TestCase
       post :create, :order => @order.attributes
     end
     assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+  end
+  
+  test "should create order with errors" do
+    
   end
 
   test "should show order" do
