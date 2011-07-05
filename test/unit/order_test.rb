@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'test_helper'
 
 class OrderTest < ActiveSupport::TestCase
@@ -36,5 +37,14 @@ class OrderTest < ActiveSupport::TestCase
     order.index = 123456
     assert order.valid?
     assert order.errors[:index].none?
+  end
+  
+  test 'order postal index must contain only digits' do
+    order = orders(:one)
+    order.index = '123abc'
+    
+    assert !order.save
+    assert_equal 'недостаточной длины (не может быть меньше 6 символов)', order.errors[:index][0]
+    assert_equal 'должен содержать только цифры', order.errors[:index][1]
   end
 end
