@@ -1,8 +1,10 @@
-<h1>Listing orders</h1>
+<h1>Заказы</h1>
 
 <table>
   <tr>
+    <th><%= t('.id') %></th>
     <th><%= t('.index') %></th>
+    <th><%= t('.city') %></th>
     <th><%= t('.client') %></th>
     <th><%= t('.address') %></th>
     <th><%= t('.phone') %></th>
@@ -14,18 +16,20 @@
 
 <% @orders.each do |order| %>
   <tr>
+    <td><strong><%= order.id %></strong></td>
     <td><%= order.index %></td>
+    <td><%= order.city %></td>
     <td><%= order.client %></td>
     <td><%= order.address %></td>
     <td><%= order.phone %></td>
     <td><%= order.email %></td>
-    <td><%= link_to 'Show', order %></td>
-    <td><%= link_to 'Edit', edit_order_path(order) %></td>
-    <td><%= link_to 'Destroy', order, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Смотр.', order %></td>
+    <td><%= link_to 'Ред.', edit_order_path(order) %></td>
+    <td><%= link_to 'Удал.', order, :confirm => 'Вы уверены?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Order', new_order_path %>
+<%= link_to 'Новый заказ', new_order_path %>

@@ -5,6 +5,16 @@ ru:
       city: Город
     form:
       order: Заказ
+    index:
+      id: №
+      client: Ф.И.О. получателя
+      index: Индекс
+      region: Регион
+      phone: Телефон
+      city: Город
+      address: Адрес
+      email: Эл. почта
+      
       
   attributes:
     client: Ф.И.О. получателя
@@ -14,6 +24,9 @@ ru:
     city: Город
     address: Адрес
     email: Эл. почта
+    login: Логин
+    password: Пароль
+    password_confirmation: Подтверждение пароля
     
       
 

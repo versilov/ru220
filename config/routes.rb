@@ -1,5 +1,7 @@
 Ru220::Application.routes.draw do
   
+  resources :users
+
   resources :articles
   resources :orders
   
