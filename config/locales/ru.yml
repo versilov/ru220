@@ -7,6 +7,7 @@ ru:
       order: Заказ
     index:
       id: №
+      date: Дата
       client: Ф.И.О. получателя
       index: Индекс
       region: Регион
