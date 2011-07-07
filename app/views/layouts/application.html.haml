@@ -17,6 +17,12 @@
         =link_to 'Прибор', article_path(1)
         |
         =link_to 'Доставка', article_path(2)
+        
+        - if session[:user_id]
+          |
+          = link_to 'Выход', logout_path, :method => :delete
+      
+        
       
       = yield
       
