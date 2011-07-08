@@ -17,8 +17,10 @@ class OrdersControllerTest < ActionController::TestCase
   end
 
   test "should create order" do
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 3
     assert_difference('Order.count') do
-      post :create, :order => @order.attributes
+      post :create, :order => order_attrs
     end
     assert_redirected_to done_url
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"

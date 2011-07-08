@@ -1,4 +1,9 @@
 ru:
+  
+  edit: Редактировать
+  back: Назад
+
+
   orders:
     new:
       legend: Введите данные для заказа
@@ -15,6 +20,31 @@ ru:
       city: Город
       address: Адрес
       email: Эл. почта
+      pay_type: Способ оплаты
+      quantity: Количество
+      total_price: Стоимость
+      
+  products:
+    form:
+      product: Товар
+    new:
+      title: Название
+      image_url: URL картинки
+      price: Цена
+    edit:
+      back: Назад
+      show: Смотреть
+    show:
+      title: Название
+      image_url: URL картинки
+      price: Цена
+      back: Назад
+      edit: Редактировать
+ 
+    index:
+      title: Название
+      image_url: URL картинки
+      price: Цена
       
       
   attributes:
@@ -28,6 +58,13 @@ ru:
     login: Логин
     password: Пароль
     password_confirmation: Подтверждение пароля
+    pay_type: Способ оплаты
+    title: Название
+    image_url: URL картинки
+    price: Цена
+    quantity: Количество
+
+    
     
       
 

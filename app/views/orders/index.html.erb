@@ -1,33 +1,32 @@
 <h1>Заказы</h1>
 
-<table>
+<table id="orders" cellspacing=0>
   <tr>
-    <th><%= t('.id') %></th>
-    <th><%= t('.date') %></th>
-    <th><%= t('.index') %></th>
-    <th><%= t('.city') %></th>
-    <th><%= t('.client') %></th>
-    <th><%= t('.address') %></th>
-    <th><%= t('.phone') %></th>
-    <th><%= t('.email') %></th>
-    <th></th>
-    <th></th>
+    <th width="20px"><%= t('.id') %></th>
+    <th width="80px"><%= t('.date') %></th>
+    <th width="100px"><%= t('.city') %></th>
+    <th width="270x"><%= t('.client') %>/<%= t('.address') %></th>
+    <th width="100px"><%= t('.pay_type') %></th>
+    <th><%= t('.quantity') %>/<%= t('.total_price') %></th>
     <th></th>
   </tr>
 
 <% @orders.each do |order| %>
-  <tr>
+  <tr class="<%= cycle('line_odd', 'line_even') %>">
     <td><strong><%= order.id %></strong></td>
-    <td><%= order.created_at %></td>
-    <td><%= order.index %></td>
+    <td><nobr><%= order.created_at.to_date %></nobr></td>
     <td><%= order.city %></td>
-    <td><%= order.client %></td>
-    <td><%= order.address %></td>
-    <td><%= order.phone %></td>
-    <td><%= order.email %></td>
-    <td><%= link_to 'Смотр.', order %></td>
-    <td><%= link_to 'Ред.', edit_order_path(order) %></td>
-    <td><%= link_to 'Удал.', order, :confirm => 'Вы уверены?', :method => :delete %></td>
+    <td>
+      <div class="client-name"><%= order.client %></div>
+      <div class="address"><%= order.address %></div>
+    </td>
+    <td><%= order.pay_type %></td>
+    <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
+    <td class="actions">
+      <%= link_to 'Смотр.', order %><br />
+      <%= link_to 'Ред.', edit_order_path(order) %><br />
+      <%= link_to 'Удал.', order, :confirm => 'Вы уверены?', :method => :delete %>
+    </td>
   </tr>
 <% end %>
 </table>

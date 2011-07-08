@@ -20,6 +20,12 @@
         
         - if session[:user_id]
           |
+          = link_to 'Товары', products_path
+          |
+          = link_to 'Заказы', orders_path
+          |
+          = link_to 'Пользователи', users_path
+          |
           = link_to 'Выход', logout_path, :method => :delete
       
         
@@ -27,4 +33,4 @@
       = yield
       
       #footer
-        Все права защищены. ООО "220РУ", 2011 г.
+        Все права защищены. ООО "РБЛ", 2011 г.

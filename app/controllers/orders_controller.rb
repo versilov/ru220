@@ -56,6 +56,8 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
+        @order.create_sd02_line_item(@order.quantity)
+        
         format.html { redirect_to(done_url, :notice => 'Order was successfully created.'); flash[:order_id] = @order.id }
         format.xml  { render :xml => @order, :status => :created, :location => @order }
       else

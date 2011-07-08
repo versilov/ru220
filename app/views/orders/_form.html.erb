@@ -46,6 +46,16 @@
     <%= f.label :email %><br />
     <%= f.email_field :email %>
   </div>
+  
+  <div class="field">
+    <%= f.label :pay_type %><br />
+    <%= f.select :pay_type, Order::PAYMENT_TYPES, :prompt => 'Выберите способ оплаты' %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :quantity %><br />
+    <%= f.select :quantity, 1..10 %>
+  </div>
   <div class="actions">
     <%= f.submit 'Сделать заказ'%>
   </div>

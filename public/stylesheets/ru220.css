@@ -40,3 +40,26 @@ body {
   background-color: #5f5;
   padding: 4px 6px;
 }
+
+
+/******************* ORDERS LIST *********************/
+
+#orders td {
+  padding: 5px 7px;
+}
+
+#orders .line_odd td {
+  background-color: #ddd;
+}
+
+#orders .client-name {
+  color: #000;
+}
+
+#orders .address {
+  color: #555;
+}
+
+#orders .actions {
+  text-align: right;
+}

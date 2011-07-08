@@ -1,5 +1,7 @@
 Ru220::Application.routes.draw do
   
+  resources :products
+
   get 'admin' => 'admin#index'
 
   controller :sessions do

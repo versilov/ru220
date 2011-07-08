@@ -1,0 +1,27 @@
+<h1>Товары</h1>
+
+<table>
+  <tr>
+    <th><%= t('.title') %></th>
+    <th><%= t('.image_url') %></th>
+    <th><%= t('.price') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @products.each do |product| %>
+  <tr>
+    <td><%= product.title %></td>
+    <td><%= product.image_url %></td>
+    <td><%= product.price %></td>
+    <td><%= link_to 'Смотр.', product %></td>
+    <td><%= link_to 'Ред.', edit_product_path(product) %></td>
+    <td><%= link_to 'Удал.', product, :confirm => 'Вы уверены?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Создать товар', new_product_path %>
