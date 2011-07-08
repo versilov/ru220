@@ -1,8 +1,14 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
+sd02:
+  id: 1
+  title: Энергосберегающее устройство СД-02
+  image_url: '/images/sd-0022.jpg'
+  price: 1988
+
 one:
-  title: MyString
-  image_url: MyString
+  title: Product One
+  image_url: /product01.jpg
   price: 9.99
 
 two:

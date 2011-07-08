@@ -67,11 +67,6 @@ class OrdersController < ApplicationController
     end
   end
   
-  # GET /done
-  def done
-    puts 'Done!'
-  end
-
   # PUT /orders/1
   # PUT /orders/1.xml
   def update
