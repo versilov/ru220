@@ -5,7 +5,7 @@ class Order < ActiveRecord::Base
     def validate(record)
       index = record.index
       
-      post_index = PostIndex.find_by_index(index)
+      post_index = PostIndex.find_by_index(index.to_s)
       
       if post_index == nil
         record.errors[:index] << "не найден"
@@ -13,7 +13,7 @@ class Order < ActiveRecord::Base
       end
       
       # Check for delivery limits
-      DeliveryLimit.find_all_by_index(index).each do |limit|
+      DeliveryLimit.find_all_by_index(index.to_s).each do |limit|
         # Convert to year 2000
         today = Date.civil(2000, Date.today.mon, Date.today.mday)
         
