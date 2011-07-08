@@ -4,6 +4,15 @@ require 'test_helper'
 
 class UserStoriesTest < ActionDispatch::IntegrationTest
   fixtures :all
+  
+  def login(login, password)
+    get '/login'
+    post_via_redirect '/login', :login => login, :password => password
+    assert_response :success
+    assert_template :admin
+    assert_not_nil session[:user_id]
+    User::find_by_id(session[:user_id])
+  end
 
   test "place an order" do
     LineItem.delete_all
@@ -48,5 +57,14 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     assert_equal 1, order.line_items.size
     line_item = order.line_items[0]
     assert_equal products(:sd02), line_item.product
+  end
+  
+  test 'viewing orders list' do
+    user = login 'dave', 'secret'
+    assert_not_nil user
+    
+    get '/orders'
+    assert_response :success
+    assert_template 'orders/index'
   end
 end
