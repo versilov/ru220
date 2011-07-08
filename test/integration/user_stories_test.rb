@@ -23,7 +23,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     assert_template 'new'
     
     post_via_redirect '/orders', :order => { :client => 'Вася Тестер',
-                                :index => 443096,
+                                :index => 443099,
                                 :region => 'Самарская обл.',
                                 :area => '',
                                 :city => 'Самара',
@@ -45,7 +45,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     
     assert_equal 3, order.total_quantity
     assert_equal 'Вася Тестер', order.client
-    assert_equal 443096, order.index
+    assert_equal 443099, order.index
     assert_equal 'Самарская обл.', order.region
     assert_equal '', order.area
     assert_equal 'Самара', order.city

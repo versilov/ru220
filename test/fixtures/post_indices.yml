@@ -1,0 +1,41 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  index: 443099
+  opsname: САМАРА-99
+  opstype: MyString
+  opssubm: MyString
+  region: САМАРСКАЯ ОБЛАСТЬ
+  autonom: MyString
+  area: 
+  city: САМАРА
+  city_1: MyString
+  actdate: 2011-06-06
+  indexold: MyString
+
+two:
+  index: 443110
+  opsname: САМАРА-110
+  opstype: MyString
+  opssubm: MyString
+  region: САМАРСКАЯ ОБЛАСТЬ
+  autonom: MyString
+  area: 
+  city: САМАРА
+  city_1: MyString
+  actdate: 2011-06-06
+  indexold: MyString
+  
+closed:
+  index: 157164
+  opsname: ПАНКРАТОВО
+  opstype: MyString
+  opssubm: MyString
+  region: САМАРСКАЯ ОБЛАСТЬ
+  autonom: MyString
+  area: 
+  city: САМАРА
+  city_1: MyString
+  actdate: 2011-06-06
+  indexold: MyString
+

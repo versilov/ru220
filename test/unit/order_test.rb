@@ -34,7 +34,7 @@ class OrderTest < ActiveSupport::TestCase
     assert order.invalid?
     assert order.errors[:index].any?
     
-    order.index = 123456
+    order.index = 443110
     assert order.valid?
     assert order.errors[:index].none?
   end
@@ -46,5 +46,23 @@ class OrderTest < ActiveSupport::TestCase
     assert !order.save
     assert_equal 'недостаточной длины (не может быть меньше 6 символов)', order.errors[:index][0]
     assert_equal 'должен содержать только цифры', order.errors[:index][1]
+  end
+  
+  test 'post index must exist' do
+    order = orders(:one)
+    assert order.valid?
+    
+    order.index = 123456
+    assert order.invalid?
+    assert_equal 'не найден', order.errors[:index][0]
+  end
+  
+  test 'index delivery limit' do
+    order = orders(:one)
+    assert order.valid?
+    
+    order.index = 157164
+    assert order.invalid?
+    assert_equal 'закрыт до 31-12', order.errors[:index][0]
   end
 end

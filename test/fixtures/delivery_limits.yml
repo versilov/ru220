@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  index: 157164
+  opsname: ПАНКРАТОВО
+  actdate: 2000-09-22
+  prbegdate: 2000-01-01
+  prenddate: 2000-12-31
+  delivtype: Запрещена
+  delivpnt: MyString
+  baserate: MyString
+  basecoeff: MyString
+  transfcnt: MyString
+  ratezone: MyString
+  cfactdate: 2011-06-07
+  delivindex: MyString
+
+two:
+  index: 157465
+  opsname: ТИМОШИНО
+  actdate: 2000-09-22
+  prbegdate: 2000-01-01
+  prenddate: 2000-12-31
+  delivtype: Запрещена
+  delivpnt: MyString
+  baserate: MyString
+  basecoeff: MyString
+  transfcnt: MyString
+  ratezone: MyString
+  cfactdate: 2011-06-07
+  delivindex: MyString
