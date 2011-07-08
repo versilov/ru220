@@ -23,6 +23,23 @@ ru:
       pay_type: Способ оплаты
       quantity: Количество
       total_price: Стоимость
+    show:
+      index: Почтовый индекс
+      client: Получатель
+      region: Регион
+      area: Район
+      phone: Телефон
+      city: Город
+      address: Адрес
+      email: Эл. почта
+      pay_type: Способ оплаты
+      quantity: Количество
+      total_price: Стоимость
+      edit: Редактировать
+      back: Назад
+      price: Стоимость
+
+    
       
   products:
     form:

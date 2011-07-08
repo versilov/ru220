@@ -63,3 +63,10 @@ body {
 #orders .actions {
   text-align: right;
 }
+
+
+/******************* ORDER SHOW ****************/
+
+.gray {
+  color: #777;
+}

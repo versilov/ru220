@@ -1,0 +1,60 @@
+%h1
+  %span.gray Заказ
+  = "#{@order.city}-#{@order.id}"
+
+%p#notice= notice
+
+%p
+  %strong= t('.index') + ":"
+  = @order.index
+
+%p
+  %strong= t('.address') + ':'
+  = @order.address 
+
+%p
+  %strong= t('.region') + ':'
+  = @order.region
+
+%p
+  %strong= t('.area') + ':'
+  = @order.area 
+
+%p
+  %strong= t('.city') + ':'
+  = @order.city
+
+%p
+  %strong= t('.address') + ':'
+  = @order.address 
+
+%p
+  %strong= t('.client') + ':'
+  = @order.client 
+  
+%p
+  %strong= t('.phone') + ':'
+  = @order.phone
+
+%p
+  %strong= t('.email') + ':'
+  = @order.email 
+
+
+%p
+  %strong= t('.pay_type') + ':'
+  = @order.pay_type
+
+%p
+  %strong= t('.quantity') + ':'
+  = "#{@order.total_quantity} шт."
+
+%p
+  %strong= t('.price') + ':'
+  = number_to_currency(@order.total_price)
+
+
+
+
+= link_to t('.edit'), edit_order_path(@order)  |
+= link_to t('.back'), orders_path 

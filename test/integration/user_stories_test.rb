@@ -67,4 +67,33 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template 'orders/index'
   end
+  
+  test 'show order' do
+    user = login 'dave', 'secret'
+    assert_not_nil user
+    
+    get '/orders'
+    assert_response :success
+    assert_template 'orders/index'
+    
+    get "/orders/#{Order.all.first.id}"
+    assert_response :success
+    assert_template 'orders/show'
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
