@@ -69,6 +69,7 @@ ru:
     index: Почтовый индекс
     region: Регион
     phone: Телефон
+    area: Район
     city: Город
     address: Адрес
     email: Эл. почта

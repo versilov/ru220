@@ -1,3 +1,5 @@
+
+
 <a name="order_form">&nbsp;</a>
 <%= form_for(@order, :url => '/#order_form') do |f| %>
   <% if @order.errors.any? %>
@@ -21,11 +23,17 @@
   <div class="field">
     <%= f.label :index %><br />
     <%= f.text_field :index, :size => 6, :maxlength => 6 %>
+    <span id="order_index_error"></span>
   </div>
   
   <div class="field">
     <%= f.label :region %><br />
     <%= f.text_field :region %>
+  </div>
+
+  <div class="field">
+    <%= f.label :area %><br />
+    <%= f.text_field :area %>
   </div>
   
   <div class="field">
@@ -60,3 +68,35 @@
     <%= f.submit 'Сделать заказ'%>
   </div>
 <% end %>
+
+<script language="javascript">
+  $('#order_index').blur( function() {
+    var index = event.target.value;
+    if (index.length == 6)  {
+      $.ajax({
+        type: 'GET',
+        url: '/parseindex',
+        data: 'index=' + index,
+        success: function(msg) {
+          var splt = msg.split(';');
+          
+          var region = splt[0];
+          var area = splt[1];
+          var city = splt[2];
+          
+          $('#order_index_error').text('');
+          $('#order_region').val(region);
+          $('#order_area').val(area);
+          $('#order_city').val(city);
+         },
+         error: function() {
+          $('#order_region').val('');
+          $('#order_area').val('');
+          $('#order_city').val('');
+          $('#order_index_error').text('Индекс не найден');
+         }
+       });
+    }
+  });
+</script>
+

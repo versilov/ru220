@@ -52,4 +52,21 @@ class OrdersControllerTest < ActionController::TestCase
 
     assert_redirected_to orders_path
   end
+  
+  test 'should get region, area, city by index' do
+    xhr :get, :parse_index, :index => '123456'
+    assert_response :missing
+    
+    xhr :get, :parse_index, :index => '443099'
+    assert_response :success
+    parts = @response.body.split(';')
+    region = parts[0]
+    area = parts[1]
+    city = parts[2]
+    
+    post_index = PostIndex.find_by_index('443099')
+    assert_equal region, post_index.region
+    assert_equal area, post_index.area
+    assert_equal city, post_index.city
+  end
 end

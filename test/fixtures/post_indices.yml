@@ -7,7 +7,7 @@ one:
   opssubm: MyString
   region: САМАРСКАЯ ОБЛАСТЬ
   autonom: MyString
-  area: 
+  area: ''
   city: САМАРА
   city_1: MyString
   actdate: 2011-06-06

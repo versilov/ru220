@@ -94,4 +94,18 @@ class OrdersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def parse_index
+    index = PostIndex.find_by_index(params[:index])
+    
+    if (index)
+      respond_to do |format|
+        format.html { render :text => index.region + ';' + index.area + ';' + index.city }
+      end
+    else
+      respond_to do |format|
+        format.html { render :text => '', :status => 404 }
+      end
+    end
+  end
 end

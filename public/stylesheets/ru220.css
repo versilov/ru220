@@ -32,6 +32,10 @@ body {
   font-size: 22px;
 }
 
+#order_index_error {
+  color: #f00;
+}
+
 
 
 /************************* DONE **************************/

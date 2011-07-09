@@ -20,6 +20,7 @@ Ru220::Application.routes.draw do
   root :to => 'orders#new', :as => :new_order, :via => :get
   root :to => 'orders#create', :via => :post
   match 'done' => 'orders#done', :as => :done
+  match 'parseindex' => 'orders#parse_index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
