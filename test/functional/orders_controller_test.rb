@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'test_helper'
 
 class OrdersControllerTest < ActionController::TestCase
@@ -9,6 +11,8 @@ class OrdersControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:orders)
+    
+    assert_select 'h1', 'Заказы'
   end
 
   test "should get new" do
@@ -27,6 +31,14 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   test "should create order with errors" do
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 3
+    order_attrs[:index] = 123456
+    assert_no_difference('Order.count') do
+      post :create, :order => order_attrs
+    end
+    
+    assert_template 'orders/new'
     
   end
 

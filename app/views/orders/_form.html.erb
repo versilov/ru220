@@ -1,7 +1,7 @@
 
 
 <a name="order_form">&nbsp;</a>
-<%= form_for(@order, :url => '/#order_form') do |f| %>
+<%= form_for(@order) do |f| %>
   <% if @order.errors.any? %>
     <div id="error_explanation">
       <h2><%= t('activerecord.errors.template.header', :count=>@order.errors.size,
