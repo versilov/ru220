@@ -29,15 +29,18 @@ class OrdersController < ApplicationController
   # GET /orders/new.xml
   def new
     @order = Order.new
-    
-    @order.client = 'Смирнов Сергей Игоревич'
-    @order.index = '443096'
-    @order.region = 'Самарская обл.'
-    @order.city = 'Самара'
-    @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
-    @order.phone = '+7 916 233 03 36'
-    @order.email = 'client@mail.org'
-    @order.pay_type = Order::PaymentType::COD
+
+    puts "DOMAIN: #{request.domain}" 
+    if request.domain == 'localhost'   
+      @order.client = 'Смирнов Сергей Игоревич'
+      @order.index = '443096'
+      @order.region = 'Самарская обл.'
+      @order.city = 'Самара'
+      @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
+      @order.phone = '+7 916 233 03 36'
+      @order.email = 'client@mail.org'
+      @order.pay_type = Order::PaymentType::COD
+    end
 
     respond_to do |format|
       format.html # new.html.erb
