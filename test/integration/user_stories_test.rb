@@ -20,7 +20,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     
     get '/'
     assert_response :success
-    assert_template 'new'
+    assert_template 'articles/home'
     
     post_via_redirect '/orders', :order => { :client => 'Вася Тестер',
                                 :index => 443099,

@@ -15,10 +15,15 @@ Ru220::Application.routes.draw do
   resources :articles
   resources :orders
   
+  match '/device/how' => 'articles#how'
+  match '/device/economy' => 'articles#economy'
+  match '/device/reviews' => 'articles#reviews'
+  root :to => 'articles#home', :as => :home
   
   
-  root :to => 'orders#new', :as => :new_order, :via => :get
-  root :to => 'orders#create', :via => :post
+  
+#  root :to => 'orders#new', :as => :new_order, :via => :get
+#  root :to => 'orders#create', :via => :post
   match 'done' => 'orders#done', :as => :done
   match 'parseindex' => 'orders#parse_index'
 

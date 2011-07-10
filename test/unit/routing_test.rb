@@ -3,7 +3,7 @@ require './config/routes.rb'
 
 class RoutingTest < ActionController::TestCase
 
-  test "root path is order->new" do
-    assert_recognizes({:controller => 'orders', :action => 'new'}, '/')
+  test "root path is articles/home" do
+    assert_recognizes({:controller => 'articles', :action => 'home'}, '/')
   end
 end

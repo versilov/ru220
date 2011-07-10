@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  skip_before_filter :authorize, :only => [:show]
+  skip_before_filter :authorize, :only => [:show, :home, :how, :economy, :reviews]
   
   # GET /articles
   # GET /articles.xml

@@ -7,7 +7,6 @@ class OrderTest < ActiveSupport::TestCase
     order = Order.new
     assert order.invalid?
     assert order.errors[:index].any?
-    assert order.errors[:city].any?
     assert order.errors[:address].any?
     assert order.errors[:client].any?
     assert order.errors[:phone].any?

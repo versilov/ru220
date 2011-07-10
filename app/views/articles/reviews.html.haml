@@ -1,0 +1,10 @@
+%h1 Прибор энергосберегающий СД-02
+
+#tabs
+  %ul
+    %li= link_to 'Прибор', '/'
+    %li= link_to 'Как он работает', '/device/how'
+    %li= link_to 'Сколько можно сэкономить', '/device/economy'
+    %li= link_to 'Что говорят покупатели', '/device/reviews', :class => 'selected'
+    
+  = link_to 'Купить', new_order_path, :class => 'gold-button'

@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class OrdersController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create, :done]
+  skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index]
   
   # GET /orders
   # GET /orders.xml
@@ -37,6 +37,7 @@ class OrdersController < ApplicationController
     @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
     @order.phone = '+7 916 233 03 36'
     @order.email = 'client@mail.org'
+    @order.pay_type = Order::PaymentType::COD
 
     respond_to do |format|
       format.html # new.html.erb

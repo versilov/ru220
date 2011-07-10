@@ -1,26 +1,179 @@
-body {
-  text-align: center;
-}
+    body {
+        background-color: #fff;
+        color: #444;
+        font-family: arial, helvetica, verdana, sans-serif;
+        padding: 0px;
+        margin: 0;
+        text-align: center;
+    }
+    
+    #toptop {
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
+      height: 40px;
+      text-align: center;
+    }
+    
+    #top-menu {
+        list-style-type: none;
+        padding: 10px 0px;
+        margin: 0px auto;
+        text-align: left;
+        width: 940px;
+      
+    }
+    
+    #top-menu a {
+      color: #ddd;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    
+    #top-menu li {
+      display: inline;
+      margin-right: 15px;
+      padding-top: 13px;
+    }
+    
+    
+    /****************** CONTENT ***************/
+    #content {
+      width: 960px;
+      margin: 0 auto;
+      text-align: left;
+      padding-bottom: 100px;
+    }
+    
+    #content h1 {
+        font-weight: normal;
+        margin-bottom: 36px;
+        margin-left: 7px;
+        margin-top: 35px;
+        margin-bottom: 45px;
+        font-size: 32px !important;
+    }
+    
+    #content #tabs li {
+        display: inline;
+        list-style-type: none;
+        padding: 0;
+        margin: 0 5px 0 7px;
+    }
+    
+    #tabs {
+        border-bottom: solid 1px #999;
+        padding: 0 0 11px 0 !important;
+        margin: 0;
+        height: 19px;
+    }
+    
+    #tabs ul {
+        padding: 0;
+        margin: 0;
+        display: block;
+        float: left;
+    }
+    
+    
+    #tabs a {
+        color: #888;
+        font-size: 14px;
+        text-decoration: none;
+        
+        padding: 13px 18px;
+        margin: 0;
+        
+        border: none;
+        background-color: #eee;
+    }
+    
+    #tabs a.selected {
+        border-left: solid 1px #bbb;
+        border-top: solid 1px #bbb;
+        border-right: solid 1px #bbb;
+        border-bottom: solid 1px #fff;
+        background-color: #fff;
+        color: #000;
+    }
+    
+    a.gold-button {
+        background: url('/images/btn_gold_bg.jpg') repeat-x scroll left top #FFCB4F !important;
+        padding: 9px 33px !important;
+        color: #000 !important;
+        font-size: 14px !important;
+        height: 16px; 
+        font-weight: bold;
+        float: right;
+        margin: -9px 0px 0px 30px !important;
+        display: block !important;
+        
+        border-bottom: solid 1px #CA8B08 !important;
+        border-left: solid 1px #CA8B08 !important;
+        border-right: solid 1px #CA8B08 !important;
+        border-top: solid 1px #FFC23B !important;
+    }
+    
+    /*************** DEVICE FEATURES **************/
+    
+    .clear {
+      clear: both;
+    }
+    
+    #device {
+      background: url("/images/sd-0022_main.jpg") no-repeat 180px 0px;
+      width: 960px;
+      height: 800px;
+      margin-top: 20px;
 
-#box {
-  width: 780px;
-  text-align: left;
-  margin: 0 auto;
-}
+    }
+    
+    #device div {
+      float: left;
+    }
+    
+    .feature {
+      background: url('/images/smlPanelOuter.png') no-repeat;
+      width: 180px;
+      height: 195px;
+      padding: 5px 25px;
+      margin-top: 36px;
+    }
+    
+    .feature h3 {
+        margin-bottom: -5px;
+    }
+    
+    .feature p {
+        font-size: 15px;
+    }
+    
 
-#menu {
-  font-size: 120%;
-}
+  /****************** ARTICLE *****************/
+  
+  .article {
+    clear: both;
+    margin: 20px 0px;
+  }
 
-#footer {
-  border-top: solid 1px gray;
-  margin-top: 27px;
-}
+    
+    
+    /**************** FOOTER ****************/
+    
+    #footer {
+        background-color: #141414;
+        color: #ddd;
+        height: 45px;
+        padding: 9px 0px;
+        font-size: 12px;
+    }
 
 /********************** ORDER FORM ***********************/
 #new_order_fieldset {
   width: 500px;
   border: solid 1px gray;
+  margin-top: 40px;
 }
 
 #new_order_fieldset legend {

@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    redirect_to new_order_url, :notice => 'Пользователь вышел'
+    redirect_to home_url, :notice => 'Пользователь вышел'
   end
 
 end

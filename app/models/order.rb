@@ -39,7 +39,7 @@ class Order < ActiveRecord::Base
   SD02_PRODUCT_ID = 1
 
 
-  validates :index, :client, :city, :address, :phone, :pay_type, :presence => true
+  validates :index, :client, :address, :phone, :pay_type, :presence => true
   validates :index, :length => 6..6,  :numericality => true
   validates :pay_type, :inclusion => PAYMENT_TYPES
   validates_with IndexValidator
