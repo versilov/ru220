@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  skip_before_filter :authorize, :only => [:show, :home, :how, :economy, :reviews]
+  skip_before_filter :authorize, :only => [:show, :home, :how, :economy, :rostest, :reviews]
   
   # GET /articles
   # GET /articles.xml
@@ -15,7 +15,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.xml
   def show
-    @article = Article.find(params[:id])
+    @article = Article.find_by_alias(params[:alias])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -62,7 +62,8 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.update_attributes(params[:article])
-        format.html { redirect_to(@article, :notice => 'Article was successfully updated.') }
+
+        format.html { redirect_to(article_path(@article.alias), :notice => 'Article was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -15,9 +15,15 @@
     <%= f.label :title %><br />
     <%= f.text_field :title %>
   </div>
+  
+  <div class="field">
+    <%= f.label :alias %><br />
+    <%= f.text_field :alias %>
+  </div>
+
   <div class="field">
     <%= f.label :text %><br />
-    <%= f.text_area :text %>
+    <%= f.text_area :text, :cols => 108 %>
   </div>
   <div class="actions">
     <%= f.submit %>

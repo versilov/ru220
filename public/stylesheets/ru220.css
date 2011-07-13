@@ -16,12 +16,29 @@
       text-align: center;
     }
     
+    #toptop #head {
+      width: 940px;
+      margin: 0 auto;
+    }
+    
+    
+    #toptop #phone {
+      float: right;
+      font-size: 20px;
+      margin-top: 3px;
+    }
+    
+    #toptop #phone span {
+      font-size: 13px;
+      display: block;
+    }
+    
     #top-menu {
         list-style-type: none;
         padding: 10px 0px;
         margin: 0px auto;
         text-align: left;
-        width: 940px;
+        float: left;
       
     }
     
@@ -55,11 +72,34 @@
         font-size: 32px !important;
     }
     
+    h1#energo {
+      float: left;
+    }
+    
+    #home-price {
+      margin-top: 36px;
+      float: right;
+      font-size: 24px;
+      margin-right: -190px;
+      
+    }
+    
+    #sub-price {
+      font-size: 15px;
+      margin-top: 3px;
+    }
+    
+    #home-price strong {
+      color: #0a0;
+    }
+    
+    
     #content #tabs li {
         display: inline;
         list-style-type: none;
         padding: 0;
         margin: 0 5px 0 7px;
+        height: auto;
     }
     
     #tabs {
@@ -67,6 +107,7 @@
         padding: 0 0 11px 0 !important;
         margin: 0;
         height: 19px;
+        
     }
     
     #tabs ul {
@@ -74,6 +115,8 @@
         margin: 0;
         display: block;
         float: left;
+        
+       
     }
     
     
@@ -85,8 +128,7 @@
         padding: 13px 18px;
         margin: 0;
         
-        border: none;
-        background-color: #eee;
+        background-color: #eeeeee;
     }
     
     #tabs a.selected {
@@ -100,12 +142,13 @@
     
     a.gold-button {
         background: url('/images/btn_gold_bg.jpg') repeat-x scroll left top #FFCB4F !important;
-        padding: 9px 33px !important;
+        
+        padding: 8px 33px !important;
         color: #000 !important;
         font-size: 14px !important;
-        height: 16px; 
         font-weight: bold;
         float: right;
+        
         margin: -9px 0px 0px 30px !important;
         display: block !important;
         
@@ -142,7 +185,8 @@
     }
     
     .feature h3 {
-        margin-bottom: -5px;
+      margin-top: 20px;
+      margin-bottom: -5px;
     }
     
     .feature p {
@@ -156,6 +200,10 @@
     clear: both;
     margin: 20px 0px;
   }
+  
+  #delivery h3 {
+    color: #555;
+  }
 
     
     
@@ -168,21 +216,66 @@
         padding: 9px 0px;
         font-size: 12px;
     }
+    
+    #footer a {
+      color: #fff;
+      background: none;
+    }
+    
+    #footer a:hover {
+      background: none;
+    }
 
 /********************** ORDER FORM ***********************/
-#new_order_fieldset {
-  width: 500px;
-  border: solid 1px gray;
-  margin-top: 40px;
+
+form#new_order {
+  margin-top: -40px;
+}
+
+.new_order_fieldset {
+  width: 420px;
+  border: solid 1px #d2d2d2;
+  background: #fafafa;
+  margin-bottom: 18px;
+  margin-right:  24px;
+  padding: 9px 0px 0px 13px;
+  
+  float: left;
+}
+
+#price {
+  float: left;
+  font-size: 25px;
+  padding-top: 17px;
+  width: 420px;
+  height: 40px;  
+}
+
+#price strong {
+  color: #0a0;
+}
+
+#price #old {
+  color: #c00;
+  text-decoration: line-through;
+  padding-left: 20px;
+}
+
+.new_order_fieldset input, .new_order_fieldset textarea {
+  border:solid 1px #d2d2d2;
+  padding: 3px;
+  font-size: 13px;
 }
 
 #new_order_fieldset legend {
-  background-color: #5f5;
+  background-color: #eee;
   padding: 1px 6px;
 }
 
 #order_submit {
   font-size: 22px;
+
+  clear: both;
 }
 
 #order_index_error {

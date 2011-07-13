@@ -14,6 +14,10 @@
       </ul>
     </div>
   <% end %>
+  
+  <fieldset class="new_order_fieldset">
+   <legend>Адрес доставки</legend>
+
 
   <div class="field">
     <%= f.label :client %><br />
@@ -46,6 +50,31 @@
     <%= f.text_area :address, :cols => 48, :rows => 3, 
                     :placeholder => 'Пример: ул. Ленина, д. 3-А, кв. 12' %>
   </div>
+  </fieldset>
+  
+  <div id="price">
+    Цена: <strong><%= number_to_currency(Product.find(1).price) %></strong> <span id="old">2 450 руб.</span>
+  </div>
+  
+  
+  <fieldset class="new_order_fieldset">
+  <legend>Заказ</legend>
+  <div class="field">
+    <%= f.label :pay_type %><br />
+    <%= f.select :pay_type, Order::PAYMENT_TYPES, :prompt => 'Выберите способ оплаты' %>
+  </div>
+  
+    <div class="field">
+     <%= f.label :quantity %><br />
+     <%= f.select :quantity, 1..10 %>
+    </div>
+  </fieldset>
+
+  
+  
+  
+  <fieldset class="new_order_fieldset">
+    <legend>Контактные данные</legend>
   <div class="field">
     <%= f.label :phone %><br />
     <%= f.telephone_field :phone, :placeholder => 'Пример: +7 927 234 05 46' %>
@@ -55,15 +84,9 @@
     <%= f.email_field :email %>
   </div>
   
-  <div class="field">
-    <%= f.label :pay_type %><br />
-    <%= f.select :pay_type, Order::PAYMENT_TYPES, :prompt => 'Выберите способ оплаты' %>
-  </div>
+  </fieldset>
   
-  <div class="field">
-    <%= f.label :quantity %><br />
-    <%= f.select :quantity, 1..10 %>
-  </div>
+  <br />
   <div class="actions">
     <%= f.submit 'Сделать заказ'%>
   </div>

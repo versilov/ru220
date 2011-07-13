@@ -1,4 +1,4 @@
-%h1 Прибор энергосберегающий СД-02
+%h1 Энергосберегатель
 
 #tabs
   %ul
@@ -8,3 +8,11 @@
     %li= link_to 'Что говорят покупатели', '/device/reviews', :class => 'selected'
     
   = link_to 'Купить', new_order_path, :class => 'gold-button'
+  
+  
+.article
+  <script type="text/javascript" src="/javascripts/flowplayer-3.2.6.min.js"></script>
+  <a href="/video/_Energosberegatel_dtv_5m_DM_4101_PD_mpg.flv" style="display:block;width:480px;height:360px" id="player"></a> 
+  <!-- this will install flowplayer inside previous A- tag. -->
+  <script>flowplayer("player", "/video/flowplayer-3.2.7.swf");</script>
+

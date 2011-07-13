@@ -2,5 +2,7 @@
 
 %h1= @article.title
 
+<div id="#{@article.alias}">
 = sanitize @article.text
+</div>
 

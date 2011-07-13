@@ -11,19 +11,23 @@
     
   %body
     #toptop
-      %ul#top-menu
-        %li= link_to 'Начало', '/'
-        %li= link_to 'Доставка', article_path(2)
-        %li
-          %a{ :href => "#"} Контакты
-        - if session[:user_id]
-          %li= link_to 'Товары', products_path
-          %li= link_to 'Заказы', orders_path
-          %li= link_to 'Пользователи', users_path
-          %li= link_to 'Выход', logout_path, :method => :delete
+      #head
+        %ul#top-menu
+          %li= link_to 'Начало', '/'
+          %li= link_to 'Доставка и оплата', article_path('delivery')
+          %li= link_to 'Ответы на вопросы', article_path('faq')
+          - if session[:user_id]
+            %li= link_to 'Товары', products_path
+            %li= link_to 'Заказы', orders_path
+            %li= link_to 'Пользователи', users_path
+            %li= link_to 'Выход', logout_path, :method => :delete
+        
+        #phone
+          8-800-333-06-88
+          %span Звонок бесплатный по РФ
       
     #content
       = yield
       
     #footer
-      Все права защищены. Товар сертифицирован. ООО "РБЛ", 2011 г.
+      Все права защищены. Товар <a href="/device/rostest">сертифицирован</a>. ООО "РБЛ", 2011 г.<br />Бесплатная горячая линия: 8-800-333-06-88

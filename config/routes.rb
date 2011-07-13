@@ -12,12 +12,18 @@ Ru220::Application.routes.draw do
 
   resources :users
 
+  match '/articles/:alias' => 'articles#show', :via => :get
+
+
   resources :articles
   resources :orders
   
   match '/device/how' => 'articles#how'
   match '/device/economy' => 'articles#economy'
   match '/device/reviews' => 'articles#reviews'
+  match '/device/rostest' => 'articles#rostest'
+
+
   
   root :to => 'articles#home', :as => :home
   match 'done' => 'orders#done', :as => :done
