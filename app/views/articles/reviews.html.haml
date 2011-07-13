@@ -1,13 +1,4 @@
-%h1 Энергосберегатель
-
-#tabs
-  %ul
-    %li= link_to 'Прибор', '/'
-    %li= link_to 'Как он работает', '/device/how'
-    %li= link_to 'Сколько можно сэкономить', '/device/economy'
-    %li= link_to 'Что говорят покупатели', '/device/reviews', :class => 'selected'
-    
-  = link_to 'Купить', new_order_path, :class => 'gold-button'
+= render :partial => 'tabs'
   
   
 .article

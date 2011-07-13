@@ -1,20 +1,4 @@
-%h1#energo Энергосберегатель
-  
-#home-price
-  %strong= number_to_currency(Product.find(1).price)
-  #sub-price включая доставку
-
-%br.clear
-
-#tabs
-  %ul
-    %li= link_to 'Прибор', '/', :class => 'selected'
-    %li= link_to 'Как он работает', '/device/how'
-    %li= link_to 'Сколько можно сэкономить', '/device/economy'
-    %li= link_to 'Что говорят покупатели', '/device/reviews'
-    
-  = link_to 'Купить', new_order_path, :class => 'gold-button'
-
+= render :partial => 'tabs'
 
 #device.clear
   .feature{ :style => 'margin-left: 60px;'}

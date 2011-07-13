@@ -30,7 +30,6 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
 
-    puts "DOMAIN: #{request.domain}" 
     if request.domain == 'localhost'   
       @order.client = 'Смирнов Сергей Игоревич'
       @order.index = '443096'

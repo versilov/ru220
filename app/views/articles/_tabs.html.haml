@@ -1,0 +1,27 @@
+%h1#energo Энергосберегатель
+  
+#home-price
+  %strong= number_to_currency(Product.find(1).price)
+  #sub-price включая доставку
+
+%br.clear
+
+#tabs
+  %ul
+    %li
+      = link_to_unless_current( 'Прибор', '/') do
+        %span Прибор
+  
+    %li
+      = link_to_unless_current 'Как он работает', '/device/how' do
+        %span Как он работает
+        
+    %li
+      = link_to_unless_current 'Сколько можно сэкономить', '/device/economy' do
+        %span Сколько можно сэкономить
+          
+    %li
+      = link_to_unless_current 'Что говорят покупатели', '/device/reviews' do
+        %span Что говорят покупатели
+    
+  = link_to 'Купить', new_order_path, :class => 'gold-button'
