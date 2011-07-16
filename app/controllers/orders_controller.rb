@@ -6,7 +6,14 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.xml
   def index
-    @orders = Order.all
+    @filters = Order::FILTERS
+    if params[:show] && @filters.collect { |f| f[:scope] }.include?(params[:show])
+      @orders = Order.send(params[:show])
+    elsif params[:store_id] && Store.find(params[:store_id])
+      @orders = Order.find_all_by_store_id(params[:store_id])
+    else
+      @orders = Order.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb

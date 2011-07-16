@@ -61,7 +61,12 @@
   <legend>Заказ</legend>
   <div class="field">
     <%= f.label :pay_type %><br />
-    <%= f.select :pay_type, Order::PAYMENT_TYPES, :prompt => 'Выберите способ оплаты' %>
+    <%= f.select :pay_type, Order::PAYMENT_TYPES, {:prompt => 'Выберите способ оплаты'}, { :class => 'new_order_select' }%>
+  </div>
+  
+  <div class="field">
+    <%= f.label :delivery_type %><br />
+    <%= f.select :delivery_type, Order::DELIVERY_TYPES, { :prompt => 'Выберите способ доставки'}, { :class => 'new_order_select' }  %>
   </div>
   
     <div class="field">

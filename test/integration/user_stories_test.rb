@@ -31,6 +31,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
                                 :phone => '+7 916 234 09 23',
                                 :email => 'vasya@tester.org',
                                 :pay_type => Order::PaymentType::COD,
+                                :delivery_type => Order::DeliveryType::POSTAL,
                                 :quantity => 3 }
                                 
                                 

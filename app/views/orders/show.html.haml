@@ -1,60 +1,73 @@
-%h1
+%h1.order_show
   %span.gray Заказ
-  = "#{@order.city}-#{@order.id}"
+  = @order.short_name
+  
+= link_to t('.edit'), edit_order_path(@order)
+= link_to t('.back'), orders_path 
+
 
 %p#notice= notice
 
-%p
-  %strong= t('.index') + ":"
+
+%fieldset.order_show
+  %legend Адрес
   = @order.index
-
-%p
-  %strong= t('.address') + ':'
-  = @order.address 
-
-%p
-  %strong= t('.region') + ':'
-  = @order.region
-
-%p
-  %strong= t('.area') + ':'
-  = @order.area 
-
-%p
-  %strong= t('.city') + ':'
-  = @order.city
-
-%p
-  %strong= t('.address') + ':'
-  = @order.address 
-
-%p
-  %strong= t('.client') + ':'
-  = @order.client 
+  %br
+  = @order.region + ', ' + (@order.area || '') + ', ' + (@order.city || '')
+  %br
+  = @order.address
+  %br
+  = @order.client
   
-%p
-  %strong= t('.phone') + ':'
+  
+  
+  
+%fieldset.order_show
+  %legend Контакты
   = @order.phone
-
-%p
-  %strong= t('.email') + ':'
-  = @order.email 
-
-
-%p
+  %br
+  = @order.email
+  
+  
+  
+%fieldset.order_show
+  %legend Заказ
   %strong= t('.pay_type') + ':'
   = @order.pay_type
-
-%p
+  %br
+  %strong= t('.delivery_type') + ':'
+  = @order.delivery_type
+  %br
   %strong= t('.quantity') + ':'
-  = "#{@order.total_quantity} шт."
-
-%p
-  %strong= t('.price') + ':'
-  = number_to_currency(@order.total_price)
-
-
+  = @order.total_quantity
+  шт.
+  %br
+  %strong= t('.total_price') + ':'
+  = number_to_currency @order.total_price
 
 
-= link_to t('.edit'), edit_order_path(@order)  |
-= link_to t('.back'), orders_path 
+
+%fieldset.order_show.history
+  %legend История
+    
+  %table.order_history{ :cellspacing => '0' }
+    %tr.even
+      %td 21-06-2011
+      %td Создан
+    %tr.odd
+      %td 22-06-2011
+      %td Оплачен
+    %tr.even
+      %td 24-06-2011
+      %td Отправлен
+
+  
+
+
+
+
+    
+
+
+
+

@@ -35,14 +35,38 @@ class Order < ActiveRecord::Base
     ROBO = 'Робокасса'
   end
   
+  module DeliveryType
+    POSTAL = 'Почта России'
+    COURIER = 'Курьером по Москве и Питеру'
+  end
+  
   PAYMENT_TYPES = [ PaymentType::COD, PaymentType::ROBO ]
+  DELIVERY_TYPES = [ DeliveryType::POSTAL, DeliveryType::COURIER ]
   SD02_PRODUCT_ID = 1
 
 
-  validates :index, :client, :address, :phone, :pay_type, :presence => true
+  validates :index, :client, :address, :phone, :pay_type, :delivery_type, :presence => true
   validates :index, :length => 6..6,  :numericality => true
   validates :pay_type, :inclusion => PAYMENT_TYPES
+  validates :delivery_type, :inclusion => DELIVERY_TYPES
   validates_with IndexValidator
+  
+  
+  # Filters
+  
+  scope :cod,     :conditions => { :pay_type => PAYMENT_TYPES[0] }
+  scope :robokassa, :conditions => { :pay_type => PAYMENT_TYPES[1] }
+  
+  FILTERS = [
+    { :scope => 'all',        :label => 'Все' },
+    { :scope => 'cod',        :label => 'Наложенный платёж' },
+    { :scope => 'robokassa',  :label => 'Робокасса (предоплата)' },
+  ]
+
+  
+  
+  
+  
   
   
   attr_accessor :quantity
@@ -62,6 +86,14 @@ class Order < ActiveRecord::Base
   
   def total_quantity
     line_items.to_a.sum { |item| item.quantity }
+  end
+  
+  def short_name
+    if city.length > 0
+      "#{city}—#{id}"
+    else
+      "#{region}—#{id}"
+    end
   end
   
 end

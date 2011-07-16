@@ -4,20 +4,24 @@ one:
   index: 443110
   client: Пусечкин Иван Петрович
   region: Самарская обл.
+  area: ''
   city: Самара
   address: ул. Мухина, д. 13
   phone: +7 916 234 03 04
   email: pusechkin.i@mail.ru
   pay_type: <%= Order::PaymentType::ROBO %>
+  delivery_type: <%= Order::DeliveryType::POSTAL %>
 
 
 two:
   index: 123456
   region: Москва
-  city: Москва
+  area: ''
+  city: ''
   client: Пупкин Василий Георгиевич
   address: ул. Неглинная, д. 23
   phone: +7 927 232 03 04
   pay_type: <%= Order::PaymentType::COD %>
+  delivery_type: <%= Order::DeliveryType::COURIER %>
 
 
