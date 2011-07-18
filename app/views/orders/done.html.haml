@@ -4,3 +4,7 @@
 %p
   Номер вашего заказа:
   %span#order_num #{flash[:order_id]}
+  
+= link_to 'Перейти к оплате через РобоКассу', @robo_url if @order.pay_type == Order::PaymentType::ROBO
+
+    

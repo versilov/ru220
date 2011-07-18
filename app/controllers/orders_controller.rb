@@ -1,7 +1,8 @@
 # encoding: utf-8
+require 'digest/md5'
 
 class OrdersController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index]
+  skip_before_filter :authorize, :only => [:new, :create, :done, :roboresult, :parse_index]
   
   # GET /orders
   # GET /orders.xml
@@ -45,7 +46,8 @@ class OrdersController < ApplicationController
       @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
       @order.phone = '+7 916 233 03 36'
       @order.email = 'client@mail.org'
-      @order.pay_type = Order::PaymentType::COD
+      @order.pay_type = Order::PaymentType::ROBO
+      @order.delivery_type = Order::DeliveryType::POSTAL
     end
 
     respond_to do |format|
@@ -74,6 +76,30 @@ class OrdersController < ApplicationController
         format.html { render :action => "new" }
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+  
+  def done
+    @order = Order.find(flash[:order_id])
+    if @order.pay_type == Order::PaymentType::ROBO
+      crc = Digest::MD5.hexdigest "energo220ru:#{@order.total_price}:#{@order.id}:electricity88"
+      
+      @robo_url = %{http://test.robokassa.ru/Index.aspx?MrchLogin=energo220ru&OutSum=#{@order.total_price}&InvId=#{@order.id}&IncCurrLabel=BANKOCEAN2R&Desc=EnergoSberegatel&SignatureValue=#{crc}&Culture=ru&Encoding=utf-8}
+    end
+  end
+  
+  def roboresult
+    out_sum = params[:OutSum]
+    inv_id = params[:InvId]
+    crc = params[:SignatureValue]
+    mrh_pass2 = 'electricity88'
+    
+    crc = crc.upcase
+    my_crc = Digest::MD5.hexdigest("#{out_sum}:#{inv_id}:#{mrh_pass2}").upcase
+    if crc == my_crc
+      render :text => "OK#{inv_id}" 
+    else
+      render :text => "Failed"
     end
   end
   
