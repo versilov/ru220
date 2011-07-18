@@ -12,6 +12,7 @@ Ru220::Application.routes.draw do
 
   resources :users
 
+  match '/articles/new' => 'articles#new', :via => :get
   match '/articles/:alias' => 'articles#show', :via => :get
 
 

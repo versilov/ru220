@@ -67,7 +67,7 @@
     #content h1 {
         font-weight: normal;
         margin-bottom: 36px;
-        margin-left: 7px;
+        margin-left: 0px;
         margin-top: 35px;
         margin-bottom: 45px;
         font-size: 32px !important;
@@ -211,45 +211,116 @@
 
     
     
-    /**************** FOOTER ****************/
-    
-    #footer {
-        background-color: #141414;
-        color: #ddd;
-        padding: 9px 0px;
-        font-size: 12px;
-        text-align: middle;
-    }
-    
-    #footer a {
-      color: #fff;
-      background: none;
-    }
-    
-    #footer a:hover {
-      background: none;
-    }
-    
-    
-    
+/**************** FOOTER ****************/
+
+#footer {
+	background-color: #555;
+	min-height: 300px;
+	float:left;
+	width: 100%;
+	margin: 0;
+	padding: 20px 0;
+}
+
+#footer-top {
+	width:100%;
+	float:left;
+}
+
+#footer-top ul {
+  list-style-type: none;
+  padding-left: 3px;
+}
+
+#footer-bottom {
+	width:100%;
+	float:left;
+	margin: 30px 0 0 0;
+}
+
+#footer-inner {
+	width:955px;
+	margin: 20px auto;
+	text-align: left;
+}
+
+#footer-inner h3 {
+	color:#ddd;
+	font-size: 16px;
+}
+
+#footer-menu1,
+#footer-menu2 {
+	float:left;
+	width:25%;
+	line-height: 200%;
+	font-size:13px;
+}
+
+#footer-menu1 a,
+#footer-menu2 a {
+	color:#fff;
+}
+
+#footer-text {
+	float:left;
+	width:42%;
+	color:#fff;
+	line-height: 150%;
+	margin-left:65px;
+}
+
+#footer-text p {
+	margin-top:10px;
+	font-size: 10px;
+}
+
 #footer-phone {
-  width: 940px;
-  margin: 0 auto;
-  text-align: left;
+	width:407px;
+	height: 146px;
+	float:left;
+	margin-top: -150px;
+/*	background:url(i/footer-phone.gif) top left no-repeat;*/
+/*border: 1px solid green;*/
+}
+#footer-phone .phone-txt,
+#footer-phone .phone-num,
+#footer-phone .phone-free {
+	color: white;
+	float: left;
+	width: 100%;
+	font-size: 13px;	
+}
+#footer-phone .phone-num {
+	font-size: 40px;
+	line-height: 50px;
+}
+#footer-phone .phone-free {
+	color: #eee;
+  float: left;
 }
 
-#phone-txt {
-  font-size: 14px;
+
+#footer-ldm {
+	float:left;
+  margin-top: -70px;
+  height: 100px;
+	width: 100%;
+/*border: 1px solid red;*/
 }
 
-#phone-num {
-  font-size: 36px;
-  margin: 13px 0px;
-}
+#footer-copyr {color:#fff; text-align:left; margin-top:28px; float: left; width: 500px;}
+#footer-copyr a {color:#fff;}
+#counters {width: 300px; float: right; text-align: right; margin: 25px 30px 0 0;}
 
-#phone-free {
-  font-size: 13px;
-}
+
+
+
+
+
+
+
+    
 /********************** ORDER FORM ***********************/
 
 form#new_order {

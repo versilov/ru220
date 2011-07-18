@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ArticlesControllerTest < ActionController::TestCase
   setup do
-    @article = articles(:one)
+    @article = articles(:about)
   end
 
   test "should get index" do
@@ -21,11 +21,11 @@ class ArticlesControllerTest < ActionController::TestCase
       post :create, :article => @article.attributes
     end
 
-    assert_redirected_to article_path(assigns(:article))
+    assert_redirected_to article_path(assigns(:article).alias)
   end
 
   test "should show article" do
-    get :show, :id => @article.to_param
+    get :show, :alias => @article.alias
     assert_response :success
   end
 
@@ -36,7 +36,7 @@ class ArticlesControllerTest < ActionController::TestCase
 
   test "should update article" do
     put :update, :id => @article.to_param, :article => @article.attributes
-    assert_redirected_to article_path(assigns(:article))
+    assert_redirected_to article_path(assigns(:article).alias)
   end
 
   test "should destroy article" do

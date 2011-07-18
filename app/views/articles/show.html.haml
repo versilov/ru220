@@ -1,6 +1,9 @@
 %p#notice= notice
 
 %h1= @article.title
+  
+- if session[:user_id]
+  = link_to 'Редактировать', edit_article_path(@article)
 
 <div id="#{@article.alias}">
 = sanitize @article.text

@@ -1,9 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  title: MyString
-  text: MyText
+about:
+  title: About
+  alias: about
+  text: <html>About</html>
 
-two:
-  title: MyString
-  text: MyText
+contacts:
+  title: Contacts
+  alias: contacts
+  text: <html><h1>Contacts</h1></html>
