@@ -10,10 +10,15 @@ class RobokassaController < ApplicationController
   def result
     if check_crc(params, MERCH_PASS2)
       order_id = params[:InvId]
+      sum = params[:OutSum].to_i
       order = Order.find(order_id)
       if order
-        render :text => "OK#{order_id}" 
-        # TODO: Mark order as payed.
+        if order.total_price == sum
+          render :text => "OK#{order_id}" 
+          # TODO: Mark order as payed.
+        else
+          render :text => "Sum for the order #{order_id} should be #{order.total_price}, but was #{sum}"
+        end
       else
         render :text => "Order with id #{order_id} not found."
       end
@@ -26,9 +31,14 @@ class RobokassaController < ApplicationController
   def success
     if check_crc(params, MERCH_PASS1)
       order_id = params[:InvId]
+      sum = params[:OutSum].to_i
       order = Order.find(order_id)
       if order 
-        render :text => "Operation successfull"
+        if order.total_price == sum
+          render :text => "Operation successfull"
+        else
+          render :text => "Sum for the order #{order_id} should be #{order.total_price}, but was #{sum}"
+        end
       else
         render :text => "Order with id #{order_id} not found"
       end
