@@ -12,7 +12,7 @@ class RobokassaController < ApplicationController
       order_id = params[:InvId]
       order = Order.find(order_id)
       if order
-        render :text => "OK#{inv_id}" 
+        render :text => "OK#{order_id}" 
         # TODO: Mark order as payed.
       else
         render :text => "Order with id #{order_id} not found."
