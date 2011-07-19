@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class OrdersController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create, :done, :roboresult, :parse_index]
+  skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index]
   
   # GET /orders
   # GET /orders.xml

@@ -2,6 +2,7 @@
 
 
 class RobokassaController < ApplicationController
+  skip_before_filter :authorize, 
   
   MERCH_PASS1 = 'electricity88'
   MERCH_PASS2 = 'electricity88'
