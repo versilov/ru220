@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'digest/md5'
 
 class OrdersController < ApplicationController
   skip_before_filter :authorize, :only => [:new, :create, :done, :roboresult, :parse_index]
@@ -88,20 +87,6 @@ class OrdersController < ApplicationController
     end
   end
   
-  def roboresult
-    out_sum = params[:OutSum]
-    inv_id = params[:InvId]
-    crc = params[:SignatureValue]
-    mrh_pass2 = 'electricity88'
-    
-    crc = crc.upcase
-    my_crc = Digest::MD5.hexdigest("#{out_sum}:#{inv_id}:#{mrh_pass2}").upcase
-    if crc == my_crc
-      render :text => "OK#{inv_id}" 
-    else
-      render :text => "Failed"
-    end
-  end
   
   # PUT /orders/1
   # PUT /orders/1.xml
