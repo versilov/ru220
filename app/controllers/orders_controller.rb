@@ -83,7 +83,7 @@ class OrdersController < ApplicationController
     if @order.pay_type == Order::PaymentType::ROBO
       crc = Digest::MD5.hexdigest "energo220ru:#{@order.total_price}:#{@order.id}:electricity88"
       
-      @robo_url = %{http://test.robokassa.ru/Index.aspx?MrchLogin=energo220ru&OutSum=#{@order.total_price}&InvId=#{@order.id}&IncCurrLabel=BANKOCEAN2R&Desc=EnergoSberegatel&SignatureValue=#{crc}&Culture=ru&Encoding=utf-8}
+      @robo_signature = crc
     end
   end
   

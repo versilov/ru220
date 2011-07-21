@@ -1,10 +1,35 @@
 %h2 Спасибо за ваш заказ!
 
-%p Ваш заказ принят и будет отправлен в течении 24-х часов.
 %p
   Номер вашего заказа:
   %span#order_num #{flash[:order_id]}
-  
-= link_to 'Перейти к оплате через РобоКассу', @robo_url if @order.pay_type == Order::PaymentType::ROBO
 
+
+- if @order.pay_type == Order::PaymentType::COD
+  %p Ваш заказ принят и будет отправлен в течении 24-х часов.
+- else
+  %p Ваш заказ принят и ожидает оплаты. 
     
+    
+    
+
+- if @order.pay_type == Order::PaymentType::ROBO
+  = form_tag 'http://test.robokassa.ru/Index.aspx', :method => :post, :id => 'roboform' do
+    = hidden_field_tag 'MrchLogin', 'energo220ru'
+    = hidden_field_tag 'OutSum', @order.total_price
+    = hidden_field_tag 'InvId', @order.id
+    = hidden_field_tag 'IncCurrLabel', 'BANKOCEAN2R'
+    = hidden_field_tag 'Desc', 'EnergoSberegatel'
+    = hidden_field_tag 'SignatureValue', @robo_signature
+    = hidden_field_tag 'Culture', 'ru'
+    = hidden_field_tag 'Encoding', 'utf-8'
+    = submit_tag 'Оплатить >>'
+    
+  %p Если окно оплаты не открывается автоматически в течении 3-х секунд, нажмите кнопку "Оплатить >>"
+    
+  
+
+:javascript
+  if (document.forms['roboform'])
+    setTimeout(function() { document.forms['roboform'].submit(); }, 1000);
+  
