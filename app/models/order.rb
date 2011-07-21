@@ -96,4 +96,16 @@ class Order < ActiveRecord::Base
     end
   end
   
+  
+  # Marks order as payed with the current timestamp and saves order.
+  def mark_payed
+    self.payed_at = Time.now
+    save
+  end
+  
+  # True, if order was payed for (i.e. payed_at timestamp is not nil)
+  def payed?
+    self.payed_at != nil
+  end
+  
 end

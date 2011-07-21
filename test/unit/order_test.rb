@@ -64,4 +64,15 @@ class OrderTest < ActiveSupport::TestCase
     assert order.invalid?
     assert_equal 'закрыт до 31-12', order.errors[:index][0]
   end
+  
+  test 'should mark as payed' do
+    order = orders(:one)
+    assert order.valid?
+    
+    order.mark_payed
+    assert order.valid?
+    assert order.save
+    order.reload
+    assert order.payed?
+  end
 end

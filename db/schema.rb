@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110716033311) do
+ActiveRecord::Schema.define(:version => 20110721074946) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20110716033311) do
     t.string   "city"
     t.string   "pay_type"
     t.string   "delivery_type"
+    t.datetime "payed_at"
+    t.datetime "sent_at"
   end
 
   create_table "post_indices", :id => false, :force => true do |t|

@@ -22,7 +22,7 @@
       <div class="client-name"><%= order.client %></div>
       <div class="address"><%= order.address %></div>
     </td>
-    <td><%= order.pay_type %></td>
+    <td><%= order.pay_type %><%= " Оплачен #{order.payed_at.to_date}" if order.payed? %></td>
     <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
     <td class="actions">
       <%= link_to 'Смотр.', order %><br />
