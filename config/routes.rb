@@ -16,9 +16,9 @@ Ru220::Application.routes.draw do
   match '/articles/new' => 'articles#new', :via => :get
   match '/articles/:alias' => 'articles#show', :via => :get
   
-  match '/roboresult' => 'robokassa#result', :via => :get
-  match '/robosuccess' => 'robokassa#success', :via => :get
-  match '/robofail' => 'robokassa#fail', :via => :get
+  match '/roboresult' => 'robokassa#result', :via => :post
+  match '/robosuccess' => 'robokassa#success', :via => :post
+  match '/robofail' => 'robokassa#fail', :via => :post
 
 
   resources :articles
