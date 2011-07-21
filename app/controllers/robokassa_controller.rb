@@ -37,21 +37,21 @@ class RobokassaController < ApplicationController
       order = Order.find(order_id)
       if order 
         if order.total_price == sum
-          render :text => "Operation successfull"
+          @message = "Оплата прошла успешно"
         else
-          render :text => "Sum for the order #{order_id} should be #{order.total_price}, but was #{sum}"
+          @message = "Сумма для заказа #{order_id} должна быть равна #{order.total_price}, вместо этого была равна #{sum}"
         end
       else
-        render :text => "Order with id #{order_id} not found"
+        @message = "Заказ с номером #{order_id} не найден."
       end
     else
-      render :text => "Bad signature"
+      @message = "Ошибка в подписи запроса"
     end
   end
 
   def fail
     order_id = params[:InvId]
-    render :text => "Вы отказались от оплаты заказа №#{order_id}"
+    @message = "Вы отказались от оплаты заказа №#{order_id}"
   end
   
 private
