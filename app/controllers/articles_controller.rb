@@ -15,7 +15,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.xml
   def show
-    @article = Article.find_by_alias(params[:alias])
+    @article = Article.find_by_alias(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -36,7 +36,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1/edit
   def edit
-    @article = Article.find(params[:id])
+    @article = Article.find_by_alias(params[:id])
   end
 
   # POST /articles
@@ -58,7 +58,7 @@ class ArticlesController < ApplicationController
   # PUT /articles/1
   # PUT /articles/1.xml
   def update
-    @article = Article.find(params[:id])
+    @article = Article.find_by_alias(params[:id])
 
     respond_to do |format|
       if @article.update_attributes(params[:article])
@@ -75,7 +75,7 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.xml
   def destroy
-    @article = Article.find(params[:id])
+    @article = Article.find_by_alias(params[:id])
     @article.destroy
 
     respond_to do |format|

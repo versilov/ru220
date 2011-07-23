@@ -88,6 +88,7 @@ class Order < ActiveRecord::Base
     line_items.to_a.sum { |item| item.quantity }
   end
   
+  # Short name includes not only id, but also a city or region name for redundancy
   def short_name
     if city.length > 0
       "#{city}—#{id}"
@@ -96,7 +97,7 @@ class Order < ActiveRecord::Base
     end
   end
   
-  
+ 
   # Marks order as payed with the current timestamp and saves order.
   def mark_payed
     self.payed_at = Time.now

@@ -25,9 +25,10 @@
   </div>
   
   <div class="field">
-    <%= f.label :index %><br />
+    <%= f.label :index %>&nbsp;<a id="find_index" href="http://russianpost.ru/rp/servise/ru/home/postuslug/searchops" target="_blank">Забыли свой индекс?</a><br />
     <%= f.text_field :index, :size => 6, :maxlength => 6 %>
     <span id="order_index_error"></span>
+    
   </div>
   
   <div class="field">
@@ -60,7 +61,7 @@
   <fieldset class="new_order_fieldset">
   <legend>Заказ</legend>
   <div class="field">
-    <%= f.label :pay_type %><br />
+    <%= f.label :pay_type %><a id="pay_and_delivery" target="_blank" href="/articles/delivery">Подробнее про доставку и оплату</a><br />
     <%= f.select :pay_type, Order::PAYMENT_TYPES, {:prompt => 'Выберите способ оплаты'}, { :class => 'new_order_select' }%>
   </div>
   
@@ -72,6 +73,7 @@
     <div class="field">
      <%= f.label :quantity %><br />
      <%= f.select :quantity, 1..10 %>
+     <span id="order_total">Итого:  <span id="order_total_sum">1 988</span> руб.</span>
     </div>
   </fieldset>
 
@@ -124,6 +126,27 @@
           $('#order_index_error').text('Индекс не найден');
          }
        });
+    }
+  });
+  
+  $('#order_quantity').change( function() {
+    var quantity = event.target.value;
+    $('#order_total_sum').text(1988*quantity);
+  });
+  
+  $('#order_delivery_type').change( function() {
+    if (event.target.value == 'Курьером по Москве и Питеру') {
+      $('#order_pay_type').val('Наложенный платёж');
+    }
+    
+  });
+  
+  $('#order_pay_type').change( function() {
+    if (event.target.value == 'Робокасса') {
+      if ($('#order_delivery_type').val() == 'Курьером по Москве и Питеру') {
+        $('#order_pay_type').val('Наложенный платёж');
+        alert('Для курьерской доставки возможна только оплата наложенным платежом (наличными курьеру)');
+      }
     }
   });
 </script>

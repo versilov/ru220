@@ -13,7 +13,6 @@ class RobokassaControllerTest < ActionController::TestCase
     get :result, :OutSum => @order.total_price, :InvId => @order.id, :SignatureValue => crc
     assert_response :success
     @order = Order.find(@order.id)
-    p @order
     assert @order.payed?
   end
 

@@ -13,7 +13,7 @@
       %td
         %strong= article.title
       %td= truncate(strip_tags(article.text), :length => 80)
-      %td= link_to 'Смотр.', article_path(article.alias)
+      %td= link_to 'Смотр.', article_path(article)
       %td= link_to 'Редакт.', edit_article_path(article)
       %td= link_to 'Удал.', article, :confirm => 'Are you sure?', :method => :delete
 

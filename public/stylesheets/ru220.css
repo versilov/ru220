@@ -382,6 +382,18 @@ fieldset {
   color: #f00;
 }
 
+a#find_index {
+  padding-left: 108px;
+}
+
+#order_total {
+  padding-left: 200px;
+  font-size: 18px;
+}
+
+#pay_and_delivery {
+  padding-left: 70px;
+}
 
 .new_order_select {
   width: 220px;

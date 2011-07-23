@@ -1,6 +1,5 @@
 Ru220::Application.routes.draw do
   
-
   resources :products
 
   get 'admin' => 'admin#index'
@@ -13,9 +12,7 @@ Ru220::Application.routes.draw do
 
   resources :users
 
-  match '/articles/new' => 'articles#new', :via => :get
-  match '/articles/:alias' => 'articles#show', :via => :get
-  
+ 
   match '/roboresult' => 'robokassa#result', :via => :post
   match '/robosuccess' => 'robokassa#success', :via => :post
   match '/robofail' => 'robokassa#fail', :via => :post

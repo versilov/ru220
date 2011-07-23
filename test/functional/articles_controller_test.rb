@@ -17,6 +17,8 @@ class ArticlesControllerTest < ActionController::TestCase
   end
 
   test "should create article" do
+    # make alias unique
+    @article.alias = 'about2'
     assert_difference('Article.count') do
       post :create, :article => @article.attributes
     end
@@ -25,7 +27,7 @@ class ArticlesControllerTest < ActionController::TestCase
   end
 
   test "should show article" do
-    get :show, :alias => @article.alias
+    get :show, :id => @article.to_param
     assert_response :success
   end
 
@@ -45,5 +47,13 @@ class ArticlesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to articles_path
+  end
+  
+  test 'should fail with alias already exists' do
+    assert_no_difference 'Article.count' do
+      post :create, :article => @article.attributes
+    end
+    
+    assert_template 'articles/new'
   end
 end
