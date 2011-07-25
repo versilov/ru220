@@ -348,7 +348,8 @@ fieldset {
   font-size: 25px;
   padding-top: 17px;
   width: 420px;
-  height: 40px;  
+  height: 40px; 
+  margin-top: -56px; 
 }
 
 #price strong {
@@ -387,7 +388,7 @@ a#find_index {
 }
 
 #order_total {
-  padding-left: 200px;
+  padding-left: 170px;
   font-size: 18px;
 }
 
@@ -410,6 +411,25 @@ a#find_index {
 
 
 /******************* ORDERS LIST *********************/
+
+#orders_filter {
+  width: 450px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  padding-top: 0px;
+  float: left;
+}
+
+#orders_search {
+  width: 210px;
+  float: right;
+  margin-top: -10px;
+  
+}
+
+#orders {
+  clear: both;
+}
 
 #orders td {
   padding: 5px 7px;

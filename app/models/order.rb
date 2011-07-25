@@ -25,6 +25,7 @@ class Order < ActiveRecord::Base
   end
   
   has_many :line_items, :dependent => :destroy
+  has_many :order_events, :dependent => :destroy
   
   default_scope :order => 'created_at DESC'
   
@@ -33,11 +34,13 @@ class Order < ActiveRecord::Base
   module PaymentType
     COD = 'Наложенный платёж'
     ROBO = 'Робокасса'
+    ALL = 'Все'
   end
   
   module DeliveryType
     POSTAL = 'Почта России'
     COURIER = 'Курьером по Москве и Питеру'
+    ALL = 'Все'
   end
   
   PAYMENT_TYPES = [ PaymentType::COD, PaymentType::ROBO ]
@@ -101,12 +104,20 @@ class Order < ActiveRecord::Base
   # Marks order as payed with the current timestamp and saves order.
   def mark_payed
     self.payed_at = Time.now
+    self.add_event 'Оплачен'
     save
   end
   
   # True, if order was payed for (i.e. payed_at timestamp is not nil)
   def payed?
     self.payed_at != nil
+  end
+  
+  def add_event(description)
+    ev = OrderEvent.new
+    ev.order_id = self.id
+    ev.description = description
+    ev.save
   end
   
 end

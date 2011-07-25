@@ -9,6 +9,7 @@ gem 'rake', '~> 0.8'
 gem 'sqlite3'
 gem 'haml'
 gem 'jquery-rails'
+gem 'unicode'
 
 # Use unicorn as the web server
 # gem 'unicorn'

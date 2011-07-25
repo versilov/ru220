@@ -51,15 +51,10 @@
   %legend История
     
   %table.order_history{ :cellspacing => '0' }
-    %tr.even
-      %td 21-06-2011
-      %td Создан
-    %tr.odd
-      %td 22-06-2011
-      %td Оплачен
-    %tr.even
-      %td 24-06-2011
-      %td Отправлен
+    - @order.order_events.each do |event|
+      %tr{ :class => cycle('odd', 'even')  }
+        %td= event.created_at.strftime '%d-%m-%Y %H:%M:%S'
+        %td= event.description
 
   
 

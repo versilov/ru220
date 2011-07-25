@@ -1,6 +1,24 @@
 <h1>Заказы</h1>
 
-<p>Фильтр: <%= select_tag_for_filter( 'orders', @filters, params ) %></p>
+<fieldset id="orders_filter">
+<legend>Фильтр</legend>
+<%- form_tag '', :method => :get do %>
+  <p>Оплата: <%= select :filter, :pay_type, [Order::PaymentType::ALL, Order::PaymentType::COD, Order::PaymentType::ROBO] %></p>
+  <p>Доставка: <%= select :filter, :delivery_type, [Order::DeliveryType::ALL, Order::DeliveryType::POSTAL, Order::DeliveryType::COURIER] %></p>
+  <p>С <%= date_select :filter, :start_date %>
+  по <%= date_select :filter, 'end_date', :order => [:day, :month, :year] %></p>
+  <%= submit_tag 'Фильтровать', :name => :do_filter %> <%= submit_tag 'Сброс', :name => :reset %>
+<%- end %>
+</fieldset>
+
+<fieldset id="orders_search">
+<legend>Поиск</legend>
+<%- form_tag '', :method => :get do %>
+  <p><%= text_field_tag :search, @search, :placeholder => 'Введите строку поиска...', :size => 27 %></p>
+  <%= submit_tag 'Искать', :name => :do_search %> <%= submit_tag 'Сброс', :name => :reset %>
+<%- end %>
+
+</fieldset>
 
 <table id="orders" cellspacing=0>
   <tr>
