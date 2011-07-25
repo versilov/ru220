@@ -1,0 +1,5 @@
+#!/bin/sh -e
+git add .
+git commit -a -m "$0"
+git push heroku master
+

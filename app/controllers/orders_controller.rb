@@ -22,10 +22,12 @@ class OrdersController < ApplicationController
   
   # GET /orders
   # GET /orders.xml
+  # Contains huge filtering logic.
   def index
     @filter = Filter.new(Order::PaymentType::ALL, Order::DeliveryType::ALL, Date.yesterday, Date.today)
     
     if params[:filter] and params[:do_filter]
+      # Filter button was pressed
       @start_date = Date.civil(params[:filter][:"start_date(1i)"].to_i,params[:filter][:"start_date(2i)"].to_i,params[:filter][:"start_date(3i)"].to_i)
       
       @end_date = Date.civil(params[:filter][:"end_date(1i)"].to_i,params[:filter][:"end_date(2i)"].to_i,params[:filter][:"end_date(3i)"].to_i)
@@ -49,11 +51,21 @@ class OrdersController < ApplicationController
       
       
     elsif params[:search] and params[:do_search]
-      @search = params[:search]
+      # Search button was pressed
       
-      query = '%' + @search.downcase + '%'
-      @orders = Order.where("lower(client) like ? or lower(city) like ? or lower(address) like ?", query, query, query)
+      @search = params[:search]
+
+      if @search.to_i > 0
+        # Look for an order by number
+        @orders = Order.find_all_by_id(@search.to_i)
+      else
+        # Look for an order by client name, city or address
+        query = '%' + @search.downcase + '%'
+        @orders = Order.where("lower(client) like ? or lower(city) like ? or lower(address) like ?", query, query, query)
+      end
     else
+      # Some other button (on of the two Resets) or no button were pressed.
+      # Just give everything we've got.
       @orders = Order.all
     end
 

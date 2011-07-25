@@ -78,6 +78,17 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   
+  test 'should find order by number' do
+    get :index, :search => orders(:two).id, :do_search => 'Искать'
+    assert_response :success
+    assert_template 'orders/index'
+    
+    assert_not_nil assigns(:orders)
+    assert_equal 1, assigns(:orders).size, 'should be just one order'
+    assert_equal orders(:two).id, assigns(:orders)[0].id
+  end
+  
+  
   
   test 'should filter orders' do
     return # .where() does not work correctly, possible reason -- encoding or locale
