@@ -32,7 +32,7 @@ class Order < ActiveRecord::Base
   
   
   module PaymentType
-    COD = 'Наложенный платёж'
+    COD = 'Наложенный платёж' # Cash On Delivery
     ROBO = 'Робокасса'
     ALL = 'Все'
   end

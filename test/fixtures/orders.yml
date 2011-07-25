@@ -24,4 +24,14 @@ two:
   pay_type: <%= Order::PaymentType::COD %>
   delivery_type: <%= Order::DeliveryType::COURIER %>
 
+english:
+  index: 174156
+  region: Novgorodskaya oblast
+  area: Shimskiy
+  city: Bolshaya Uotorgosh
+  client: Poupkine Basil
+  address: Neglinnaya st. 23-56
+  phone: +7 927 232 03 04
+  pay_type: <%= Order::PaymentType::COD %>
+  delivery_type: <%= Order::DeliveryType::COURIER %>
 

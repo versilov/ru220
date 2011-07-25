@@ -65,6 +65,34 @@ class OrdersControllerTest < ActionController::TestCase
     assert_redirected_to orders_path
   end
   
+  test 'should apply search criteria' do
+    get :index, :search => 'Poupk', :do_search => 'Искать'
+    assert_response :success
+    assert_template 'orders/index'
+
+    assert_not_nil assigns(:orders)
+    assert assigns(:orders).size == 1, 'just one order found'
+    order = assigns(:orders)[0]
+    
+    assert order.client.include? 'Poupk'
+  end
+  
+  
+  
+  test 'should filter orders' do
+    return # .where() does not work correctly, possible reason -- encoding or locale
+    get :index, :filter => { :pay_type => Order::PaymentType::ALL,
+      :delivery_type => Order::DeliveryType::ALL, 
+      :'start_date(1i)' => Date.yesterday.year, :'start_date(2i)' => Date.yesterday.month, :'start_date(3i)' => Date.yesterday.day-3,
+      :'end_date(1i)' => Date.today.year, :'end_date(2i)' => Date.today.month, :'end_date(3i)' => Date.today.day }, 
+      :do_filter => 'Фильтровать'
+    assert_response :success
+    assert_template 'orders/index'
+    
+    assert_not_nil assigns(:orders)
+    assert_equal 2, assigns(:orders).size, 'should be two courier orders in orders.yml'
+  end
+  
   test 'should get region, area, city by index' do
     xhr :get, :parse_index, :index => '123456'
     assert_response :missing

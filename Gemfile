@@ -10,6 +10,7 @@ gem 'sqlite3'
 gem 'haml'
 gem 'jquery-rails'
 gem 'unicode'
+gem 'will_paginate', '>= 3.0.pre'
 
 # Use unicorn as the web server
 # gem 'unicorn'

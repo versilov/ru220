@@ -3,6 +3,7 @@
 require 'net/http'
 require 'rexml/document'
 
+
 class OrdersController < ApplicationController
   skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index]
   
@@ -26,12 +27,13 @@ class OrdersController < ApplicationController
     
     if params[:filter] and params[:do_filter]
       @start_date = Date.civil(params[:filter][:"start_date(1i)"].to_i,params[:filter][:"start_date(2i)"].to_i,params[:filter][:"start_date(3i)"].to_i)
+      
       @end_date = Date.civil(params[:filter][:"end_date(1i)"].to_i,params[:filter][:"end_date(2i)"].to_i,params[:filter][:"end_date(3i)"].to_i)
       
       
       @pay_type = params[:filter][:pay_type]
       @delivery_type = params[:filter][:delivery_type]
-
+      
       @filter = Filter.new(@pay_type, @delivery_type, @start_date, @end_date)
       
       query = "created_at >= :start and created_at <= :end"
@@ -45,6 +47,7 @@ class OrdersController < ApplicationController
       
       @orders = Order.where(query, {:start => @start_date, :end => @end_date, :pay_type => @pay_type, :delivery_type => @delivery_type })
       
+      
     elsif params[:search] and params[:do_search]
       @search = params[:search]
       
@@ -53,6 +56,9 @@ class OrdersController < ApplicationController
     else
       @orders = Order.all
     end
+
+    @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
+    
 
     respond_to do |format|
       format.html # index.html.erb

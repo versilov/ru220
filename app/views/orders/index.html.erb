@@ -2,23 +2,25 @@
 
 <fieldset id="orders_filter">
 <legend>Фильтр</legend>
-<%- form_tag '', :method => :get do %>
+<%= form_tag '', :method => :get do %>
   <p>Оплата: <%= select :filter, :pay_type, [Order::PaymentType::ALL, Order::PaymentType::COD, Order::PaymentType::ROBO] %></p>
   <p>Доставка: <%= select :filter, :delivery_type, [Order::DeliveryType::ALL, Order::DeliveryType::POSTAL, Order::DeliveryType::COURIER] %></p>
   <p>С <%= date_select :filter, :start_date %>
   по <%= date_select :filter, 'end_date', :order => [:day, :month, :year] %></p>
   <%= submit_tag 'Фильтровать', :name => :do_filter %> <%= submit_tag 'Сброс', :name => :reset %>
-<%- end %>
+<% end %>
 </fieldset>
 
 <fieldset id="orders_search">
 <legend>Поиск</legend>
-<%- form_tag '', :method => :get do %>
+<%= form_tag '', :method => :get do %>
   <p><%= text_field_tag :search, @search, :placeholder => 'Введите строку поиска...', :size => 27 %></p>
   <%= submit_tag 'Искать', :name => :do_search %> <%= submit_tag 'Сброс', :name => :reset %>
-<%- end %>
+<% end %>
 
 </fieldset>
+
+<p class="clear"><%= will_paginate @orders %></p>
 
 <table id="orders" cellspacing=0>
   <tr>
@@ -27,6 +29,7 @@
     <th width="100px"><%= t('.city') %></th>
     <th width="270x"><%= t('.client') %>/<%= t('.address') %></th>
     <th width="120px"><%= t('.pay_type') %></th>
+    <th width="120px"><%= t('.delivery_type') %></th>
     <th width="90px"><%= t('.quantity') %>/<%= t('.total_price') %></th>
     <th></th>
   </tr>
@@ -41,6 +44,7 @@
       <div class="address"><%= order.address %></div>
     </td>
     <td><%= order.pay_type %><%= " Оплачен #{order.payed_at.to_date}" if order.payed? %></td>
+    <td><%= order.delivery_type %></td>
     <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
     <td class="actions">
       <%= link_to 'Смотр.', order %><br />
@@ -50,6 +54,8 @@
   </tr>
 <% end %>
 </table>
+
+<p><%= will_paginate @orders %></p>
 
 <br />
 

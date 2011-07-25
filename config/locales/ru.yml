@@ -20,7 +20,8 @@ ru:
       city: Город
       address: Адрес
       email: Эл. почта
-      pay_type: Способ оплаты
+      pay_type: Оплата
+      delivery_type: Доставка
       quantity: Количество
       total_price: Стоимость
     show:
