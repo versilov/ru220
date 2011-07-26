@@ -32,4 +32,6 @@ Ru220::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  config.extrapost_site = 'http://localhost:4000/'
 end

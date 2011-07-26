@@ -1,3 +1,3 @@
 class PostOrder < ActiveResource::Base
-  self.site = 'http://localhost:4000/'
+  self.site = Rails.application.config.extrapost_site
 end

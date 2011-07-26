@@ -24,5 +24,7 @@ Ru220::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  config.extrapost_site = 'http://localhost:4000/'
 end
 
