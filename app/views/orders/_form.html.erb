@@ -73,7 +73,7 @@
     <div class="field">
      <%= f.label :quantity %><br />
      <%= f.select :quantity, 1..10 %>&nbsp;шт.
-     <span id="order_total">Итого:  <span id="order_total_sum">1 988</span> руб.</span>
+     <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*1988 %></span> руб.</span>
     </div>
   </fieldset>
 
@@ -138,7 +138,6 @@
     if (event.target.value == 'Курьером по Москве и Питеру') {
       $('#order_pay_type').val('Наложенный платёж');
     }
-    
   });
   
   $('#order_pay_type').change( function() {

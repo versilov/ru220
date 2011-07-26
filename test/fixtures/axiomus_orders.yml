@@ -1,11 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  product_id: 1
-  order_id: 3
-  quantity: 1
+  order_id: 2
+  axiomus_id: 144
+  auth: MyString
 
 two:
-  product_id: 1
   order_id: 4
-  quantity: 5
+  axiomus_id: 255
+  auth: MyString

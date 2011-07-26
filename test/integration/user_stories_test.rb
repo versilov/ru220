@@ -77,7 +77,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template 'orders/index'
     
-    get "/orders/#{Order.all.first.id}"
+    get "/orders/#{orders(:one).id}"
     assert_response :success
     assert_template 'orders/show'
   end

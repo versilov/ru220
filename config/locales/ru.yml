@@ -33,6 +33,7 @@ ru:
       city: Город
       address: Адрес
       email: Эл. почта
+      status: Статус
       pay_type: Оплата
       delivery_type: Доставка
       quantity: Количество

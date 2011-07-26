@@ -1,11 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  product_id: 1
-  order_id: 3
-  quantity: 1
+  order_id: 2
+  post_order_id: 123
 
 two:
-  product_id: 1
   order_id: 4
-  quantity: 5
+  post_order_id: 234

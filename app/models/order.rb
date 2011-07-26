@@ -26,6 +26,8 @@ class Order < ActiveRecord::Base
   
   has_many :line_items, :dependent => :destroy
   has_many :order_events, :dependent => :destroy
+  has_one :axiomus_order, :dependent => :destroy
+  has_one :extra_post_order, :dependent => :destroy
   
   default_scope :order => 'created_at DESC'
   
@@ -55,32 +57,33 @@ class Order < ActiveRecord::Base
   validates_with IndexValidator
   
   
-  # Filters
   
-  scope :cod,     :conditions => { :pay_type => PAYMENT_TYPES[0] }
-  scope :robokassa, :conditions => { :pay_type => PAYMENT_TYPES[1] }
+  def quantity
+    if @quantity
+      @quantity
+    elsif self.total_quantity > 0
+      @quantity = self.total_quantity
+    else
+      @quantity = 1
+    end
+  end
   
-  FILTERS = [
-    { :scope => 'all',        :label => 'Все' },
-    { :scope => 'cod',        :label => 'Наложенный платёж' },
-    { :scope => 'robokassa',  :label => 'Робокасса (предоплата)' },
-  ]
-
+  def quantity= q
+    @quantity = q.to_i
+    if self.line_items.size > 0
+      self.line_items[0].update_attribute(:quantity, q)
+    end
+  end
   
-  
-  
-  
-  
-  
-  attr_accessor :quantity
-  
-  def create_sd02_line_item(quantity)
+  def create_sd02_line_item(q)
     line_item = LineItem.new
     line_item.order_id = self.id
     line_item.product_id = SD02_PRODUCT_ID
-    line_item.quantity = quantity
+    line_item.quantity = q
     
-    line_item.save
+    if not line_item.save
+      puts "Could not save line item. quantity == #{line_item.quantity}"
+    end
   end
   
   def total_price
@@ -113,11 +116,64 @@ class Order < ActiveRecord::Base
     self.payed_at != nil
   end
   
+  def mark_sent
+    self.sent_at = Time.now
+    self.add_event 'Отправлен'
+    save
+  end
+  
+  def sent?
+    self.sent_at != nil
+  end
+  
+  def postal?
+    self.delivery_type == DeliveryType::POSTAL
+  end
+  
+  def courier?
+    self.delivery_type == DeliveryType::COURIER
+  end
+  
   def add_event(description)
     ev = OrderEvent.new
     ev.order_id = self.id
     ev.description = description
     ev.save
+  end
+  
+  
+  def status
+    if self.courier?
+      xml = %{<?xml version='1.0' standalone='yes'?>
+      <singleorder>
+        <mode>status</mode>
+        <okey>#{self.axiomus_order.auth}</okey>
+      </singleorder>}
+      url = URI.parse('http://www.axiomus.ru/test/api_xml_test.php')
+      post_params = { 'data' => xml }
+      resp = Net::HTTP.post_form(url, post_params)
+      puts resp
+      
+      doc = REXML::Document.new(resp.body)
+      status = doc.elements['response/status']
+      return status.text
+    elsif self.postal?
+      if self.extra_post_order
+        self.extra_post_order.post_order.comment
+      else
+        #raise 'Postal order without extra_post_order object!'
+      end
+    else
+      raise "Неизвестный способ доставки: #{self.delivery_type}"
+    end
+  end
+  
+  def post_num
+    if self.extra_post_order
+      self.extra_post_order.post_order.num
+    else
+      nil
+    end
   end
   
 end

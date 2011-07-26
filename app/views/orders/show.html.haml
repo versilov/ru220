@@ -32,6 +32,23 @@
   
 %fieldset.order_show
   %legend Заказ
+    
+  - if @order.post_num
+    %strong Бандероль:
+    = @order.post_num
+    = form_tag 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo', :id => 'post_form' do
+      = hidden_field_tag 'PATHCUR', 'rp/servise/ru/home/postuslug/trackingpo'
+      = hidden_field_tag 'PATHWEB', 'RP/INDEX/RU/Home'
+      = hidden_field_tag 'PATHPAGE', 'RP/INDEX/RU/Home/Search'
+      = hidden_field_tag 'searchsign', '1'
+      = hidden_field_tag 'BarCode', @order.post_num
+      = submit_tag 'Найти', :name => 'searchbarcode'
+  
+  %strong= t('.status') + ':'
+  = 'Оплачен' if @order.payed?
+  = 'Отправлен' if @order.sent?
+  = @order.status
+  %br
   %strong= t('.pay_type') + ':'
   = @order.pay_type
   %br
@@ -56,9 +73,20 @@
         %td= event.created_at.strftime '%d-%m-%Y %H:%M:%S'
         %td= event.description
 
+
+%fieldset.order_show
+  %legend= @post_history_table_html
+  %p#post_result
+
+
+
+:javascript
+  $(document).ready(function() { 
+    $('#post_form').ajaxSubmit(function(data) { alert('form'); });
+  }); 
   
 
-
+  
 
 
     

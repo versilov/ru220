@@ -2,6 +2,8 @@
 
 require 'net/http'
 require 'rexml/document'
+require 'nokogiri'
+require 'erb'
 
 
 class OrdersController < ApplicationController
@@ -24,7 +26,7 @@ class OrdersController < ApplicationController
   # GET /orders.xml
   # Contains huge filtering logic.
   def index
-    @filter = Filter.new(Order::PaymentType::ALL, Order::DeliveryType::ALL, Date.yesterday, Date.today)
+    @filter = Filter.new(Order::PaymentType::ALL, Order::DeliveryType::ALL, Date.yesterday, Date.tomorrow)
     
     if params[:filter] and params[:do_filter]
       # Filter button was pressed
@@ -70,7 +72,6 @@ class OrdersController < ApplicationController
     end
 
     @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
-    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,11 +79,16 @@ class OrdersController < ApplicationController
     end
   end
 
+
+
+
   # GET /orders/1
   # GET /orders/1.xml
   def show
     @order = Order.find(params[:id])
     Time.zone = 'Moscow'
+    
+    @post_history_table_html = get_post_history if @order.postal?
 
     respond_to do |format|
       format.html # show.html.erb
@@ -127,17 +133,55 @@ class OrdersController < ApplicationController
       if @order.save
         @order.add_event 'Создан'
         @order.create_sd02_line_item(@order.quantity)
+        @order.reload
+
         
-        if @order.delivery_type == Order::DeliveryType::COURIER
+        if @order.courier?
           # Send data to Axiomus
-          status = send_order_to_axiomus(@order)
-          if status.attributes['code'].to_i > 0
+          response = send_order_to_axiomus(@order)
+          
+          if response.elements['status'].attributes['code'].to_i > 0
             format.html { 
-              flash[:notice] = 'Не удалось передать заказ в службу курьерской доставки: ' + status.text;
+              flash[:notice] = 'Не удалось передать заказ в службу курьерской доставки: ' + response.elements['status'].text;
               render :action => 'new'  }
           else
-            @order.add_event 'Передан в Аксиомус'
+            @order.add_event "Передан в Аксиомус под номером #{response.elements['auth'].attributes['objectid']}"
           end
+        elsif @order.postal?
+          po = PostOrder.new
+          po.index = @order.index
+          po.region = @order.region
+          po.area = @order.area
+          po.city = @order.city
+          po.address = @order.address
+          po.adressee = @order.client
+          po.mass = @order.total_quantity*0.2
+          
+          if @order.pay_type == Order::PaymentType::ROBO
+            po.value = 1.0
+            po.payment = 0.0
+          elsif  @order.pay_type == Order::PaymentType::COD
+            po.value = po.payment = @order.total_price
+          else
+            raise "Неизвестный тип оплаты: #{@order.pay_type}"
+          end
+          
+          po.comment = "РБЛ#{@order.id}"
+          
+          if not po.save
+            format.html { 
+              flash[:notice] = 'Не удалось передать заказ в службу почтовой доставки: ' + po.errors.to_s;
+              render :action => 'new'  }
+          else
+            epo = ExtraPostOrder.new
+            epo.post_order_id = po.id
+            epo.order_id = @order.id
+            epo.save
+            @order.add_event "Передан в ЭкстраПост под номером #{po.id} (#{po.comment})"
+          end
+          
+        else
+          raise "Неизвестный тип доставки: #{@order.delivery_type}"
         end
         
         format.html { redirect_to(done_url, :notice => 'Order was successfully created.'); flash[:order_id] = @order.id }
@@ -166,6 +210,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.update_attributes(params[:order])
+        @order.add_event "Изменён пользователем #{User.find_by_id(session[:user_id]).login}"
         format.html { redirect_to(@order, :notice => 'Order was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -235,9 +280,56 @@ class OrdersController < ApplicationController
     
     doc = REXML::Document.new(resp.body)
     status = doc.elements['response/status']
-    axiomus_status_code = status.attributes['code'].to_i
     
-    status
+    ao = AxiomusOrder.new
+    ao.order_id = order.id
+    ao.axiomus_id = doc.elements['response/auth'].attributes['objectid'].to_i
+    ao.auth = doc.elements['response/auth'].text
+    ao.save
+    
+    doc.elements['response']
+  end
+  
+  def get_post_history
+
+    post_params = { 'PATHCUR' => 'rp/servise/ru/home/postuslug/trackingpo',
+      'PATHWEB' =>'RP/INDEX/RU/Home',
+      'PATHPAGE' => 'RP/INDEX/RU/Home/Search',
+      'searchsign' => '1',
+      'BarCode' => '44396140000029', 
+      'searchbarcode' => 'Найти'  }
+      
+      url = URI.parse('http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo')
+      headers = {
+        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 
+        'User-Agent' => 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30',
+        'Accept-Charset' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+        'Accept-Encoding' => 'gzip,deflate,sdch',
+        'Accept-Language' => 'en-US,en;q=0.8',
+        'Cache-Control' => 'max-age=0',
+        'Connection' => 'keep-alive',
+        'Content-Length' => '311',
+        'Content-Type' => 'application/x-www-form-urlencoded',
+        'Cookie' => 'uid=26423e66-dd01-4c5a-8fec-2a254b344457; ASP.NET_SessionId=jti1gdiyzdferuuxuyi2j555',
+        'Host' => 'russianpost.ru',
+        'Origin' => 'http://russianpost.ru',
+        'Referer' => 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo' }
+
+#      resp = Net::HTTP.new(url.host, url.port).start { |http|
+#        http.request_post(url.path, post_data, headers)
+#      }
+      
+#      req = Net::HTTP::Post.new(url.path, headers)
+#      req.form_data = post_params
+#      resp = Net::HTTP.new(url.host, url.port).start {|http|
+#        http.request(req)
+#      }
+      
+      
+#    resp = Net::HTTP.post_form(URI.parse('http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo'), post_params)
+#    doc = Nokogiri::HTML(resp.body)
+#    doc.css('title').first.content
+    'Почта России'
   end
   
 end

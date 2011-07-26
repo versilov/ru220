@@ -11,6 +11,7 @@ gem 'haml'
 gem 'jquery-rails'
 gem 'unicode'
 gem 'will_paginate', '>= 3.0.pre'
+gem 'nokogiri'
 
 # Use unicorn as the web server
 # gem 'unicorn'

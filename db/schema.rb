@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110724182525) do
+ActiveRecord::Schema.define(:version => 20110725230731) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -18,6 +18,14 @@ ActiveRecord::Schema.define(:version => 20110724182525) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "alias"
+  end
+
+  create_table "axiomus_orders", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "axiomus_id"
+    t.string   "auth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "delivery_limits", :id => false, :force => true do |t|
@@ -34,6 +42,13 @@ ActiveRecord::Schema.define(:version => 20110724182525) do
     t.string "ratezone"
     t.date   "cfactdate"
     t.string "delivindex", :limit => 6
+  end
+
+  create_table "extra_post_orders", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "post_order_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "line_items", :force => true do |t|
