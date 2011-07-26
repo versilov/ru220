@@ -161,7 +161,7 @@ class Order < ActiveRecord::Base
       if self.extra_post_order
         self.extra_post_order.post_order.comment
       else
-        #raise 'Postal order without extra_post_order object!'
+        raise 'Postal order without extra_post_order object!'
       end
     else
       raise "Неизвестный способ доставки: #{self.delivery_type}"
