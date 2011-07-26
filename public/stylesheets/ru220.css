@@ -472,17 +472,16 @@ h1.order_show {
   float: left;
 }
 
+table#two_cols td {
+  vertical-align: top;
+}
+
 fieldset.order_show {
-  float: left;
-  width: 400px;
+  width: 415px;
   padding: 7px 15px 9px;
   margin-right: 30px;
   margin-bottom: 30px;
   line-height: 25px;
-}
-
-fieldset.history {
-  margin-top: -100px;
 }
 
 table.order_history {
@@ -497,7 +496,19 @@ table.order_history {
   background-color: #fafafa;
 }
 
+#post_history {
+  width: 913px;
+}
 
+#post_history table.pagetext th {
+  background-color: #ddd;
+  padding: 3px;
+}
+
+#post_history table.pagetext td {
+  background-color: #efefef;
+  padding: 3px;
+}
 
 
 /***************** FAQ **********************/

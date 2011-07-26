@@ -34,6 +34,7 @@ ru:
       address: Адрес
       email: Эл. почта
       status: Статус
+      post_num: ШПИ
       pay_type: Оплата
       delivery_type: Доставка
       quantity: Количество

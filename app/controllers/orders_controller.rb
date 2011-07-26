@@ -88,7 +88,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     Time.zone = 'Moscow'
     
-    @post_history_table_html = get_post_history if @order.postal?
+    @post_history_table_html = get_post_history if @order.post_num
 
     respond_to do |format|
       format.html # show.html.erb
@@ -296,40 +296,35 @@ class OrdersController < ApplicationController
       'PATHWEB' =>'RP/INDEX/RU/Home',
       'PATHPAGE' => 'RP/INDEX/RU/Home/Search',
       'searchsign' => '1',
-      'BarCode' => '44396140000029', 
+      'BarCode' => @order.post_num, 
       'searchbarcode' => 'Найти'  }
       
-      url = URI.parse('http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo')
-      headers = {
-        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 
-        'User-Agent' => 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30',
-        'Accept-Charset' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-        'Accept-Encoding' => 'gzip,deflate,sdch',
-        'Accept-Language' => 'en-US,en;q=0.8',
-        'Cache-Control' => 'max-age=0',
-        'Connection' => 'keep-alive',
-        'Content-Length' => '311',
-        'Content-Type' => 'application/x-www-form-urlencoded',
-        'Cookie' => 'uid=26423e66-dd01-4c5a-8fec-2a254b344457; ASP.NET_SessionId=jti1gdiyzdferuuxuyi2j555',
-        'Host' => 'russianpost.ru',
-        'Origin' => 'http://russianpost.ru',
-        'Referer' => 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo' }
+    headers = {
+      'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 
+      'User-Agent' => 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30',
+      'Accept-Charset' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+      'Accept-Encoding' => 'gzip,deflate,sdch',
+      'Accept-Language' => 'en-US,en;q=0.8',
+      'Cache-Control' => 'max-age=0',
+      'Connection' => 'keep-alive',
+      'Content-Length' => '311',
+      'Content-Type' => 'application/x-www-form-urlencoded',
+      'Host' => 'russianpost.ru',
+      'Origin' => 'http://russianpost.ru',
+      'Referer' => 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo' }
 
-#      resp = Net::HTTP.new(url.host, url.port).start { |http|
-#        http.request_post(url.path, post_data, headers)
-#      }
+    
+    req = Net::HTTP::Post.new(
+      '/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo', 
+      headers)
+    req.form_data = post_params
+    resp = Net::HTTP.start('russianpost.ru') {|http|
+      http.request(req)
+    }
+    
       
-#      req = Net::HTTP::Post.new(url.path, headers)
-#      req.form_data = post_params
-#      resp = Net::HTTP.new(url.host, url.port).start {|http|
-#        http.request(req)
-#      }
-      
-      
-#    resp = Net::HTTP.post_form(URI.parse('http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo'), post_params)
-#    doc = Nokogiri::HTML(resp.body)
-#    doc.css('title').first.content
-    'Почта России'
+    doc = Nokogiri::HTML(resp.body)
+    doc.css('table.pagetext').first
   end
   
 end

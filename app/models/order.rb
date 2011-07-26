@@ -144,6 +144,9 @@ class Order < ActiveRecord::Base
   
   def status
     if self.courier?
+      if not self.axiomus_order
+        return 'Не найден объект-связка с Аксиомусом'
+      end
       xml = %{<?xml version='1.0' standalone='yes'?>
       <singleorder>
         <mode>status</mode>
@@ -159,9 +162,14 @@ class Order < ActiveRecord::Base
       return status.text
     elsif self.postal?
       if self.extra_post_order
-        self.extra_post_order.post_order.comment
+        begin
+          self.extra_post_order.post_order.comment
+        rescue Exception
+          STDERR.puts "Order #{self} without a corresponding post_order object in extrapost system."
+          return "Не найден сопутствующий объект в системе ЭкстраПост"
+        end
       else
-        raise 'Postal order without extra_post_order object!'
+        return 'Почтовый заказ без объекта-связки с ЭкстраПостом!'
       end
     else
       raise "Неизвестный способ доставки: #{self.delivery_type}"
@@ -169,9 +177,13 @@ class Order < ActiveRecord::Base
   end
   
   def post_num
-    if self.extra_post_order
-      self.extra_post_order.post_order.num
-    else
+    begin
+      if self.extra_post_order
+        self.extra_post_order.post_order.num
+      else
+        nil
+      end
+    rescue Exception
       nil
     end
   end

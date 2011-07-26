@@ -3,93 +3,82 @@
   = @order.short_name
   
 = link_to t('.edit'), edit_order_path(@order)
-= link_to t('.back'), orders_path 
+&nbsp;
+= link_to 'К списку заказов', orders_path 
 
 
 %p#notice= notice
 
+%table#two_cols
+  %tr
+    %td
 
-%fieldset.order_show
-  %legend Адрес
-  = @order.index
-  %br
-  = @order.region + ', ' + (@order.area || '') + ', ' + (@order.city || '')
-  %br
-  = @order.address
-  %br
-  = @order.client
+      %fieldset.order_show
+        %legend Адрес
+        = @order.index
+        %br
+        = @order.region + ', ' + (@order.area || '') + ', ' + (@order.city || '')
+        %br
+        = @order.address
+        %br
+        = @order.client
+        
+      %fieldset.order_show.history
+        %legend История
+          
+        %table.order_history{ :cellspacing => '0' }
+          - @order.order_events.each do |event|
+            %tr{ :class => cycle('odd', 'even')  }
+              %td= event.created_at.strftime '%d-%m-%Y %H:%M:%S'
+              %td= event.description
+                
+    %td
   
-  
-  
-  
-%fieldset.order_show
-  %legend Контакты
-  = @order.phone
-  %br
-  = @order.email
-  
-  
-  
-%fieldset.order_show
-  %legend Заказ
-    
-  - if @order.post_num
-    %strong Бандероль:
-    = @order.post_num
-    = form_tag 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo', :id => 'post_form' do
-      = hidden_field_tag 'PATHCUR', 'rp/servise/ru/home/postuslug/trackingpo'
-      = hidden_field_tag 'PATHWEB', 'RP/INDEX/RU/Home'
-      = hidden_field_tag 'PATHPAGE', 'RP/INDEX/RU/Home/Search'
-      = hidden_field_tag 'searchsign', '1'
-      = hidden_field_tag 'BarCode', @order.post_num
-      = submit_tag 'Найти', :name => 'searchbarcode'
-  
-  %strong= t('.status') + ':'
-  = 'Оплачен' if @order.payed?
-  = 'Отправлен' if @order.sent?
-  = @order.status
-  %br
-  %strong= t('.pay_type') + ':'
-  = @order.pay_type
-  %br
-  %strong= t('.delivery_type') + ':'
-  = @order.delivery_type
-  %br
-  %strong= t('.quantity') + ':'
-  = @order.total_quantity
-  шт.
-  %br
-  %strong= t('.total_price') + ':'
-  = number_to_currency @order.total_price
+      %fieldset.order_show
+        %legend Контакты
+        = @order.phone
+        %br
+        = @order.email
+        
+        
+      %fieldset.order_show
+        %legend Заказ
+        
+        - if @order.post_num
+          %strong= t('.post_num') + ':'
+          = @order.post_num
+          %br
+        
+        %strong= t('.status') + ':'
+        = 'Оплачен' if @order.payed?
+        = 'Отправлен' if @order.sent?
+        = ', ' + @order.status
+        %br
+        %strong= t('.pay_type') + ':'
+        = @order.pay_type
+        %br
+        %strong= t('.delivery_type') + ':'
+        = @order.delivery_type
+        %br
+        %strong= t('.quantity') + ':'
+        = @order.total_quantity
+        шт.
+        %br
+        %strong= t('.total_price') + ':'
+        = number_to_currency @order.total_price
 
 
 
-%fieldset.order_show.history
-  %legend История
-    
-  %table.order_history{ :cellspacing => '0' }
-    - @order.order_events.each do |event|
-      %tr{ :class => cycle('odd', 'even')  }
-        %td= event.created_at.strftime '%d-%m-%Y %H:%M:%S'
-        %td= event.description
 
 
-%fieldset.order_show
-  %legend= @post_history_table_html
-  %p#post_result
+- if @order.post_num
+  %fieldset#post_history
+    %legend Почтовая история
+    = raw @post_history_table_html
 
 
 
-:javascript
-  $(document).ready(function() { 
-    $('#post_form').ajaxSubmit(function(data) { alert('form'); });
-  }); 
-  
 
-  
-
-
-    
 
 
 
