@@ -232,6 +232,8 @@ class OrdersController < ApplicationController
     end
   end
   
+  
+  
   def parse_index
     index = PostIndex.find_by_index(params[:index])
     
@@ -245,6 +247,8 @@ class OrdersController < ApplicationController
       end
     end
   end
+  
+  
   
   def send_order_to_axiomus(order)
     uid = 92
@@ -290,8 +294,8 @@ class OrdersController < ApplicationController
     doc.elements['response']
   end
   
+  
   def get_post_history
-
     post_params = { 'PATHCUR' => 'rp/servise/ru/home/postuslug/trackingpo',
       'PATHWEB' =>'RP/INDEX/RU/Home',
       'PATHPAGE' => 'RP/INDEX/RU/Home/Search',

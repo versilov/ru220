@@ -388,6 +388,10 @@ a#find_index {
   padding-left: 108px;
 }
 
+#order_region, #order_area, #order_city {
+  background-color: #eee;
+}
+
 #order_total {
   padding-left: 170px;
   font-size: 18px;

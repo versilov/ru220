@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate(params[:login], params[:password])
       session[:user_id] = user.id
-      redirect_to admin_url
+      redirect_to orders_url
     else
       redirect_to login_url, :alert => 'Неверный логин/пароль'
     end

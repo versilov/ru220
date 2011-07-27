@@ -9,7 +9,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     get '/login'
     post_via_redirect '/login', :login => login, :password => password
     assert_response :success
-    assert_template :admin
+    assert_template 'orders/index'
     assert_not_nil session[:user_id]
     User::find_by_id(session[:user_id])
   end
