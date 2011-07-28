@@ -154,7 +154,7 @@ class OrdersController < ApplicationController
           po.area = @order.area
           po.city = @order.city
           po.address = @order.address
-          po.adressee = @order.client
+          po.addressee = @order.client
           po.mass = @order.total_quantity*0.2
           
           if @order.pay_type == Order::PaymentType::ROBO
