@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'test_helper'
 
 class ArticlesControllerTest < ActionController::TestCase
@@ -29,6 +31,7 @@ class ArticlesControllerTest < ActionController::TestCase
   test "should show article" do
     get :show, :id => @article.to_param
     assert_response :success
+    assert_select '.gold-button', /Купить/
   end
 
   test "should get edit" do

@@ -148,6 +148,8 @@
     a.gold-button {
         background: url('/images/btn_gold_bg.jpg') repeat-x scroll left top #FFCB4F !important;
         
+        text-decoration: none;
+        
         padding: 8px 33px !important;
         color: #000 !important;
         font-size: 14px !important;
@@ -388,9 +390,6 @@ a#find_index {
   padding-left: 108px;
 }
 
-#order_region, #order_area, #order_city {
-  background-color: #eee;
-}
 
 #order_total {
   padding-left: 170px;

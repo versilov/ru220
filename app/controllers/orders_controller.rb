@@ -109,9 +109,10 @@ class OrdersController < ApplicationController
       @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
       @order.phone = '+7 916 233 03 36'
       @order.email = 'client@mail.org'
-      @order.pay_type = Order::PaymentType::COD
-      @order.delivery_type = Order::DeliveryType::COURIER
     end
+    
+    @order.pay_type = Order::PaymentType::COD
+    @order.delivery_type = Order::DeliveryType::POSTAL
 
     respond_to do |format|
       format.html # new.html.erb

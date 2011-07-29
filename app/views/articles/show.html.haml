@@ -1,6 +1,8 @@
 %p#notice= notice
 
-%h1= @article.title
+%h1
+  = @article.title
+  = link_to 'Купить', new_order_path, :class => 'gold-button'
   
 - if session[:user_id]
   = link_to 'Редактировать', edit_article_path(@article)

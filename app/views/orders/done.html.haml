@@ -1,3 +1,38 @@
+:javascript
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23213950-4']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_addTrans',
+    '#{@order.id}',           // order ID - required
+    '220RU',  // affiliation or store name
+    '#{@order.total_price}',          // total - required
+    '0',           // tax
+    '0',              // shipping
+    '#{@order.city}',       // city
+    '#{@order.region}',     // state or province
+    'Russia'             // country
+  ]);
+
+   // add item might be called for every item in the shopping cart
+   // where your ecommerce engine loops through each item in the cart and
+   // prints out _addItem for each
+  _gaq.push(['_addItem',
+    '#{@order.id}',           // order ID - required
+    '#{@order.line_items.first.product.id}',           // SKU/code - required
+    '#{@order.line_items.first.product.title}',        // product name
+    '',   // category or variation
+    '#{@order.line_items.first.product.price}',          // unit price - required
+    '#{@order.line_items.first.quantity}'               // quantity - required
+  ]);
+  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+
 %h2 Спасибо за ваш заказ!
 
 %p
