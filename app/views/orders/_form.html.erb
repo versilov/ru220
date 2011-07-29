@@ -100,7 +100,7 @@
 <% end %>
 
 <script language="javascript">
-  $('#order_index').blur( function() {
+  $('#order_index').blur( function(event) {
     var index = event.target.value;
     if (index.length == 6)  {
       $.ajax({
@@ -129,18 +129,18 @@
     }
   });
   
-  $('#order_quantity').change( function() {
+  $('#order_quantity').change( function(event) {
     var quantity = event.target.value;
     $('#order_total_sum').text(1988*quantity);
   });
   
-  $('#order_delivery_type').change( function() {
+  $('#order_delivery_type').change( function(event) {
     if (event.target.value == 'Курьером по Москве и Питеру') {
       $('#order_pay_type').val('Наложенный платёж');
     }
   });
   
-  $('#order_pay_type').change( function() {
+  $('#order_pay_type').change( function(event) {
     if (event.target.value == 'Робокасса') {
       if ($('#order_delivery_type').val() == 'Курьером по Москве и Питеру') {
         $('#order_pay_type').val('Наложенный платёж');
