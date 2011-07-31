@@ -94,19 +94,12 @@
     }
     
     
-    #content #tabs li {
-        display: inline;
-        list-style-type: none;
-        padding: 0;
-        margin: 0 5px 0 7px;
-        height: auto;
-    }
     
     #tabs {
         border-bottom: solid 1px #999;
         padding: 0 0 11px 0 !important;
         margin: 0;
-        height: 19px;
+        height: 20px;
         
     }
     
@@ -115,10 +108,18 @@
         margin: 0;
         display: block;
         float: left;
+        height: 19px;
         
        
     }
     
+    #content #tabs li {
+        display: inline;
+        list-style-type: none;
+        padding: 0;
+        margin: 0 5px 0 7px;
+    }
+
     
     #tabs a {
         color: #888;
@@ -127,6 +128,8 @@
         
         padding: 13px 18px;
         margin: 0;
+        
+  
         
         background-color: #eeeeee;
     }
@@ -333,6 +336,7 @@ form#new_order {
 fieldset {
   border: solid 1px #d2d2d2;
   background: #fafafa;
+  padding: 7px 15px 9px;
 }
 
 .new_order_fieldset {
@@ -372,7 +376,6 @@ fieldset {
 }
 
 #new_order_fieldset legend {
-  background-color: #eee;
   padding: 1px 6px;
 }
 
@@ -481,7 +484,6 @@ table#two_cols td {
 
 fieldset.order_show {
   width: 415px;
-  padding: 7px 15px 9px;
   margin-right: 30px;
   margin-bottom: 30px;
   line-height: 25px;
