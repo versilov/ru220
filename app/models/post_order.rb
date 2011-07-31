@@ -4,6 +4,10 @@ class PostOrder < ActiveResource::Base
   self.password = 'T7ilk20doZ'
   
   def batch
-    Batch.find(self.batch_id)
+    if not self.batch_id
+      nil
+    else
+      Batch.find(self.batch_id)
+    end
   end
 end
