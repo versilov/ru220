@@ -52,6 +52,7 @@
         %strong= t('.status') + ':'
         = 'Оплачен' if @order.payed?
         = 'Отправлен' if @order.sent?
+        = ', ' + @order.status
         %br
         %strong= t('.pay_type') + ':'
         = @order.pay_type

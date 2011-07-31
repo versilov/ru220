@@ -20,9 +20,7 @@ Ru220::Application.routes.draw do
 
   resources :articles
   resources :orders
-  resources :extra_post_orders, :as => :orders, :controller => :orders
-  resources :axiomus_orders, :as => :orders, :controller => :orders
-
+  
   match '/device/how' => 'articles#how'
   match '/device/economy' => 'articles#economy'
   match '/device/reviews' => 'articles#reviews'

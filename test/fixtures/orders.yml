@@ -11,8 +11,6 @@ one:
   email: pusechkin.i@mail.ru
   pay_type: <%= Order::PaymentType::ROBO %>
   delivery_type: <%= Order::DeliveryType::POSTAL %>
-  sent_at: nil
-  payed_at: nil
 
 
 two:
