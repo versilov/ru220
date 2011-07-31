@@ -47,9 +47,9 @@
     <td><%= order.delivery_type %></td>
     <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
     <td class="actions">
-      <%= link_to 'Смотр.', order %><br />
+      <%= link_to 'Смотр.', order_path(order) %><br />
       <%= link_to 'Редакт.', edit_order_path(order) %><br />
-      <%= link_to 'Удал.', order, :confirm => 'Вы уверены?', :method => :delete %>
+      <%= link_to 'Удал.', order_path(order), :confirm => 'Вы уверены?', :method => :delete %>
     </td>
   </tr>
 <% end %>

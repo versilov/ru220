@@ -129,6 +129,14 @@ class OrdersController < ApplicationController
   # POST /orders.xml
   def create
     @order = Order.new(params[:order])
+    if @order.delivery_type == Order::DeliveryType::POSTAL
+      @order.type = 'ExtraPostOrder'
+    elsif @order.delivery_type == Order::DeliveryType::COURIER
+      @order.type = 'AxiomusOrder'
+    else
+      raise"Unknown delivery type: #{@order.delivery_type}"
+    end
+  
 
     respond_to do |format|
       if @order.save
@@ -174,10 +182,7 @@ class OrdersController < ApplicationController
               flash[:notice] = 'Не удалось передать заказ в службу почтовой доставки: ' + po.errors.to_s;
               render :action => 'new'  }
           else
-            epo = ExtraPostOrder.new
-            epo.post_order_id = po.id
-            epo.order_id = @order.id
-            epo.save
+            @order.update_attribute(:external_order_id, po.id)
             @order.add_event "Передан в ЭкстраПост под номером #{po.id} (#{po.comment})"
           end
           
@@ -286,12 +291,8 @@ class OrdersController < ApplicationController
     doc = REXML::Document.new(resp.body)
     status = doc.elements['response/status']
     
-    ao = AxiomusOrder.new
-    ao.order_id = order.id
-    ao.axiomus_id = doc.elements['response/auth'].attributes['objectid'].to_i
-    ao.auth = doc.elements['response/auth'].text
-    ao.save
-    
+    order.update_attribute(:external_order_id, doc.elements['response/auth'].text)
+   
     doc.elements['response']
   end
   

@@ -26,8 +26,6 @@ class Order < ActiveRecord::Base
   
   has_many :line_items, :dependent => :destroy
   has_many :order_events, :dependent => :destroy
-  has_one :axiomus_order, :dependent => :destroy
-  has_one :extra_post_order, :dependent => :destroy
   
   default_scope :order => 'created_at DESC'
   
@@ -178,8 +176,8 @@ class Order < ActiveRecord::Base
   
   def post_num
     begin
-      if self.extra_post_order
-        self.extra_post_order.post_order.num
+      if self.post_order
+        self.post_order.num
       else
         nil
       end
@@ -188,4 +186,9 @@ class Order < ActiveRecord::Base
     end
   end
   
+  
 end
+
+
+
+
