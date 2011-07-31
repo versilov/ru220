@@ -49,7 +49,7 @@
     
 
 - if @order.pay_type == Order::PaymentType::ROBO
-  = form_tag 'http://test.robokassa.ru/Index.aspx', :method => :post, :id => 'roboform' do
+  = form_tag 'https://merchant.roboxchange.com/Index.aspx', :method => :post, :id => 'roboform' do
     = hidden_field_tag 'MrchLogin', 'energo220ru'
     = hidden_field_tag 'OutSum', @order.total_price
     = hidden_field_tag 'InvId', @order.id
