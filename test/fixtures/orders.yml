@@ -13,6 +13,7 @@ one:
   delivery_type: <%= Order::DeliveryType::POSTAL %>
   sent_at: nil
   payed_at: nil
+  type: ExtraPostOrder
 
 
 two:
@@ -26,6 +27,7 @@ two:
   phone: +7 927 232 03 04
   pay_type: <%= Order::PaymentType::COD %>
   delivery_type: <%= Order::DeliveryType::COURIER %>
+  type: AxiomusOrder
 
 english:
   id: 4
@@ -38,4 +40,5 @@ english:
   phone: +7 927 232 03 04
   pay_type: <%= Order::PaymentType::COD %>
   delivery_type: <%= Order::DeliveryType::COURIER %>
+  type: AxiomusOrder
 

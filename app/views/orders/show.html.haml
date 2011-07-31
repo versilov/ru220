@@ -44,7 +44,7 @@
       %fieldset.order_show
         %legend Заказ
         
-        - if @order.post_num
+        - if @order.postal? and @order.post_num
           %strong= t('.post_num') + ':'
           = @order.post_num
           %br
@@ -70,7 +70,7 @@
 
 
 
-- if @order.post_num
+- if @order.postal? and @order.post_num
   %fieldset#post_history
     %legend Почтовая история
     = raw @post_history_table_html

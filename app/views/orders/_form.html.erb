@@ -1,7 +1,7 @@
 
 
 <a name="order_form">&nbsp;</a>
-<%= form_for(@order) do |f| %>
+<%= form_for(@order, :url => orders_path) do |f| %>
   <% if @order.errors.any? %>
     <div id="error_explanation">
       <h2><%= t('activerecord.errors.template.header', :count=>@order.errors.size,
@@ -73,7 +73,7 @@
     <div class="field">
      <%= f.label :quantity %><br />
      <%= f.select :quantity, 1..10 %>&nbsp;шт.
-     <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*1988 %></span> руб.</span>
+     <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*Product.find(1).price.to_i %></span> руб.</span>
     </div>
   </fieldset>
 
@@ -131,7 +131,7 @@
   
   $('#order_quantity').change( function(event) {
     var quantity = event.target.value;
-    $('#order_total_sum').text(1988*quantity);
+    $('#order_total_sum').text(<%= Product.find(1).price %>*quantity);
   });
   
   $('#order_delivery_type').change( function(event) {

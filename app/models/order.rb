@@ -132,6 +132,18 @@ class Order < ActiveRecord::Base
     self.delivery_type == DeliveryType::COURIER
   end
   
+  def prepaid?
+    self.pay_type == PaymentType::ROBO
+  end
+  
+  def postpaid?
+    self.pay_type == PaymentType::COD
+  end
+  
+  def send_to_delivery
+    raise "Not implemented. Implement in child classes"
+  end
+  
   def add_event(description)
     ev = OrderEvent.new
     ev.order_id = self.id
@@ -174,17 +186,7 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def post_num
-    begin
-      if self.post_order
-        self.post_order.num
-      else
-        nil
-      end
-    rescue Exception
-      nil
-    end
-  end
+
   
   
 end

@@ -15,7 +15,9 @@ class RobokassaController < ApplicationController
       if order
         if order.total_price == sum
           render :text => "OK#{order_id}"
+          order.add_event "Оплачен через РобоКассу"
           order.mark_payed
+          order.send_to_delivery
         else
           render :text => "Sum for the order #{order_id} should be #{order.total_price}, but was #{sum}"
         end
