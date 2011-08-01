@@ -52,6 +52,8 @@ class RobokassaController < ApplicationController
   def fail
     order_id = params[:InvId]
     @message = "Вы отказались от оплаты заказа №#{order_id}. Заказ отменён."
+    order = Order.find(order_id)
+    order.add_event "Отказ от оплаты через Робокассу."
   end
   
 private

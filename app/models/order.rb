@@ -104,9 +104,7 @@ class Order < ActiveRecord::Base
  
   # Marks order as payed with the current timestamp and saves order.
   def mark_payed
-    self.payed_at = Time.now
-    self.add_event 'Оплачен'
-    save
+    self.update_attribute(:payed_at, Time.now)
   end
   
   # True, if order was payed for (i.e. payed_at timestamp is not nil)

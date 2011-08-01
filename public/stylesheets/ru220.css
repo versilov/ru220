@@ -560,3 +560,20 @@ div.data .pseudo-link{
 	line-height:1.3em;
 }
 
+
+/******************** ECONOMY *********************/
+#economy .head {
+  font-weight: bold;
+}
+
+#economy .subhead td {
+  font-style: italic;
+  padding-top: 7px;
+  border-top: solid 1px #777;
+}
+
+#economy .even td {
+  background-color: #ddd;
+}
+
+
