@@ -14,14 +14,11 @@ class ApplicationController < ActionController::Base
         redirect_to login_url, :alert => 'Пожалуйста, войдите в систему, используя логин и пароль.'
       end
     end
-    
-  def clean_backtrace(exception)
-    Rails.respond_to?(:backtrace_cleaner) ?
-      Rails.backtrace_cleaner.send(:filter, exception.backtrace) : exception.backtrace
-  end
 
+    
   def render_all_errors(exception)
-    logger.error "Exception caught: #{exception}"
+    
+    logger.error "\n\n\nException caught: #{exception}\n\n"
     logger.error exception.backtrace.join("\n")
     
     ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver

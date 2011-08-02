@@ -107,8 +107,6 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     Time.zone = 'Moscow'
     
-    raise "Test exception"
-    
     @post_history_table_html = @order.get_post_history if @order.postal?
 
     respond_to do |format|
