@@ -33,6 +33,7 @@ Ru220::Application.routes.draw do
   root :to => 'articles#home', :as => :home
   match 'done' => 'orders#done', :as => :done
   match 'parseindex' => 'orders#parse_index'
+  match 'searchindex' => 'orders#search_index'
   
   
   

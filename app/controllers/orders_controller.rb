@@ -7,7 +7,7 @@ require 'erb'
 
 
 class OrdersController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index]
+  skip_before_filter :authorize, :only => [:new, :create, :done, :parse_index, :search_index]
   
   class Filter
     def initialize(pay, delivery, start_date, end_date)
@@ -119,8 +119,8 @@ class OrdersController < ApplicationController
   # GET /orders/new.xml
   def new
     @order = Order.new
-    @delivery_time = DeliveryTime.new(Date.tomorrow, 10, 15, 'Москва')
-
+    @delivery_time = DeliveryTime.new(Date.tomorrow.jd, 10, 15, 'Москва')
+    
     if request.domain == 'localhost'   
       @order.client = 'Смирнов Сергей Игоревич'
       @order.index = '443096'
@@ -149,8 +149,7 @@ class OrdersController < ApplicationController
   # POST /orders.xml
   def create
     dparams = params[:delivery_time]
-    @delivery_time = DeliveryTime.new(
-      Date.civil(dparams[:"date(1i)"].to_i, dparams[:"date(2i)"].to_i, dparams[:"date(3i)"].to_i), dparams[:from], dparams[:to], dparams[:city])
+    @delivery_time = DeliveryTime.new(dparams[:date], dparams[:from], dparams[:to], dparams[:city])
   
 
 
@@ -162,7 +161,10 @@ class OrdersController < ApplicationController
       @order.region = nil
       @order.area = nil
       
-      @order.date = @delivery_time.date
+      puts "DEL. DATE: #{@delivery_time.date}"
+      y Date.jd(@delivery_time.date.to_i)
+      
+      @order.date = Date.jd(@delivery_time.date.to_i)
       @order.from = @delivery_time.from
       @order.to = @delivery_time.to
       
@@ -233,6 +235,9 @@ class OrdersController < ApplicationController
     end
   end
   
+  
+  
+  # returns region, area and city by postal index
   def parse_index
     index = PostIndex.find_by_index(params[:index])
     
@@ -244,6 +249,17 @@ class OrdersController < ApplicationController
       respond_to do |format|
         format.html { render :text => '', :status => 404 }
       end
+    end
+  end
+  
+  
+  # Returns indexes, that start with the given sequence
+  def search_index
+    part_of_index = params[:term]
+    indexes = PostIndex.where('`index` like ?', part_of_index + '%').select("`index`, region, city").collect { |pi| {:value => pi.index, :label => pi.index + '-' + pi.city! } }
+    puts indexes
+    respond_to do |format|
+      format.html { render :text => indexes.to_json }
     end
   end
   

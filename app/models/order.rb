@@ -50,7 +50,7 @@ class Order < ActiveRecord::Base
   
   module DeliveryType
     POSTAL = 'Почта России'
-    COURIER = 'Курьером по Москве и Питеру'
+    COURIER = 'Курьером по Москве и Санкт-Петербургу'
     ALL = 'Все'
   end
   
@@ -65,7 +65,15 @@ class Order < ActiveRecord::Base
   validates :delivery_type, :inclusion => DELIVERY_TYPES
   validates_with IndexValidator
   
-  
+    # Returns city name, event if it's stored in the region field (as for capitals)
+  def city!
+    if self.city.length > 0
+      return self.city
+    else
+      return self.region
+    end
+  end
+
   
   def quantity
     if @quantity

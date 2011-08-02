@@ -75,4 +75,13 @@ class OrderTest < ActiveSupport::TestCase
     order.reload
     assert order.payed?
   end
+  
+  test 'city!' do
+    order = orders(:moscow)
+    assert order.valid?
+    
+    assert_equal '', order.city
+    assert_equal 'МОСКВА', order.city!
+    assert_equal 'МОСКВА', order.region
+  end
 end

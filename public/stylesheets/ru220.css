@@ -391,6 +391,26 @@ fieldset {
   color: #f00;
 }
 
+.ui-autocomplete {
+  max-height: 150px;
+  width: 200px;
+  text-align: left;
+  white-space: nowrap;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+  /* add padding to account for vertical scrollbar */
+  padding-right: 10px;
+}
+
+.ui-autocomplete-loading {
+  background: white url('/images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+
+.ui-menu-item {
+  font-size: 12px;
+}
+
 a#find_index {
   padding-left: 108px;
 }

@@ -37,7 +37,7 @@
     </div>
     
     <p>Выберите удобное для вас время доставки:</p>
-    <p><%= date_select :delivery_time, :date %></p>
+    <p><%= select :delivery_time, :date, delivery_dates %></p>
     <p>С <%= select :delivery_time, :from, OrdersController::DeliveryTime::DELIVERY_HOURS_FROM %> до <%= select :delivery_time, :to, OrdersController::DeliveryTime::DELIVERY_HOURS_TO %> часов</p>
   </div>
 
@@ -117,7 +117,51 @@
 <% end %>
 
 <script language="javascript">
-  $('#order_index').blur( function(event) {
+  function loadOPSByIndex(index) {
+  $.ajax({
+        type: 'GET',
+        url: '/parseindex',
+        data: 'index=' + index,
+        success: function(msg) {
+          var splt = msg.split(';');
+          
+          var region = splt[0];
+          var area = splt[1];
+          var city = splt[2];
+          
+          $('#order_index_error').text('');
+          $('#order_region').val(region);
+          $('#order_area').val(area);
+          $('#order_city').val(city);
+         },
+         error: function() {
+          $('#order_region').val('');
+          $('#order_area').val('');
+          $('#order_city').val('');
+          $('#order_index_error').text('Индекс не найден');
+         }
+      });
+   }
+
+
+  $('#order_index').autocomplete({ 
+      source: '/searchindex',
+      minLength: 3,
+      select: function( event, ui ) {
+        if (ui.item) {
+          loadOPSByIndex(ui.item.value);
+        }
+			}
+	 });
+
+  $('#order_index').keyup( function(event) {
+    var index = event.target.value;
+    if (index.length == 6)  {
+      loadOPSByIndex(index);
+    }
+  });
+
+/*  $('#order_index').blur( function(event) {
     var index = event.target.value;
     if (index.length == 6)  {
       $.ajax({
@@ -145,14 +189,14 @@
        });
     }
   });
-  
+  */
   $('#order_quantity').change( function(event) {
     var quantity = event.target.value;
     $('#order_total_sum').text(<%= Product.find(1).price %>*quantity);
   });
   
   $('#order_delivery_type').change( function(event) {
-    if (event.target.value == 'Курьером по Москве и Питеру') {
+    if (event.target.value == '<%= Order::DeliveryType::COURIER %>') {
       $('#order_pay_type').val('Наложенный платёж');
       // show delivery date and time controls
       $('#postal_address').hide('blind', 500);
@@ -166,7 +210,7 @@
   
   $('#order_pay_type').change( function(event) {
     if (event.target.value == 'Робокасса') {
-      if ($('#order_delivery_type').val() == 'Курьером по Москве и Питеру') {
+      if ($('#order_delivery_type').val() == '<%= Order::DeliveryType::COURIER %>') {
         $('#order_pay_type').val('Наложенный платёж');
         alert('Для курьерской доставки возможна только оплата наложенным платежом (наличными курьеру при получении товара)');
       }

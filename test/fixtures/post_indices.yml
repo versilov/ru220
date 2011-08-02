@@ -26,6 +26,19 @@ two:
   actdate: 2011-06-06
   indexold: MyString
   
+moscow:
+  index: 123060
+  opsname: МОСКВА-060
+  opstype: MyString
+  opssubm: MyString
+  region: МОСКВА
+  autonom: MyString
+  area: 
+  city:
+  city_1: MyString
+  actdate: 2011-06-06
+  indexold: MyString
+  
 closed:
   index: 157164
   opsname: ПАНКРАТОВО

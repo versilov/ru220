@@ -15,5 +15,12 @@
 
 class PostIndex < ActiveRecord::Base
 
-
+  # Returns city name, event if it's stored in the region field (as for capitals)
+  def city!
+    if self.city.length > 0
+      return self.city
+    else
+      return self.region
+    end
+  end
 end

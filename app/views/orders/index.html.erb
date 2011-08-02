@@ -38,7 +38,7 @@
   <tr class="<%= cycle('line_odd', 'line_even') %>">
     <td><strong><%= order.id %></strong></td>
     <td><nobr><%= order.created_at.to_date %></nobr></td>
-    <td><%= if order.city.length > 1 then order.city else order.region end %></td>
+    <td><%= order.city! %></td>
     <td>
       <div class="client-name"><%= order.client %></div>
       <div class="address"><%= order.address %></div>
