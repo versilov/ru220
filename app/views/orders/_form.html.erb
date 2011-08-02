@@ -161,35 +161,7 @@
     }
   });
 
-/*  $('#order_index').blur( function(event) {
-    var index = event.target.value;
-    if (index.length == 6)  {
-      $.ajax({
-        type: 'GET',
-        url: '/parseindex',
-        data: 'index=' + index,
-        success: function(msg) {
-          var splt = msg.split(';');
-          
-          var region = splt[0];
-          var area = splt[1];
-          var city = splt[2];
-          
-          $('#order_index_error').text('');
-          $('#order_region').val(region);
-          $('#order_area').val(area);
-          $('#order_city').val(city);
-         },
-         error: function() {
-          $('#order_region').val('');
-          $('#order_area').val('');
-          $('#order_city').val('');
-          $('#order_index_error').text('Индекс не найден');
-         }
-       });
-    }
-  });
-  */
+
   $('#order_quantity').change( function(event) {
     var quantity = event.target.value;
     $('#order_total_sum').text(<%= Product.find(1).price %>*quantity);

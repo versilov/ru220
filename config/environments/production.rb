@@ -48,4 +48,25 @@ Ru220::Application.configure do
   config.active_support.deprecation = :notify
   
   config.extrapost_site = 'http://extrapost.heroku.com/'
+  
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => '[RU220 Exception] ',
+    :sender_address => %{"Exception Notifier" <notifier@220ru.ru>},
+    :exception_recipients => %w{stas.versilov@gmail.com}
+
+  
+  # Email sending config
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.extrastore.ru",
+    :port                 => 2525,
+    :user_name            => 'smtp@extrastore.ru',
+    :password             => 'rubysmtp',
+    :authentication       => :login
+  }
 end
+
+  
+  
+  

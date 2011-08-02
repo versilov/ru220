@@ -329,6 +329,10 @@
     
 /********************** ORDER FORM ***********************/
 
+h1#new_order_header {
+  margin-bottom: 0px;
+}
+
 form#new_order {
   margin-top: -40px;
 }
@@ -356,7 +360,7 @@ fieldset {
   padding-top: 17px;
   width: 420px;
   height: 40px; 
-  margin-top: -56px; 
+  margin-top: -60px; 
 }
 
 #price strong {

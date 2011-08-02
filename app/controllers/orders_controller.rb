@@ -158,11 +158,11 @@ class OrdersController < ApplicationController
     elsif params[:order][:delivery_type] == Order::DeliveryType::COURIER
       @order = AxiomusOrder.new(params[:order])
       @order.city = @delivery_time.city
+      @order.index = nil
       @order.region = nil
       @order.area = nil
       
-      puts "DEL. DATE: #{@delivery_time.date}"
-      y Date.jd(@delivery_time.date.to_i)
+      puts @order.index.to_s
       
       @order.date = Date.jd(@delivery_time.date.to_i)
       @order.from = @delivery_time.from

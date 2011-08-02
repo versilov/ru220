@@ -10,7 +10,7 @@ Ru220::Application.configure do
   config.whiny_nils = true
 
   # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local       = false
   config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
   
@@ -26,5 +26,24 @@ Ru220::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   
   config.extrapost_site = 'http://localhost:4000/'
+  
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => '[RU220 Exception] ',
+    :sender_address => %{"Exception Notifier" <notifier@220ru.ru>},
+    :exception_recipients => %w{stas.versilov@gmail.com}
+  
+  # Email sending config
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => "smtp.extrastore.ru",
+  :port                 => 2525,
+  :user_name            => 'smtp@extrastore.ru',
+  :password             => 'rubysmtp',
+  :authentication       => :login
+  }
 end
+
+
+  
 

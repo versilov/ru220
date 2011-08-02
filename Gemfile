@@ -13,6 +13,8 @@ gem 'unicode'
 gem 'will_paginate', '>= 3.0.pre'
 gem 'nokogiri'
 
+gem 'exception_notification'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
