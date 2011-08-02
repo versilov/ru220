@@ -107,6 +107,8 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     Time.zone = 'Moscow'
     
+    raise "Test exception"
+    
     @post_history_table_html = @order.get_post_history if @order.postal?
 
     respond_to do |format|
@@ -161,8 +163,6 @@ class OrdersController < ApplicationController
       @order.index = nil
       @order.region = nil
       @order.area = nil
-      
-      puts @order.index.to_s
       
       @order.date = Date.jd(@delivery_time.date.to_i)
       @order.from = @delivery_time.from
