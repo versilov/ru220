@@ -5,6 +5,15 @@ class Order < ActiveRecord::Base
     def validate(record)
       index = record.index
       
+      if not index
+        if record.delivery_type == DeliveryType::COURIER
+          return
+        else
+          record.errors[:index] << "является обязательным полем"
+          return
+        end
+      end
+      
       post_index = PostIndex.find_by_index(index.to_s)
       
       if post_index == nil
@@ -48,8 +57,8 @@ class Order < ActiveRecord::Base
   SD02_PRODUCT_ID = 1
 
 
-  validates :index, :client, :address, :phone, :pay_type, :delivery_type, :presence => true
-  validates :index, :length => 6..6,  :numericality => true
+  validates :client, :address, :phone, :pay_type, :delivery_type, :presence => true
+  validates :index, :length => { :is => 6, :allow_blank => true },  :numericality => { :on => :save, :only_integer => true, :allow_nil => true }
   validates :pay_type, :inclusion => PAYMENT_TYPES
   validates :delivery_type, :inclusion => DELIVERY_TYPES
   validates_with IndexValidator

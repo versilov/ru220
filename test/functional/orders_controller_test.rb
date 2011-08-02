@@ -5,6 +5,7 @@ require 'test_helper'
 class OrdersControllerTest < ActionController::TestCase
   setup do
     @order = orders(:one)
+    @delivery_attrs = {:"date(1i)" => 2011, :"date(2i)" => 8, :"date(3i)" => 8, :from => 11, :to => 15, :city => 'Москва' }
   end
 
   test "should get index" do
@@ -24,7 +25,7 @@ class OrdersControllerTest < ActionController::TestCase
     order_attrs = @order.attributes
     order_attrs[:quantity] = 3
     assert_difference('Order.count') do
-      post :create, :order => order_attrs
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
     end
     assert_redirected_to done_url
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"
@@ -35,7 +36,7 @@ class OrdersControllerTest < ActionController::TestCase
     order_attrs[:quantity] = 3
     order_attrs[:index] = 123456
     assert_no_difference('Order.count') do
-      post :create, :order => order_attrs
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
     end
     
     assert_template 'orders/new'

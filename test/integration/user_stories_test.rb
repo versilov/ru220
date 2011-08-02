@@ -32,7 +32,13 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
                                 :email => 'vasya@tester.org',
                                 :pay_type => Order::PaymentType::COD,
                                 :delivery_type => Order::DeliveryType::POSTAL,
-                                :quantity => 3 }
+                                :quantity => 3 },
+                        :delivery_time => {
+                                :"date(1i)" => 2011,
+                                :"date(2i)" => 8,
+                                :"date(3i)" => 8,
+                                :from => 13, :to => 17, 
+                                :city => 'Санкт-Петербург' }
                                 
                                 
     assert_response :success

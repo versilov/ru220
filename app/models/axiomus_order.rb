@@ -1,6 +1,9 @@
 # encoding: utf-8
 
 class AxiomusOrder < Order
+  
+  attr_accessor :date, :from, :to
+  
   def okey
     self.external_order_id
   end
@@ -11,9 +14,9 @@ class AxiomusOrder < Order
   
   def send_to_delivery
     uid = 92
-    date = Date.tomorrow
-    start_time = '10:00'
-    end_time = '18:00'
+    date = @date
+    start_time = @from + ':00'
+    end_time = @to + ':00'
     cache = 'yes'
     cheque = 'yes'
     selsize = 'no'
@@ -24,7 +27,7 @@ class AxiomusOrder < Order
 <singleorder>
 <mode>new</mode>
 <auth ukey="XXcd208495d565ef66e7dff9f98764XX" checksum="#{checksum}" />
-<order inner_id="#{self.id}" name="#{self.client}"  address="#{self.index}, #{self.region}, #{self.city}, #{self.address}" from_mkad="0" d_date="#{date}" b_time="#{start_time}" e_time="#{end_time}">
+<order inner_id="#{self.id}" name="#{self.client}"  address="#{self.city}, #{self.address}" from_mkad="0" d_date="#{date}" b_time="#{start_time}" e_time="#{end_time}">
    <contacts>тел. #{self.phone}</contacts>
    <description></description>
    <hidden_desc></hidden_desc>
@@ -42,16 +45,12 @@ class AxiomusOrder < Order
     puts resp.body
     
     doc = REXML::Document.new(resp.body)
-    status = doc.elements['response/status']
     
-    self.update_attribute(:external_order_id, doc.elements['response/auth'].text)
-   
-    response = doc.elements['response']
-    
-    if response.elements['status'].attributes['code'].to_i > 0
+    if doc.elements['response/status'].attributes['code'].to_i > 0
       return false
     else
-      self.add_event "Передан в Аксиомус под номером #{response.elements['auth'].attributes['objectid']}"
+      self.update_attribute(:external_order_id, doc.elements['response/auth'].text)
+      self.add_event "Передан в Аксиомус под номером #{doc.elements['response/auth'].attributes['objectid']}"
       return true
     end
   end

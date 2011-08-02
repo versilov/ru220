@@ -21,6 +21,25 @@ class OrdersController < ApplicationController
     
   end
   
+  class DeliveryTime
+    DELIVERY_HOURS_FROM = (10..19).collect { |h| ["#{h}:00", h] }
+    DELIVERY_HOURS_TO = (15..22).collect { |h| ["#{h}:00", h] }
+    
+    
+    attr_accessor :city, :date, :from, :to
+    
+    
+    def initialize(date, from, to, city)
+      @date = date
+      @from = from
+      @to = to
+      
+      @city = city
+    end
+    
+
+  end
+  
   
   # GET /orders
   # GET /orders.xml
@@ -100,6 +119,7 @@ class OrdersController < ApplicationController
   # GET /orders/new.xml
   def new
     @order = Order.new
+    @delivery_time = DeliveryTime.new(Date.tomorrow, 10, 15, 'Москва')
 
     if request.domain == 'localhost'   
       @order.client = 'Смирнов Сергей Игоревич'
@@ -128,14 +148,28 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.xml
   def create
+    dparams = params[:delivery_time]
+    @delivery_time = DeliveryTime.new(
+      Date.civil(dparams[:"date(1i)"].to_i, dparams[:"date(2i)"].to_i, dparams[:"date(3i)"].to_i), dparams[:from], dparams[:to], dparams[:city])
+  
+
+
     if params[:order][:delivery_type] == Order::DeliveryType::POSTAL
       @order = ExtraPostOrder.new(params[:order])
     elsif params[:order][:delivery_type] == Order::DeliveryType::COURIER
       @order = AxiomusOrder.new(params[:order])
+      @order.city = @delivery_time.city
+      @order.region = nil
+      @order.area = nil
+      
+      @order.date = @delivery_time.date
+      @order.from = @delivery_time.from
+      @order.to = @delivery_time.to
+      
     else
       raise"Unknown delivery type: #{@order.delivery_type}"
     end
-  
+    
 
     respond_to do |format|
       if @order.save

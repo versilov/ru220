@@ -380,9 +380,11 @@ fieldset {
 }
 
 #order_submit {
-  font-size: 22px;
+  font-size: 27px;
+  margin-right: 60px;
+  margin-bottom: 100px;
 
-  clear: both;
+  float: right;
 }
 
 #order_index_error {
@@ -401,6 +403,15 @@ a#find_index {
 
 #pay_and_delivery {
   padding-left: 70px;
+}
+
+#delivery_time {
+  margin-bottom: 13px;
+}
+
+#delivery_time p {
+  margin-bottom: 0px;
+  margin-top: 3px;
 }
 
 .new_order_select {

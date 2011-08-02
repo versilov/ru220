@@ -1,7 +1,7 @@
 
 
 <a name="order_form">&nbsp;</a>
-<%= form_for(@order, :url => orders_path) do |f| %>
+<%= form_for(@order, :as => :order, :url => orders_url) do |f| %>
   <% if @order.errors.any? %>
     <div id="error_explanation">
       <h2><%= t('activerecord.errors.template.header', :count=>@order.errors.size,
@@ -25,6 +25,25 @@
   </div>
   
   <div class="field">
+    <%= f.label :delivery_type %><br />
+    <%= f.select :delivery_type, Order::DELIVERY_TYPES, { :prompt => 'Выберите способ доставки'}, { :class => 'new_order_select' }  %>
+  </div>
+  
+  <div id="delivery_time" style="<%= 'display: none' if @order.delivery_type != Order::DeliveryType::COURIER %>">
+  
+    <div class="field">
+      <%= f.label :city %><br />
+      <%= select :delivery_time, :city, ['Москва', 'Санкт-Петербург'] %>
+    </div>
+    
+    <p>Выберите удобное для вас время доставки:</p>
+    <p><%= date_select :delivery_time, :date %></p>
+    <p>С <%= select :delivery_time, :from, OrdersController::DeliveryTime::DELIVERY_HOURS_FROM %> до <%= select :delivery_time, :to, OrdersController::DeliveryTime::DELIVERY_HOURS_TO %> часов</p>
+  </div>
+
+  
+  <div id="postal_address" style="<%= 'display: none' if @order.delivery_type != Order::DeliveryType::POSTAL %>">
+  <div class="field">
     <%= f.label :index %>&nbsp;<a id="find_index" href="http://russianpost.ru/rp/servise/ru/home/postuslug/searchops" target="_blank">Забыли свой индекс?</a><br />
     <%= f.text_field :index, :size => 6, :maxlength => 6 %>
     <span id="order_index_error"></span>
@@ -45,6 +64,7 @@
     <%= f.label :city %><br />
     <%= f.text_field :city %>
   </div>
+  </div> <!-- #postal_address -->
   
   <div class="field">
     <%= f.label :address %><br />
@@ -65,17 +85,14 @@
     <%= f.select :pay_type, Order::PAYMENT_TYPES, {:prompt => 'Выберите способ оплаты'}, { :class => 'new_order_select' }%>
   </div>
   
-  <div class="field">
-    <%= f.label :delivery_type %><br />
-    <%= f.select :delivery_type, Order::DELIVERY_TYPES, { :prompt => 'Выберите способ доставки'}, { :class => 'new_order_select' }  %>
-  </div>
   
-    <div class="field">
-     <%= f.label :quantity %><br />
-     <%= f.select :quantity, 1..10 %>&nbsp;шт.
-     <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*Product.find(1).price.to_i %></span> руб.</span>
-    </div>
-  </fieldset>
+  
+  <div class="field">
+    <%= f.label :quantity %><br />
+    <%= f.select :quantity, 1..10 %>&nbsp;шт.
+    <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*Product.find(1).price.to_i %></span> руб.</span>
+  </div>
+</fieldset>
 
   
   
@@ -137,6 +154,13 @@
   $('#order_delivery_type').change( function(event) {
     if (event.target.value == 'Курьером по Москве и Питеру') {
       $('#order_pay_type').val('Наложенный платёж');
+      // show delivery date and time controls
+      $('#postal_address').hide('blind', 500);
+      $('#delivery_time').show('blind', 500);
+    } else {
+      // hide delivery date and time controls
+      $('#delivery_time').hide('blind', 500);
+      $('#postal_address').show('blind', 500);
     }
   });
   
@@ -144,9 +168,26 @@
     if (event.target.value == 'Робокасса') {
       if ($('#order_delivery_type').val() == 'Курьером по Москве и Питеру') {
         $('#order_pay_type').val('Наложенный платёж');
-        alert('Для курьерской доставки возможна только оплата наложенным платежом (наличными курьеру)');
+        alert('Для курьерской доставки возможна только оплата наложенным платежом (наличными курьеру при получении товара)');
       }
     }
   });
+  
+  $('#delivery_time_from').change( function(event) {
+    var from = parseInt($('#delivery_time_from').val());
+    var to = parseInt($('#delivery_time_to').val());
+    if ((to - from) < 3) {
+      $('#delivery_time_to').val(from + 3);
+    }
+  });
+  
+  $('#delivery_time_to').change( function(event) {
+    var from = parseInt($('#delivery_time_from').val());
+    var to = parseInt($('#delivery_time_to').val());
+    if ((to - from) < 3) {
+      $('#delivery_time_from').val(to-3);
+    }
+  });
+
 </script>
 

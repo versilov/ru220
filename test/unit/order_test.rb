@@ -43,8 +43,8 @@ class OrderTest < ActiveSupport::TestCase
     order.index = '123abc'
     
     assert !order.save
-    assert_equal 'недостаточной длины (не может быть меньше 6 символов)', order.errors[:index][0]
-    assert_equal 'должен содержать только цифры', order.errors[:index][1]
+    assert_equal 'неверной длины (может быть длиной ровно 6 символа)', order.errors[:index][0]
+    assert_equal 'не найден', order.errors[:index][1]
   end
   
   test 'post index must exist' do
