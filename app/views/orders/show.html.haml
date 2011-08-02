@@ -17,7 +17,7 @@
         %legend Адрес
         = @order.index
         %br
-        = @order.region + ', ' + (@order.area || '') + ', ' + (@order.city || '')
+        = (@order.region || '') + ', ' + (@order.area || '') + ', ' + (@order.city || '')
         %br
         = @order.address
         %br

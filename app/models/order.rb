@@ -3,15 +3,17 @@
 class Order < ActiveRecord::Base
   class IndexValidator < ActiveModel::Validator
     def validate(record)
+      
+      if record.delivery_type == DeliveryType::COURIER
+        # Don't need index for courier delivery
+        return
+      end
+      
       index = record.index
       
       if not index
-        if record.delivery_type == DeliveryType::COURIER
-          return
-        else
-          record.errors[:index] << "является обязательным полем"
-          return
-        end
+        record.errors[:index] << "является обязательным полем"
+        return
       end
       
       post_index = PostIndex.find_by_index(index.to_s)
