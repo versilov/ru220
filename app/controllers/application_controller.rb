@@ -21,8 +21,12 @@ class ApplicationController < ActionController::Base
     logger.error "\n\n\nException caught: #{exception}\n\n"
     logger.error exception.backtrace.join("\n")
     
-    ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
-    render :template => 'errors/500', :status => 500, :layout => 'application'
+    if Rails.env.production?
+      ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
+      render :template => 'errors/500', :status => 500, :layout => 'application'
+    else
+      raise exception
+    end
   end
     
     

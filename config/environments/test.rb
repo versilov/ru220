@@ -34,4 +34,9 @@ Ru220::Application.configure do
   config.active_support.deprecation = :stderr
   
   config.extrapost_site = 'http://localhost:4000/'
+  
+  # Axiomus delivery config
+  config.axiomus_uid = 92
+  config.axiomus_ukey = 'XXcd208495d565ef66e7dff9f98764XX'
+  config.axiomus_url = 'http://www.axiomus.ru/test/api_xml_test.php'
 end

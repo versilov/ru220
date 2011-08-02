@@ -13,20 +13,24 @@ class AxiomusOrder < Order
   end
   
   def send_to_delivery
-    uid = 92
+    uid = Rails.application.config.axiomus_uid
+    ukey = Rails.application.config.axiomus_ukey
+    axiomus_url = Rails.application.config.axiomus_url
+    
+    total_SKU = 1 # Just one kind of product
     date = @date
     start_time = @from + ':00'
     end_time = @to + ':00'
     cache = 'yes'
     cheque = 'yes'
     selsize = 'no'
-    checksum_source = "#{uid}1#{self.total_quantity}#{self.total_price.to_i}#{date} #{start_time}#{cache}/#{cheque}/#{selsize}"
+    checksum_source = "#{uid}#{total_SKU}#{self.total_quantity}#{self.total_price.to_i}#{date} #{start_time}#{cache}/#{cheque}/#{selsize}"
     puts "Checksum source: #{checksum_source}"
     checksum = Digest::MD5.hexdigest(checksum_source)
     xml = %{<?xml version='1.0' standalone='yes'?>
 <singleorder>
 <mode>new</mode>
-<auth ukey="XXcd208495d565ef66e7dff9f98764XX" checksum="#{checksum}" />
+<auth ukey="#{ukey}" checksum="#{checksum}" />
 <order inner_id="#{self.id}" name="#{self.client}"  address="#{self.city}, #{self.address}" from_mkad="0" d_date="#{date}" b_time="#{start_time}" e_time="#{end_time}">
    <contacts>тел. #{self.phone}</contacts>
    <description></description>
@@ -38,7 +42,7 @@ class AxiomusOrder < Order
 </order>
 </singleorder>}
     puts xml
-    url = URI.parse('http://www.axiomus.ru/test/api_xml_test.php')
+    url = URI.parse(axiomus_url)
     post_params = { 'data' => xml }
     resp = Net::HTTP.post_form(url, post_params)
     

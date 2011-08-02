@@ -49,6 +49,11 @@ Ru220::Application.configure do
   
   config.extrapost_site = 'http://extrapost.heroku.com/'
   
+  # Axiomus delivery config
+  config.axiomus_uid = 825
+  config.axiomus_ukey = 'rfqb61a3410613dfr01b0c83516446hg'
+  config.axiomus_url = 'http://axiomus.ru/hydra/api_xml.php'
+  
   config.middleware.use ExceptionNotifier,
     :email_prefix => '[RU220 Exception] ',
     :sender_address => %{"Exception Notifier" <notifier@220ru.ru>},

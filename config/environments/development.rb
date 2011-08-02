@@ -27,10 +27,11 @@ Ru220::Application.configure do
   
   config.extrapost_site = 'http://localhost:4000/'
   
-  config.middleware.use ExceptionNotifier,
-    :email_prefix => '[RU220 Exception] ',
-    :sender_address => %{"Exception Notifier" <notifier@220ru.ru>},
-    :exception_recipients => %w{stas.versilov@gmail.com}
+  # Axiomus delivery config
+  config.axiomus_uid = 92
+  config.axiomus_ukey = 'XXcd208495d565ef66e7dff9f98764XX'
+  config.axiomus_url = 'http://www.axiomus.ru/test/api_xml_test.php'
+  
   
   # Email sending config
   config.action_mailer.raise_delivery_errors = true
