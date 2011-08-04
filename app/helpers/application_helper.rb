@@ -17,4 +17,12 @@ module ApplicationHelper
     _html << %{</select>}
     _html.html_safe
   end
+  
+  def user
+    User.find(session[:user_id])
+  end
+  
+  def admin?
+    session[:user_id] && User.find(session[:user_id]).is_admin?
+  end
 end

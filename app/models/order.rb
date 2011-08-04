@@ -137,8 +137,18 @@ class Order < ActiveRecord::Base
     save
   end
   
+  
   def sent?
     self.sent_at != nil
+  end
+  
+  # True, if order was payed for (i.e. payed_at timestamp is not nil)
+  def payed?
+    self.payed_at != nil
+  end
+  
+  def canceled?
+    self.canceled_at != nil
   end
   
   def postal?
@@ -170,37 +180,6 @@ class Order < ActiveRecord::Base
   
   
   def status
-    if self.courier?
-      if not self.axiomus_order
-        return 'Не найден объект-связка с Аксиомусом'
-      end
-      xml = %{<?xml version='1.0' standalone='yes'?>
-      <singleorder>
-        <mode>status</mode>
-        <okey>#{self.axiomus_order.auth}</okey>
-      </singleorder>}
-      url = URI.parse('http://www.axiomus.ru/test/api_xml_test.php')
-      post_params = { 'data' => xml }
-      resp = Net::HTTP.post_form(url, post_params)
-      puts resp
-      
-      doc = REXML::Document.new(resp.body)
-      status = doc.elements['response/status']
-      return status.text
-    elsif self.postal?
-      if self.extra_post_order
-        begin
-          self.extra_post_order.post_order.comment
-        rescue Exception
-          STDERR.puts "Order #{self} without a corresponding post_order object in extrapost system."
-          return "Не найден сопутствующий объект в системе ЭкстраПост"
-        end
-      else
-        return 'Почтовый заказ без объекта-связки с ЭкстраПостом!'
-      end
-    else
-      raise "Неизвестный способ доставки: #{self.delivery_type}"
-    end
   end
   
 

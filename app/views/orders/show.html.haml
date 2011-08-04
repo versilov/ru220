@@ -1,6 +1,6 @@
 %h1.order_show
   %span.gray Заказ
-  = @order.short_name
+  %span{ :class => [@order.canceled? && :canceled] }= @order.short_name
   
 = link_to t('.edit'), edit_order_path(@order)
 &nbsp;
@@ -50,8 +50,7 @@
           %br
         
         %strong= t('.status') + ':'
-        = 'Оплачен' if @order.payed?
-        = 'Отправлен' if @order.sent?
+        = @order.status
         %br
         %strong= t('.pay_type') + ':'
         = @order.pay_type

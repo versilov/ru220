@@ -19,7 +19,11 @@ Ru220::Application.routes.draw do
 
 
   resources :articles
-  resources :orders
+  
+  resources :orders do
+    put 'cancel' => :cancel
+  end
+  
   resources :extra_post_orders, :as => :orders, :controller => :orders
   resources :axiomus_orders, :as => :orders, :controller => :orders
 

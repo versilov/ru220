@@ -13,7 +13,6 @@ class OrdersControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:orders)
     
-    assert_select 'h1', 'Заказы'
   end
 
   test "should get new" do
@@ -56,6 +55,13 @@ class OrdersControllerTest < ActionController::TestCase
   test "should update order" do
     put :update, :id => @order.to_param, :order => @order.attributes
     assert_redirected_to order_path(@order)
+  end
+  
+  test 'should cancel order' do
+    put :cancel, :order_id => @order.to_param
+    assert_redirected_to orders_path
+    @order.reload
+    assert @order.canceled?
   end
 
   test "should destroy order" do

@@ -2,16 +2,16 @@
 
 class ExtraPostOrder < Order
   def post_order
-    if self.external_order_id
+    begin
       PostOrder.find(self.external_order_id.to_i)
-    else
-      nil
+    rescue ActiveResource::ResourceNotFound
+      return nil
     end
   end
   
   # Was order sent towards client? (i.e. sent_at time has value)
   def sent?
-    self.external_order_id and self.post_order.batch != nil
+      self.post_order and self.post_order.batch != nil
   end
   
   # Return the time of order departure towards client
@@ -30,6 +30,21 @@ class ExtraPostOrder < Order
     end
   end
   
+
+  def cancel
+    if self.sent?
+      return false
+    else
+      epo = self.post_order
+      if epo
+        epo.destroy
+        self.update_attribute(:external_order_id, nil)
+      end
+      self.update_attribute(:canceled_at, Time.now())
+      true
+    end
+  end
+  
   def send_to_delivery
     po = PostOrder.new
     po.index = self.index
@@ -38,7 +53,7 @@ class ExtraPostOrder < Order
     po.city = self.city
     po.address = self.address
     po.addressee = self.client
-    po.mass = self.total_quantity*0.2
+    po.mass = self.total_quantity*(0.001*(223+rand(10)))
     
     if self.pay_type == Order::PaymentType::ROBO
       po.value = 1.0
@@ -103,5 +118,26 @@ class ExtraPostOrder < Order
     doc.css('table.pagetext').first
   end
   
+  def status
+    if self.canceled?
+      return "Отменён"
+    elsif self.post_order
+      begin
+        st = ''
+        if self.sent?
+          st = 'Отправлен'
+        else
+          st = 'Ожидает отправки'
+        end
+        st += ', Оплачен' if self.payed?
+        return st
+      rescue Exception
+        STDERR.puts "Order #{self} without a corresponding post_order object in extrapost system."
+        return "Не найден сопутствующий объект в системе ЭкстраПочта"
+      end
+    else
+      return 'Отсутствует связанный заказ в системе ЭкстраПочта'
+    end
+  end
 
 end

@@ -1,21 +1,23 @@
-<h1>Заказы</h1>
+<h1 id="orders_header">Заказы</h1>
+<p id="orders_notice"><%= flash[:notice] %></p>
+<br class="clear" />
 
-<fieldset id="orders_filter">
+<fieldset id="orders_filter" class="<%= 'filter_active' if params['do_filter'] %>">
 <legend>Фильтр</legend>
 <%= form_tag '', :method => :get do %>
   <p>Оплата: <%= select :filter, :pay_type, [Order::PaymentType::ALL, Order::PaymentType::COD, Order::PaymentType::ROBO] %></p>
   <p>Доставка: <%= select :filter, :delivery_type, [Order::DeliveryType::ALL, Order::DeliveryType::POSTAL, Order::DeliveryType::COURIER] %></p>
   <p>С <%= date_select :filter, :start_date %>
   по <%= date_select :filter, 'end_date', :order => [:day, :month, :year] %></p>
-  <%= submit_tag 'Фильтровать', :name => :do_filter %> <%= submit_tag 'Сброс', :name => :reset %>
+  <%= submit_tag 'Фильтровать', :name => :do_filter %> <%= submit_tag 'Сброс', :name => :reset, :disabled => (params['do_filter'] == nil) %>
 <% end %>
 </fieldset>
 
-<fieldset id="orders_search">
+<fieldset id="orders_search" class="<%= 'filter_active' if @search %>">
 <legend>Поиск</legend>
 <%= form_tag '', :method => :get do %>
-  <p><%= text_field_tag :search, @search, :placeholder => 'Имя, адрес или номер заказа', :size => 27 %></p>
-  <%= submit_tag 'Искать', :name => :do_search %> <%= submit_tag 'Сброс', :name => :reset %>
+  <p><%= text_field_tag :search, @search, :placeholder => 'Имя, адрес или номер заказа', :size => 45 %></p>
+  <%= submit_tag 'Искать', :name => :do_search %> <%= submit_tag 'Сброс', :name => :reset, :disabled => (@search == nil) %>
 <% end %>
 
 </fieldset>
@@ -35,8 +37,8 @@
   </tr>
 
 <% @orders.each do |order| %>
-  <tr class="<%= cycle('line_odd', 'line_even') %>">
-    <td><strong><%= order.id %></strong></td>
+  <tr class="<%= cycle('line_odd', 'line_even') %> <%= 'canceled' if order.canceled? %>">
+    <td><strong class="order_id"><%= order.id %></strong></td>
     <td><nobr><%= order.created_at.to_date %></nobr></td>
     <td><%= order.city! %></td>
     <td>
@@ -44,12 +46,13 @@
       <div class="address"><%= order.address %></div>
     </td>
     <td><%= order.pay_type %><%= " Оплачен #{order.payed_at.to_date}" if order.payed? %></td>
-    <td><%= order.delivery_type %></td>
+    <td><%= order.delivery_type %><%= raw "<br /><span class='sent'>Отправлен</span><br /><span class='sent_date'>#{order.sent_at.to_date}</span>" if order.sent? %></td>
     <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
     <td class="actions">
       <%= link_to 'Смотр.', order_path(order) %><br />
       <%= link_to 'Редакт.', edit_order_path(order) %><br />
-      <%= link_to 'Удал.', order_path(order), :confirm => 'Вы уверены?', :method => :delete %>
+      <%= link_to 'Отмена', order_cancel_path(order), :confirm => 'Вы уверены, что хотите отменить заказ?', :method => :put if not order.sent? and not order.canceled? and not order.courier? %><br />
+      <%= link_to 'Удал.', order_path(order), :confirm => 'Вы уверены?', :method => :delete if admin? %>
     </td>
   </tr>
 <% end %>

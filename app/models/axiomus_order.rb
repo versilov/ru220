@@ -58,4 +58,27 @@ class AxiomusOrder < Order
       return true
     end
   end
+  
+  def status
+      if not self.external_order_id
+        return 'Заказ не передан в Аксиомус (нет идентификатора)'
+      end
+      xml = %{<?xml version='1.0' standalone='yes'?>
+      <singleorder>
+        <mode>status</mode>
+        <okey>#{self.external_order_id}</okey>
+      </singleorder>}
+      url = URI.parse(Rails.application.config.axiomus_url)
+      post_params = { 'data' => xml }
+      resp = Net::HTTP.post_form(url, post_params)
+      puts resp
+      
+      doc = REXML::Document.new(resp.body)
+      status = doc.elements['response/status']
+      return "#{status.text} (#{status.attributes['code']})"
+  end
+  
+  def cancel
+    raise NotImplementedError
+  end
 end

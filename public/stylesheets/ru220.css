@@ -454,6 +454,17 @@ a#find_index {
 
 /******************* ORDERS LIST *********************/
 
+#orders_header {
+  float: left;
+}
+
+#orders_notice {
+  color: green;
+  float: left;
+  margin-top: 39px;
+  margin-left: 55px;
+}
+
 #orders_filter {
   width: 450px;
   margin-top: -10px;
@@ -463,14 +474,28 @@ a#find_index {
 }
 
 #orders_search {
-  width: 210px;
+  width: 310px;
   float: right;
   margin-top: -10px;
   
 }
 
+.filter_active {
+  background-color: #be9;
+  border: solid 1px #9c7;
+}
+
 #orders {
   clear: both;
+}
+
+#orders tr.canceled td, #orders .canceled .client-name, 
+#orders .canceled .address {
+  color: #888;
+}
+
+#orders .canceled .order_id {
+  text-decoration: line-through;
 }
 
 #orders td {
@@ -489,6 +514,14 @@ a#find_index {
   color: #555;
 }
 
+#orders .sent {
+  color: #070;
+}
+
+#orders .sent_date {
+  color: #555;
+}
+
 #orders .actions {
   text-align: right;
 }
@@ -503,6 +536,11 @@ a#find_index {
 h1.order_show {
   margin-left: 0px !important;
   margin-bottom: 12px !important;
+}
+
+h1.order_show .canceled {
+  text-decoration: line-through;
+  color: gray;
 }
 
 .right {

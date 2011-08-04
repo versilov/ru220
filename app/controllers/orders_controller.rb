@@ -220,6 +220,25 @@ class OrdersController < ApplicationController
       end
     end
   end
+  
+  # PUT /orders/1/cancel
+  def cancel
+    @order = Order.find(params[:order_id])
+    
+    respond_to do |format|
+      if @order.sent?
+        format.html { redirect_to(orders_url, :notice => "Невозможно отменить отправленный заказ.") }
+    elsif @order.cancel
+        
+        @order.add_event "Отменён пользователем #{User.find_by_id(session[:user_id]).login}"
+        format.html { redirect_to(orders_url, :notice => "Заказ №#{@order.id} отменён.") }
+        format.xml { head :ok }
+      else
+        format.html { redirect_to(orders.url, :notice => "Не удалось отменить заказ №#{@order.id}.") }
+        format.xml { render :xml => @order.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 
   # DELETE /orders/1
   # DELETE /orders/1.xml

@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
   
   validate :password_must_be_present
   
+  def is_admin?
+    false
+  end
+  
   def User.authenticate(login, password)
     if user = find_by_login(login)
       if user.hashed_password == encrypt_password(password, user.salt)

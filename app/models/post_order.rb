@@ -10,4 +10,5 @@ class PostOrder < ActiveResource::Base
       Batch.find(self.batch_id)
     end
   end
+  
 end
