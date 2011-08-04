@@ -89,6 +89,8 @@ class OrdersController < ApplicationController
       # Just give everything we've got.
       @orders = Order.all
     end
+    
+    @orders_size = @orders.size # for total quantity display at header
 
     @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
 
