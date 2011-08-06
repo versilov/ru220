@@ -449,8 +449,7 @@ a#find_index {
 
 input.readonly {
   background: #fafafa;
-/*  border: none;*/
-  padding-left: 0;
+  border: dotted 1px #aaa;
 }
 
 /************************* DONE **************************/
