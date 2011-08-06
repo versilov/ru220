@@ -447,6 +447,11 @@ a#find_index {
   width: 220px;
 }
 
+input.readonly {
+  background: #fafafa;
+/*  border: none;*/
+  padding-left: 0;
+}
 
 /************************* DONE **************************/
 

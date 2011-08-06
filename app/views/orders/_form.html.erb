@@ -117,6 +117,11 @@
 <% end %>
 
 <script language="javascript">
+  $('#order_region').attr('readonly', 'true').addClass('readonly');
+  $('#order_area').attr('readonly', 'true').addClass('readonly');
+  $('#order_city').attr('readonly', 'true').addClass('readonly');
+
+
   function loadOPSByIndex(index) {
   $.ajax({
         type: 'GET',
