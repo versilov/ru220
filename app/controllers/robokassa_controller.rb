@@ -34,12 +34,12 @@ class RobokassaController < ApplicationController
     if check_crc(params, MERCH_PASS1)
       order_id = params[:InvId]
       sum = params[:OutSum].to_i
-      order = Order.find(order_id)
-      if order 
-        if order.total_price == sum
-          @message = "Оплата прошла успешно. Заказ будет отправлен вам в течении 24-х часов."
+      @order = Order.find(order_id)
+      if @order 
+        if @order.total_price == sum
+          @message = "Оплата прошла успешно. Заказ будет отправлен вам Почтой России в течении 24-х часов. На ваше имя поступит ценная бандероль от ООО \"РБЛ\" из г. Самара, весом примерно #{@order.total_quantity*230} г., с объявленной ценностью 1 руб."
         else
-          @message = "Сумма для заказа #{order_id} должна быть равна #{order.total_price}, вместо этого была равна #{sum}."
+          @message = "Сумма для заказа #{order_id} должна быть равна #{@order.total_price}, вместо этого была равна #{sum}."
         end
       else
         @message = "Заказ с номером #{order_id} не найден."

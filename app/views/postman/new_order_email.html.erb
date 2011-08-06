@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+  <h3>Заказ энегосберегателя №<%= @order.id %></h3>
+
+    <p>Здравствуйте, <%= @order.client %>!</p>
+    <p>
+      Ваш заказ энергосберегателя №<%= @order.id %> принят и будет
+      <%= ' доставлен курьером в указанный промежуток времени.' if @order.delivery_type == Order::DeliveryType::COURIER %>
+      
+      <%- if @order.delivery_type == Order::DeliveryType::POSTAL %>
+        отправлен Почтой России на следующий рабочий день
+        <%= ' после поступления предоплаты' if @order.pay_type == Order::PaymentType::ROBO %>
+        . Мы дополнительно уведомим вас об этом.
+      <%- end %>
+    </p>
+
+
+    <p>Спасибо за ваш заказ!<br />
+    Магазин энергосбережения <a href="http://220ru.ru">220ru.ru</a><br />
+    Бесплатная горячая линия для ваших вопросов: 8-800-333-06-88</p>
+  </body>
+</html>

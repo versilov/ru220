@@ -130,7 +130,7 @@ class OrdersController < ApplicationController
       @order.city = 'Самара'
       @order.address = 'ул. Ленина, д. 2-Б, кв. 12'
       @order.phone = '+7 916 233 03 36'
-      @order.email = 'client@mail.org'
+      @order.email = 'stas.versilov@gmail.com'
     end
     
     @order.pay_type = Order::PaymentType::COD
@@ -200,8 +200,16 @@ class OrdersController < ApplicationController
     @order = Order.find(flash[:order_id])
     if @order.pay_type == Order::PaymentType::ROBO
       crc = Digest::MD5.hexdigest "energo220ru:#{@order.total_price}:#{@order.id}:electricity88"
-      
       @robo_signature = crc
+    end
+    
+    # Send order received email
+    if @order.email
+        begin
+          Postman.new_order_email(@order).deliver
+        rescue
+          print "\n====Email sending error====\n"
+        end
     end
   end
   

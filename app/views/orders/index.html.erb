@@ -45,7 +45,7 @@
       <div class="client-name"><%= order.client %></div>
       <div class="address"><%= order.address %></div>
     </td>
-    <td><%= order.pay_type %><%= " Оплачен #{order.payed_at.to_date}" if order.payed? %></td>
+    <td><%= order.pay_type %><%= raw "<br /><span class='sent'>Оплачен</span><br /><span class='sent_date'>#{order.payed_at.to_date}</span>" if order.payed? %></td>
     <td><%= order.delivery_type %><%= raw "<br /><span class='sent'>Отправлен</span><br /><span class='sent_date'>#{order.sent_at.to_date}</span>" if order.sent? %></td>
     <td><%= order.total_quantity %> шт.<br/><%= number_to_currency(order.total_price) %></td>
     <td class="actions">

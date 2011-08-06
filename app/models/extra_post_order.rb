@@ -19,11 +19,24 @@ class ExtraPostOrder < Order
   # delivery service object is requested and copied to the local object.
   # At last, nil is returned if sent_at is not set even in the remote object
   def sent_at
-    if read_attribute(:sent_at)
-      return read_attribute(:sent_at)
+    sa = read_attribute(:sent_at)
+    if sa
+      return sa
     else
-      if self.post_order.batch
-        write_attribute(:sent_at, self.post_order.batch.sending_date)
+      if self.post_order && self.post_order.batch
+        sa = self.post_order.batch.sending_date
+        update_attribute(:sent_at, sa)
+        
+        # Send notification email
+        if self.email
+          begin
+            Postman.sent_order_email(self).deliver
+          rescue
+            print "\n====Email sending error====\n"
+          end
+        end
+        
+        return sa
       else
         return nil
       end
