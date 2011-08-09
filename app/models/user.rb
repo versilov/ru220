@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validate :password_must_be_present
   
   def is_admin?
-    false
+    self.is_admin
   end
   
   def User.authenticate(login, password)

@@ -18,7 +18,7 @@ module ApplicationHelper
     _html.html_safe
   end
   
-  def user
+  def current_user
     User.find(session[:user_id])
   end
   

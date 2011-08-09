@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110804183010) do
+ActiveRecord::Schema.define(:version => 20110809174105) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(:version => 20110804183010) do
     t.string   "delivery_type"
     t.datetime "payed_at"
     t.datetime "sent_at"
-    t.string   "type",     :default => "Order", :null => false
+    t.string   "type",                            :default => "Order", :null => false
     t.string   "external_order_id", :limit => 64
     t.datetime "canceled_at"
   end
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20110804183010) do
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_admin",        :default => false
   end
 
 end

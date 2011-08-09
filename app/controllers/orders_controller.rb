@@ -175,7 +175,11 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        @order.add_event 'Создан'
+        event = 'Создан'
+        if current_user
+          event += " пользователем #{current_user.login}"
+        end
+        @order.add_event event
         @order.create_sd02_line_item(@order.quantity)
         @order.reload
 
