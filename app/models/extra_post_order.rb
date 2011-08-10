@@ -82,6 +82,16 @@ class ExtraPostOrder < Order
     if po.save
       self.update_attribute(:external_order_id, po.id)
       self.add_event "Передан в ЭкстраПост под номером #{po.id} (#{po.comment})"
+      
+      # Add line items
+      self.line_items.each do |li|
+        pli = PostLineItem.new
+        pli.post_order_id = po.id
+        pli.quantity = li.quantity
+        pli.product_sku = 'sd002'
+        pli.price = li.product.price
+        pli.save
+      end
     else
       return false
     end

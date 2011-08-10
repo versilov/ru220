@@ -38,6 +38,7 @@ Ru220::Application.routes.draw do
   match 'done' => 'orders#done', :as => :done
   match 'parseindex' => 'orders#parse_index'
   match 'searchindex' => 'orders#search_index'
+  match 'totalordersnum' => 'orders#total_orders_num'
   
   
   

@@ -63,3 +63,24 @@
 <br />
 
 <%= link_to 'Новый заказ', new_order_path %>
+
+<script type="text/javascript">
+var totalOrdersTimeout;
+
+function doTotalOrdersTimer() {
+  $.ajax({
+      type: 'GET',
+      url: '/totalordersnum',
+      success: function(msg) {
+        var totalorders = parseInt(msg);
+        if (totalorders != <%= @total_orders_num %>) {
+          window.location.reload();
+        } else {
+          totalOrdersTimeout = setTimeout("doTotalOrdersTimer()", 20000);
+        }
+      }
+    });
+}
+
+doTotalOrdersTimer();
+</script>

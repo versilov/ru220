@@ -91,6 +91,7 @@ class OrdersController < ApplicationController
     end
     
     @orders_size = @orders.size # for total quantity display at header
+    @total_orders_num = Order.count
 
     @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
 
@@ -280,6 +281,12 @@ class OrdersController < ApplicationController
       respond_to do |format|
         format.html { render :text => '', :status => 404 }
       end
+    end
+  end
+  
+  def total_orders_num
+    respond_to do |format|
+      format.html { render :text => Order.count.to_s }
     end
   end
   
