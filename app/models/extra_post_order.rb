@@ -2,6 +2,10 @@
 
 class ExtraPostOrder < Order
   def post_order
+    if (not self.external_order_id) || (self.external_order_id.length == 0)
+      return nil
+    end
+    
     begin
       PostOrder.find(self.external_order_id.to_i)
     rescue ActiveResource::ResourceNotFound
@@ -11,7 +15,7 @@ class ExtraPostOrder < Order
   
   # Was order sent towards client? (i.e. sent_at time has value)
   def sent?
-      self.post_order and self.post_order.batch != nil
+      self.sent_at != nil
   end
   
   # Return the time of order departure towards client
