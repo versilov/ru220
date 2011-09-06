@@ -45,6 +45,8 @@ class OrdersController < ApplicationController
   # GET /orders.xml
   # Contains huge filtering logic.
   def index
+    @total_orders_num = Order.count
+    
     @filter = Filter.new(Order::PaymentType::ALL, Order::DeliveryType::ALL, Date.yesterday, Date.tomorrow)
     
     if params[:filter] and params[:do_filter]
@@ -70,7 +72,9 @@ class OrdersController < ApplicationController
       
       @orders = Order.where(query, {:start => @start_date, :end => @end_date, :pay_type => @pay_type, :delivery_type => @delivery_type })
       
-      
+      @orders_size = @orders.size # for total quantity display at header
+      @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
+
     elsif params[:search] and params[:do_search]
       # Search button was pressed
       
@@ -84,16 +88,17 @@ class OrdersController < ApplicationController
         query = '%' + @search.downcase + '%'
         @orders = Order.where("lower(client) like ? or lower(city) like ? or lower(address) like ?", query, query, query)
       end
+      
+      @orders_size = @orders.size # for total quantity display at header
+      @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
     else
       # Some other button (on of the two Resets) or no button were pressed.
       # Just give everything we've got.
-      @orders = Order.all
+      @orders = Order.paginate :page => params[:page], :per_page => 10
+      @orders_size = @total_orders_num
     end
     
-    @orders_size = @orders.size # for total quantity display at header
-    @total_orders_num = Order.count
 
-    @orders = @orders.to_a().paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -147,56 +152,91 @@ class OrdersController < ApplicationController
   def edit
     @order = Order.find(params[:id])
   end
+  
+  def create_order2(params, quantity=0)
+    
+    if params[:order][:delivery_type] == Order::DeliveryType::POSTAL
+      order = ExtraPostOrder.new(params[:order])
+    elsif params[:order][:delivery_type] == Order::DeliveryType::COURIER
+      order = AxiomusOrder.new(params[:order])
+      order.city = @delivery_time.city
+      order.index = nil
+      order.region = nil
+      order.area = nil
+      
+      order.date = Date.jd(@delivery_time.date.to_i)
+      order.from = @delivery_time.from
+      order.to = @delivery_time.to
+    else
+      raise"Unknown delivery type: #{order.delivery_type}"
+    end
+    
+    if quantity == 0
+      quantity = order.quantity
+    end
+    
+    if not order.save
+      @order = order
+      raise RuntimeError, 'Could not save new order' + @order.errors.to_s
+    end
+
+    event = 'Создан'
+    if current_user
+      event += " пользователем #{current_user.login}"
+    end
+    order.add_event event
+    order.create_sd02_line_item(quantity)
+    order.reload
+    
+    if order.postpaid?
+      if not order.send_to_delivery
+        flash[:notice] = 'Не удалось передать заказ в службу доставки'
+      end
+    end
+    
+    return order
+  end
+  
+  def create_order(params)
+    quantity = params[:order][:quantity].to_i
+    
+    if params[:order][:delivery_type] == Order::DeliveryType::POSTAL and params[:order][:pay_type] == Order::PaymentType::COD and quantity > 2
+      # Russian Post has a 5 000 RUB limit for value of banderols, 
+      # so we need to split orders, which contain more, than 2 products
+      for i in 1..(quantity/2)
+        if i == 1
+          @order = create_order2(params, 2)
+        else
+          create_order2(params, 2)
+        end
+      end
+      
+      if quantity % 2 > 0
+        create_order2(params, quantity % 2)
+      end
+    else
+      # create order with any quantity client wished
+      @order = create_order2(params)
+    end
+  end
+  
 
   # POST /orders
   # POST /orders.xml
   def create
+    # Store filter params
     dparams = params[:delivery_time]
     @delivery_time = DeliveryTime.new(dparams[:date], dparams[:from], dparams[:to], dparams[:city])
   
 
-
-    if params[:order][:delivery_type] == Order::DeliveryType::POSTAL
-      @order = ExtraPostOrder.new(params[:order])
-    elsif params[:order][:delivery_type] == Order::DeliveryType::COURIER
-      @order = AxiomusOrder.new(params[:order])
-      @order.city = @delivery_time.city
-      @order.index = nil
-      @order.region = nil
-      @order.area = nil
-      
-      @order.date = Date.jd(@delivery_time.date.to_i)
-      @order.from = @delivery_time.from
-      @order.to = @delivery_time.to
-      
-    else
-      raise"Unknown delivery type: #{@order.delivery_type}"
-    end
-    
-
     respond_to do |format|
-      if @order.save
-        event = 'Создан'
-        if current_user
-          event += " пользователем #{current_user.login}"
-        end
-        @order.add_event event
-        @order.create_sd02_line_item(@order.quantity)
-        @order.reload
-
-        if @order.postpaid?
-          if not @order.send_to_delivery
-            format.html { 
-              flash[:notice] = 'Не удалось передать заказ в службу доставки';
-              render :action => 'new'  }
-          end
-        end
-        
+      begin
+        create_order(params)
         format.html { redirect_to(done_url, :notice => 'Заказ успешно зарегистрирован.'); flash[:order_id] = @order.id }
-        format.xml  { render :xml => @order, :status => :created, :location => @order }
-      else
+      rescue => bang
+#        puts "Exception in order_controller.create: #{bang}"
+#        puts bang.backtrace.join("\n")
         format.html { render :action => "new" }
-        format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
     end
   end

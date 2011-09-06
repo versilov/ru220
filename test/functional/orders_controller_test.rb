@@ -5,7 +5,7 @@ require 'test_helper'
 class OrdersControllerTest < ActionController::TestCase
   setup do
     @order = orders(:one)
-    @delivery_attrs = {:"date(1i)" => 2011, :"date(2i)" => 8, :"date(3i)" => 8, :from => 11, :to => 15, :city => 'Москва' }
+    @delivery_attrs = {:"date(1i)" => '2011', :"date(2i)" => '9', :"date(3i)" => '9', :from => '11', :to => '15', :city => 'Москва' }
   end
 
   test "should get index" do
@@ -22,8 +22,8 @@ class OrdersControllerTest < ActionController::TestCase
 
   test "should create order" do
     order_attrs = @order.attributes
-    order_attrs[:quantity] = 3
-    assert_difference('Order.count') do
+    order_attrs[:quantity] = 1
+    assert_difference('Order.count', 1) do
       post :create, :order => order_attrs, :delivery_time => @delivery_attrs
     end
     assert_redirected_to done_url
@@ -126,5 +126,51 @@ class OrdersControllerTest < ActionController::TestCase
     assert_equal region, post_index.region
     assert_equal area, post_index.area
     assert_equal city, post_index.city
+  end
+  
+  # COD orders with quantity greater, than 2,
+  # should be split in not-more-than-two-items orders
+  test 'should split big order in two' do
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 3
+    order_attrs[:pay_type] = Order::PaymentType::COD
+    assert_difference('Order.count', 2) do
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
+    end
+    assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+  end
+  
+  test 'should split big order in three' do
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 5
+    order_attrs[:pay_type] = Order::PaymentType::COD
+    assert_difference('Order.count', 3) do
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
+    end
+    assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+  end
+  
+  test 'should create courier order' do
+    @order = orders(:two)
+    order_attrs = @order.attributes
+    assert_difference('Order.count', 1) do
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
+    end
+    assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+
+  end
+  
+  test 'should not split courier order' do
+    @order = orders(:two)
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 5
+    assert_difference('Order.count', 1) do
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
+    end
+    assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
   end
 end

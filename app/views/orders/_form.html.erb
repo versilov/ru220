@@ -44,7 +44,7 @@
   
   <div id="postal_address" style="<%= 'display: none' if @order.delivery_type != Order::DeliveryType::POSTAL %>">
   <div class="field">
-    <%= f.label :index %>&nbsp;<a id="find_index" href="http://russianpost.ru/rp/servise/ru/home/postuslug/searchops" target="_blank">Забыли свой индекс?</a><br />
+    <%= f.label :index %>&nbsp;<a id="find_index" href="http://www.russianpost.ru/rp/servise/ru/home/postuslug/searchops" target="_blank">Забыли свой индекс?</a><br />
     <%= f.text_field :index, :size => 6, :maxlength => 6 %>
     <span id="order_index_error"></span>
     

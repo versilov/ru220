@@ -32,7 +32,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
                                 :email => 'vasya@tester.org',
                                 :pay_type => Order::PaymentType::COD,
                                 :delivery_type => Order::DeliveryType::POSTAL,
-                                :quantity => 3 },
+                                :quantity => 2 },
                         :delivery_time => {
                                 :"date(1i)" => 2011,
                                 :"date(2i)" => 8,
@@ -50,7 +50,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     order = Order.find_by_id(flash[:order_id])
     assert_not_nil order
     
-    assert_equal 3, order.total_quantity
+    assert_equal 2, order.total_quantity
     assert_equal 'Вася Тестер', order.client
     assert_equal 443099, order.index
     assert_equal 'Самарская обл.', order.region

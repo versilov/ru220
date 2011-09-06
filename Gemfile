@@ -10,7 +10,7 @@ gem 'sqlite3'
 gem 'haml'
 gem 'jquery-rails'
 gem 'unicode'
-gem 'will_paginate', '>= 3.0.pre'
+gem 'will_paginate', '3.0.pre2'
 gem 'nokogiri'
 
 gem 'exception_notification'

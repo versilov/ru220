@@ -2,16 +2,19 @@
 
 sd02:
   id: 1
+  sku: sd02
   title: Энергосберегающее устройство СД-02
   image_url: '/images/sd-0022.jpg'
   price: 1988
 
 one:
+  sku: one
   title: Product One
   image_url: /product01.jpg
   price: 9.99
 
 two:
+  sku: two
   title: MyString
   image_url: MyString
   price: 9.99

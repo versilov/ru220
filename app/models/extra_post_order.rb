@@ -62,40 +62,15 @@ class ExtraPostOrder < Order
     end
   end
   
+  
+  
   def send_to_delivery
-    po = PostOrder.new
-    po.index = self.index
-    po.region = self.region
-    po.area = self.area
-    po.city = self.city
-    po.address = self.address
-    po.addressee = self.client
-    po.mass = self.total_quantity*(0.001*(223+rand(10)))
+    po = create_post_order(self.total_quantity, self.line_items[0].product)
     
-    if self.pay_type == Order::PaymentType::ROBO
-      po.value = 1.0
-      po.payment = 0.0
-    elsif  self.pay_type == Order::PaymentType::COD
-      po.value = po.payment = self.total_price
-    else
-      raise "Неизвестный тип оплаты: #{self.pay_type}"
-    end
-    
-    po.comment = "РБЛ#{self.id}"
-    
-    if po.save
+    if po
       self.update_attribute(:external_order_id, po.id)
       self.add_event "Передан в ЭкстраПост под номером #{po.id} (#{po.comment})"
-      
-      # Add line items
-      self.line_items.each do |li|
-        pli = PostLineItem.new
-        pli.post_order_id = po.id
-        pli.quantity = li.quantity
-        pli.product_sku = 'sd002'
-        pli.price = li.product.price
-        pli.save
-      end
+      return true
     else
       return false
     end
@@ -127,16 +102,16 @@ class ExtraPostOrder < Order
       'Connection' => 'keep-alive',
       'Content-Length' => '311',
       'Content-Type' => 'application/x-www-form-urlencoded',
-      'Host' => 'russianpost.ru',
-      'Origin' => 'http://russianpost.ru',
-      'Referer' => 'http://russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo' }
+      'Host' => 'www.russianpost.ru',
+      'Origin' => 'http://www.russianpost.ru',
+      'Referer' => 'http://www.russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo' }
 
     
     req = Net::HTTP::Post.new(
       '/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo', 
       headers)
     req.form_data = post_params
-    resp = Net::HTTP.start('russianpost.ru') {|http|
+    resp = Net::HTTP.start('www.russianpost.ru') {|http|
       http.request(req)
     }
     
@@ -164,6 +139,55 @@ class ExtraPostOrder < Order
       end
     else
       return 'Отсутствует связанный заказ в системе ЭкстраПочта'
+    end
+  end
+
+  
+private
+
+  # create post order with the given quantity
+  # of the product
+  def create_post_order(quantity, product)
+    po = PostOrder.new
+    po.index = self.index
+    po.region = self.region
+    po.area = self.area
+    po.city = self.city
+    po.address = self.address
+    po.addressee = self.client
+    po.mass = 0.001*(quantity*200+24+rand(10))
+
+    if self.pay_type == Order::PaymentType::ROBO
+      po.value = 1.0
+      po.payment = 0.0
+    elsif  self.pay_type == Order::PaymentType::COD
+      po.value = po.payment = product.price*quantity
+    else
+      raise "Неизвестный тип оплаты: #{self.pay_type}"
+    end
+    
+    po.comment = "РБЛ#{self.id}"
+    
+    begin
+      
+      if po.save
+        
+        # Add line item
+        pli = PostLineItem.new
+        pli.post_order_id = po.id
+        pli.quantity = quantity
+        pli.product_sku = product.sku
+        pli.price = product.price
+        pli.save
+        
+        po
+      else
+        return nil
+      end
+    
+    rescue => bang
+      STDERR.puts "Error in extra_post.save: " + bang.backtrace.join("\n")
+      return nil
     end
   end
 

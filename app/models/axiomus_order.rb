@@ -25,7 +25,6 @@ class AxiomusOrder < Order
     cheque = 'yes'
     selsize = 'no'
     checksum_source = "#{uid}#{total_SKU}#{self.total_quantity}#{self.total_price.to_i}#{date} #{start_time}#{cache}/#{cheque}/#{selsize}"
-    puts "Checksum source: #{checksum_source}"
     checksum = Digest::MD5.hexdigest(checksum_source)
     xml = %{<?xml version='1.0' standalone='yes'?>
 <singleorder>
@@ -41,12 +40,9 @@ class AxiomusOrder < Order
    </items>
 </order>
 </singleorder>}
-    puts xml
     url = URI.parse(axiomus_url)
     post_params = { 'data' => xml }
     resp = Net::HTTP.post_form(url, post_params)
-    
-    puts resp.body
     
     doc = REXML::Document.new(resp.body)
     
