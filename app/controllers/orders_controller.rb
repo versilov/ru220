@@ -141,6 +141,8 @@ class OrdersController < ApplicationController
     
     @order.pay_type = Order::PaymentType::COD
     @order.delivery_type = Order::DeliveryType::POSTAL
+    
+    @is_cart = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -243,6 +245,7 @@ class OrdersController < ApplicationController
   
   def done
     @order = Order.find(flash[:order_id])
+    @is_done = true
     if @order.pay_type == Order::PaymentType::ROBO
       crc = Digest::MD5.hexdigest "energo220ru:#{@order.total_price}:#{@order.id}:electricity88"
       @robo_signature = crc

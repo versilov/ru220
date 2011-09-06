@@ -135,5 +135,49 @@
     <script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
     <noscript><div><img src="//mc.yandex.ru/watch/9651256" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+    
+    - if @is_cart
+      :javascript
+        (function() {
+        function f() {
+            yaCounter9651256.reachGoal("CART");
+        }
+
+        if (window.addEventListener) {
+            window.addEventListener("load", f, false);
+        } else if (window.attachEvent) {
+            window.attachEvent("onload", f);
+        }
+        })();
+        
+    - if @is_done
+      :javascript
+        (function() {
+        function f() {
+          var yaParams = 
+            {
+              order_id: "#{@order.id}",
+              order_price: #{@order.total_price}, 
+              currency: "RUR",
+              exchange_rate: 1,
+              goods: 
+                 [
+                    {
+                      id: "#{@order.line_items.first.product.sku}", 
+                      name: "#{@order.line_items.first.product.title}", 
+                      price: #{@order.line_items.first.product.price},
+                      quantity: #{@order.line_items.first.quantity}
+                    } 
+                  ]
+            };
+          yaCounter9651256.reachGoal("ORDER", yaParams);
+        }
+
+        if (window.addEventListener) {
+          window.addEventListener("load", f, false);
+        } else if (window.attachEvent) {
+          window.attachEvent("onload", f);
+        }
+        })();
         
 
