@@ -36,7 +36,7 @@ class AxiomusOrder < Order
    <hidden_desc></hidden_desc>
    <services cash="#{cache}" cheque="#{cheque}" selsize="#{selsize}" />
    <items>
-		<item name="Энергосберегатель"  weight="0.200" quantity="#{self.total_quantity}" price="#{self.line_items[0].product.price}" />
+		<item name="Энергосберегатель"  weight="0.200" quantity="#{self.total_quantity}" price="#{self.line_items[0].product.price}" bundling="1" />
    </items>
 </order>
 </singleorder>}

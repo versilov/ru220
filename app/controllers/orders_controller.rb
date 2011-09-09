@@ -116,6 +116,7 @@ class OrdersController < ApplicationController
     Time.zone = 'Moscow'
     
     @post_history_table_html = @order.get_post_history if @order.postal?
+    @phone_history_table_html = get_phone_history(@order)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -342,6 +343,20 @@ class OrdersController < ApplicationController
     respond_to do |format|
       format.html { render :text => indexes.to_json }
     end
+  end
+  
+  # Get phone calls history from the number, mentioned in order
+  def get_phone_history(order)
+    
+#    req = Net::HTTP::Get.new(
+#      '/220ru/OrdersPage.aspx?login=220ru&passw=ERG220pass2007&msisdn=8125550478')
+#    resp = Net::HTTP.start('stat.smsboom.ru') {|http|
+#      http.request(req)
+#    }
+    
+#    puts "Redirected to: #{resp.response['Location']}"
+
+    return ''
   end
   
 end
