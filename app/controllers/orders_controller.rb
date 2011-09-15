@@ -348,8 +348,7 @@ class OrdersController < ApplicationController
   # Get phone calls history from the number, mentioned in order
   def get_phone_history(order)
     
-    phone = order.phone.gsub(/\+7(.*)/, '\1').gsub(/[\s\(\)\-]/, '')
-    puts "PHONE FOR HISTORY: #{phone}"
+    phone = order.phone.gsub(/\D/, '').gsub(/^(\d*)(\d{10})$/, '\2')
     
     req = Net::HTTP::Get.new(
       "/220ruXML/Default.aspx?login=220ru&passw=ERG220pass2007&msisdn=#{phone}")
