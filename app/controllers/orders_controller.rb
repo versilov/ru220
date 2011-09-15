@@ -357,7 +357,7 @@ class OrdersController < ApplicationController
       http.request(req)
     }
     
-    doc = REXML::Document.new(resp.body.force_encoding('UTF-8'))
+    doc = REXML::Document.new(resp.body)
     
     if doc.elements.to_a('root/Call').size > 0
       return doc
