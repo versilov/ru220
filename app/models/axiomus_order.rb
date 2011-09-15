@@ -36,10 +36,13 @@ class AxiomusOrder < Order
    <hidden_desc></hidden_desc>
    <services cash="#{cache}" cheque="#{cheque}" selsize="#{selsize}" />
    <items>
-		<item name="Энергосберегатель"  weight="0.200" quantity="#{self.total_quantity}" price="#{self.line_items[0].product.price}" bundling="1" />
+      <item name="Энергосберегатель"  weight="0.200" quantity="#{self.total_quantity}" price="#{self.line_items[0].product.price}" bundling="1" />
    </items>
 </order>
 </singleorder>}
+    
+    puts "XML order for Axiomus:\n#{xml}"
+
     url = URI.parse(axiomus_url)
     post_params = { 'data' => xml }
     resp = Net::HTTP.post_form(url, post_params)

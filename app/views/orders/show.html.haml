@@ -23,27 +23,6 @@
         %br
         = @order.client
         
-      %fieldset.order_show.history
-        %legend История
-          
-        %table.order_history{ :cellspacing => '0' }
-          - @order.order_events.each do |event|
-            %tr{ :class => cycle('odd', 'even')  }
-              %td= event.created_at.strftime '%d-%m-%Y %H:%M:%S'
-              %td= event.description
-                
-    %td
-  
-      %fieldset.order_show
-        %legend Контакты
-        = @order.phone
-        %br
-        = @order.email
-        #phone_history= raw @phone_history_table_html
-          
-        
-        
-        
         
       %fieldset.order_show
         %legend Заказ
@@ -68,6 +47,48 @@
         %br
         %strong= t('.total_price') + ':'
         = number_to_currency @order.total_price
+
+
+
+
+    %td
+  
+      %fieldset.order_show
+        %legend Контакты
+        = @order.phone
+        %br
+        = @order.email
+          
+        
+      - if @phone_history          
+        %fieldset.order_show
+          %legend История звонков
+          %table#phone_history{ :cellspacing => '0' }
+            %tr
+              %th Дата
+              %th Город / Источник
+              %th Суть обращения
+              %th Длит. (мин)
+            - @phone_history.elements.each('root/Call') do |call|
+              %tr{ :class => cycle('odd', 'even') }
+                %td= raw '<nobr>' + call.elements['Call_DateTime'].text.gsub('T' ,'</nobr><br />').gsub(/(\d{2}):(\d{2}):(\d{2}).(\d{3})/, '\1:\2:\3' )
+                %td= call.elements['City_Name'].text + ' / ' + call.elements['InfoSource'].text
+                %td= call.elements['Ref_Text'].text
+                %td= call.elements['Call_Duration_Min'].text
+              
+              
+                
+      %fieldset.order_show.history
+        %legend История заказа
+          
+        %table.order_history{ :cellspacing => '0' }
+          - @order.order_events.each do |event|
+            %tr{ :class => cycle('odd', 'even')  }
+              %td= event.created_at.strftime '%Y-%m-%d %H:%M:%S'
+              %td= event.description
+
+        
+        
 
 
 

@@ -575,12 +575,22 @@ table.order_history {
   width: 380px;
 }
 
-.order_history .even td {
+
+
+tr.even td {
   background-color: #ddd;
 }
 
-.order_history .odd td {
+tr.odd td {
   background-color: #fafafa;
+}
+
+#phone_history {
+  width: 380px;
+}
+
+#phone_history th {
+  line-height: 1em;
 }
 
 #post_history {
