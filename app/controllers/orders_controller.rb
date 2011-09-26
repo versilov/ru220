@@ -116,7 +116,7 @@ class OrdersController < ApplicationController
     Time.zone = 'Moscow'
     
     @post_history_table_html = @order.get_post_history if @order.postal?
-    @phone_history = get_phone_history(@order)
+    @phone_history = OrdersController::get_phone_history(@order)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -346,11 +346,11 @@ class OrdersController < ApplicationController
   end
   
   # Get phone calls history from the number, mentioned in order
-  def get_phone_history(order)
+  def OrdersController::get_phone_history(order)
     
     phone = order.phone.gsub(/\D/, '').gsub(/^(\d*)(\d{10})$/, '\2')
     
-    if phone.length < 10
+    if phone.length < 5
       return nil
     end
     

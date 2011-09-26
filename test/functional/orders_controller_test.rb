@@ -173,4 +173,11 @@ class OrdersControllerTest < ActionController::TestCase
     assert_redirected_to done_url
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"
   end
+  
+  test 'should not get history for invalid number (shorter, than 5)' do
+    @order = orders(:two)
+    @order.phone = 'asba2sdfa23asdf9as*%&'
+    assert_nil OrdersController.get_phone_history(@order)
+  end
+  
 end

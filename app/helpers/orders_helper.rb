@@ -5,4 +5,6 @@ module OrdersHelper
     end_day = start_day + 8
     (start_day..end_day).reject { |d| Date.new!(d).wday == 0 }.collect { |d| [ l(Date.new!(d), :format => :long) + ' ' + weekdays[Date.new!(d).wday], d.to_s] }
   end
+  
+  
 end
