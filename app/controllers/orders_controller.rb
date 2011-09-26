@@ -349,7 +349,10 @@ class OrdersController < ApplicationController
   def get_phone_history(order)
     
     phone = order.phone.gsub(/\D/, '').gsub(/^(\d*)(\d{10})$/, '\2')
-   
+    
+    if phone.length < 10
+      return nil
+    end
     
     req = Net::HTTP::Get.new(
       "/220ruXML/Default.aspx?login=220ru&passw=ERG220pass2007&msisdn=#{phone}")
