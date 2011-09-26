@@ -84,4 +84,19 @@ class OrderTest < ActiveSupport::TestCase
     assert_equal 'МОСКВА', order.city!
     assert_equal 'МОСКВА', order.region
   end
+  
+  test 'add_event' do
+    order = orders(:one)
+    assert_difference('OrderEvent.count', 1) do
+      order.add_event "Something"
+      assert_equal "Something", order.order_events.last.description
+      assert_equal Date.today, order.order_events.last.created_at.to_date
+    end
+    
+    assert_difference('OrderEvent.count', 1) do
+      order.add_event :date => "08-08-2008", :description => "Nothing"
+      assert_equal "Nothing", order.order_events.last.description
+      assert_equal "08-08-2008".to_date, order.order_events.last.created_at.to_date
+    end
+  end
 end

@@ -11,4 +11,8 @@ class PostOrder < ActiveResource::Base
     end
   end
   
+  def payment
+    PostPayment.find(:first, :params => { :post_order_id => self.id })
+  end
+  
 end

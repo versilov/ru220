@@ -30,6 +30,7 @@ class ExtraPostOrder < Order
       if self.post_order && self.post_order.batch
         sa = self.post_order.batch.sending_date
         update_attribute(:sent_at, sa)
+        self.add_event :date => sa, :description => "Отправлен #{sa}"
         
         # Send notification email
         if self.email
@@ -41,6 +42,24 @@ class ExtraPostOrder < Order
         end
         
         return sa
+      else
+        return nil
+      end
+    end
+  end
+  
+  def payed_at
+    pa = read_attribute(:payed_at)
+    if pa
+      return pa
+    else
+      if self.post_order && self.post_order.payment
+        payment = self.post_order.payment
+        pa = payment.date
+        update_attribute(:payed_at, pa)
+        self.add_event :date => pa, :description => "Оплачено #{payment.sum} руб., №#{payment.num}, КГП #{payment.kgp}"
+        
+        return pa
       else
         return nil
       end
@@ -111,13 +130,18 @@ class ExtraPostOrder < Order
       '/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo', 
       headers)
     req.form_data = post_params
-    resp = Net::HTTP.start('www.russianpost.ru') {|http|
+    
+    
+    resp = Net::HTTP.start('www.russianpost.ru') { |http|
       http.request(req)
     }
     
       
     doc = Nokogiri::HTML(resp.body)
     doc.css('table.pagetext').first
+  rescue SocketError
+      STDERR.puts "Could not reach www.russianpost.ru"
+      return ""
   end
   
   def status

@@ -142,11 +142,6 @@ class Order < ActiveRecord::Base
     self.sent_at != nil
   end
   
-  # True, if order was payed for (i.e. payed_at timestamp is not nil)
-  def payed?
-    self.payed_at != nil
-  end
-  
   def canceled?
     self.canceled_at != nil
   end
@@ -171,19 +166,18 @@ class Order < ActiveRecord::Base
     raise "Not implemented. Implement in child classes"
   end
   
-  def add_event(description)
+  def add_event(params)
     ev = OrderEvent.new
     ev.order_id = self.id
-    ev.description = description
+    ev.description = params if params.respond_to? :to_str
+    ev.description = params[:description] if params.respond_to? :to_hash
+    ev.created_at = params[:date] if params.respond_to?(:to_hash) and params[:date]
     ev.save
   end
   
   
   def status
   end
-  
-
-  
   
 end
 
