@@ -50,7 +50,9 @@
       <%= raw order.payment_status %>
     </td>
     <td>
-      <%= order.delivery_type %><br />
+      <%= "Курьер" if order.courier? %>
+      <%= "Почта России" if order.postal? %>
+      <br />
       <%= raw order.delivery_status %>
       
     </td>

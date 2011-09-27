@@ -41,8 +41,6 @@ class AxiomusOrder < Order
 </order>
 </singleorder>}
     
-    puts "XML order for Axiomus:\n#{xml}"
-
     url = URI.parse(axiomus_url)
     post_params = { 'data' => xml }
     resp = Net::HTTP.post_form(url, post_params)
