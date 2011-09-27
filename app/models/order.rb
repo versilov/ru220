@@ -39,6 +39,7 @@ class Order < ActiveRecord::Base
   has_many :order_events, :dependent => :destroy
   
   default_scope :order => 'created_at DESC'
+  scope :last_n_days, lambda { |days| where("(now()-created_at) < interval '? days'", days) }
   
   
   

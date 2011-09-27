@@ -84,6 +84,10 @@ class ExtraPostOrder < Order
   
   
   def send_to_delivery
+    if self.external_order_id
+      return true # Already registered in external delivery system.
+    end
+    
     po = create_post_order(self.total_quantity, self.line_items[0].product)
     
     if po
@@ -91,6 +95,7 @@ class ExtraPostOrder < Order
       self.add_event "Передан в ЭкстраПост под номером #{po.id} (#{po.comment})"
       return true
     else
+      self.add_event "Не удалось передать заказ в ЭкстраПост."
       return false
     end
   end

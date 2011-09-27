@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'builder'
 
 class AxiomusOrder < Order
   
@@ -13,6 +14,10 @@ class AxiomusOrder < Order
   end
   
   def send_to_delivery
+    if self.external_order_id
+      return true # Already registered in external delivery system
+    end
+    
     uid = Rails.application.config.axiomus_uid
     ukey = Rails.application.config.axiomus_ukey
     axiomus_url = Rails.application.config.axiomus_url
@@ -26,28 +31,36 @@ class AxiomusOrder < Order
     selsize = 'no'
     checksum_source = "#{uid}#{total_SKU}#{self.total_quantity}#{self.total_price.to_i}#{date} #{start_time}#{cache}/#{cheque}/#{selsize}"
     checksum = Digest::MD5.hexdigest(checksum_source)
-    xml = %{<?xml version='1.0' standalone='yes'?>
-<singleorder>
-<mode>new</mode>
-<auth ukey="#{ukey}" checksum="#{checksum}" />
-<order inner_id="#{self.id}" name="#{self.client}"  address="#{self.city}, #{self.address}" from_mkad="0" d_date="#{date}" b_time="#{start_time}" e_time="#{end_time}">
-   <contacts>тел. #{self.phone}</contacts>
-   <description></description>
-   <hidden_desc></hidden_desc>
-   <services cash="#{cache}" cheque="#{cheque}" selsize="#{selsize}" />
-   <items>
-      <item name="Энергосберегатель"  weight="0.200" quantity="#{self.total_quantity}" price="#{self.line_items[0].product.price}" bundling="1" />
-   </items>
-</order>
-</singleorder>}
+    
+    xml = Builder::XmlMarkup.new :indent => 2
+    xml.instruct! :xml, :version => '1.0', :standalone => 'yes'
+    xml.singleorder do
+      xml.mode 'new'
+      xml.auth :ukey => ukey, :checksum => checksum
+      xml.order :inner_id => self.id, :name => self.client, :address => "#{self.city}, #{self.address}", :from_mkad => 0, :d_date => date, :b_time => start_time, :e_time => end_time do
+        xml.contacts "тел. #{self.phone}"
+        xml.description ""
+        xml.hidden_desc ""
+        xml.services :cash => cache, :cheque => cheque, :selsize => selsize
+        xml.items do
+          xml.item :name => 'Энергосберегатель', :weight => 0.200, :quantity => self.total_quantity, :price => self.line_items[0].product.price, :bundling => 1
+        end
+      end
+    end
+      
+    
+
+    puts "AXIOMUS XML: #{xml.target!}"
     
     url = URI.parse(axiomus_url)
-    post_params = { 'data' => xml }
+    post_params = { 'data' => xml.target! }
     resp = Net::HTTP.post_form(url, post_params)
     
     doc = REXML::Document.new(resp.body)
     
-    if doc.elements['response/status'].attributes['code'].to_i > 0
+    status_code =  doc.elements['response/status'].attributes['code'].to_i
+    if status_code > 0
+      self.add_event "Не удалось передать заказ в Аксиомус. Код статуса: #{status_code}"
       return false
     else
       self.update_attribute(:external_order_id, doc.elements['response/auth'].text)

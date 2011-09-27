@@ -192,8 +192,9 @@ class OrdersController < ApplicationController
     order.reload
     
     if order.postpaid?
+      @order = order
       if not order.send_to_delivery
-        flash[:notice] = 'Не удалось передать заказ в службу доставки'
+        flash[:notice] = 'Не удалось прямо сейчас передать заказ в службу доставки. Попробуем ещё раз через час.'
       end
     end
     
@@ -237,8 +238,8 @@ class OrdersController < ApplicationController
         create_order(params)
         format.html { redirect_to(done_url, :notice => 'Заказ успешно зарегистрирован.'); flash[:order_id] = @order.id }
       rescue => bang
-#        puts "Exception in order_controller.create: #{bang}"
-#        puts bang.backtrace.join("\n")
+        puts "Exception in order_controller.create: #{bang}"
+        puts bang.backtrace.join("\n")
         format.html { render :action => "new" }
       end
     end
