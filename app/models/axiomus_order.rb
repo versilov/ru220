@@ -77,6 +77,11 @@ class AxiomusOrder < Order
       return "#{status.text} (#{status.attributes['code']})"
   end
   
+  def delivery_status
+    "<span class='error'>Не передан в Аксиомус</span>" if not self.external_order_id
+  end
+  
+ 
   def cancel
     raise NotImplementedError
   end

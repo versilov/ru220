@@ -174,6 +174,13 @@ class OrdersControllerTest < ActionController::TestCase
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"
   end
   
+  test 'courier delivery status' do
+    @order = orders(:two)
+    @order.external_order_id = nil
+    assert_not_nil @order.delivery_status
+    assert @order.delivery_status =~ /error/, 'order not promoted to Axiomus error'
+  end
+  
   test 'should not get history for invalid number (shorter, than 5)' do
     @order = orders(:two)
     @order.phone = 'asba2sdfa23asdf9as*%&'

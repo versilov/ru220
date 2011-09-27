@@ -179,6 +179,14 @@ class Order < ActiveRecord::Base
   def status
   end
   
+  def delivery_status
+    "<span class='sent'>Отправлен</span><br /><span class='sent_date'>#{self.sent_at.to_date}</span>" if self.sent?
+  end
+  
+  def payment_status
+    "<span class='sent'>Оплачен</span><br /><span class='sent_date'>#{self.payed_at.to_date}</span>" if self.payed?
+  end
+  
 end
 
 

@@ -1,58 +1,66 @@
-    body {
-        background-color: #fff;
-        color: #444;
-        font-family: arial, helvetica, verdana, sans-serif;
-        padding: 0px;
-        margin: 0;
-        text-align: center;
-    }
-    
-    #toptop {
-      background-color: black;
-      color: white;
-      margin: 0;
-      padding: 0;
-      height: 45px;
-      text-align: center;
-    }
-    
-    #toptop #head {
-      width: 940px;
-      margin: 0 auto;
-    }
-    
-    
-    #toptop #phone {
-      float: right;
-      font-size: 20px;
-      margin-top: 3px;
-    }
-    
-    #toptop #phone span {
-      font-size: 13px;
-      display: block;
-    }
-    
-    #top-menu {
-        list-style-type: none;
-        padding: 10px 0px;
-        margin: 0px auto;
-        text-align: left;
-        float: left;
-      
-    }
-    
-    #top-menu a {
-      color: #ddd;
-      font-size: 14px;
-      text-transform: uppercase;
-    }
-    
-    #top-menu li {
-      display: inline;
-      margin-right: 15px;
-      padding-top: 13px;
-    }
+body {
+    background-color: #fff;
+    color: #444;
+    font-family: arial, helvetica, verdana, sans-serif;
+    padding: 0px;
+    margin: 0;
+    text-align: center;
+}
+
+#toptop {
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 0;
+  height: 45px;
+  text-align: center;
+}
+
+#toptop #head {
+  width: 940px;
+  margin: 0 auto;
+}
+
+
+#toptop #phone {
+  float: right;
+  font-size: 20px;
+  margin-top: 3px;
+}
+
+#toptop #phone span {
+  font-size: 13px;
+  display: block;
+}
+
+#top-menu {
+    list-style-type: none;
+    padding: 10px 0px;
+    margin: 0px auto;
+    text-align: left;
+    float: left;
+  
+}
+
+#top-menu a {
+  color: #ddd;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+#top-menu li {
+  display: inline;
+  margin-right: 15px;
+  padding-top: 13px;
+}
+
+
+
+/******************** ERRORS **********************/
+
+.error {
+  color: red;
+}
     
     
     /****************** CONTENT ***************/
