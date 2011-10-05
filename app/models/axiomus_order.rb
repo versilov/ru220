@@ -5,6 +5,11 @@ class AxiomusOrder < Order
   
   attr_accessor :date, :from, :to
   
+  module DeliveryStatus
+    DELIVERED = 100
+    CANCELED = 90
+  end
+  
   def okey
     self.external_order_id
   end
@@ -50,7 +55,7 @@ class AxiomusOrder < Order
       
     
 
-    puts "AXIOMUS XML: #{xml.target!}"
+#    puts "AXIOMUS XML: #{xml.target!}"
     
     url = URI.parse(axiomus_url)
     post_params = { 'data' => xml.target! }
@@ -68,30 +73,46 @@ class AxiomusOrder < Order
       return true
     end
   end
+
   
   def status
-      if not self.external_order_id
-        return 'Заказ не передан в Аксиомус (нет идентификатора)'
-      end
-      xml = %{<?xml version='1.0' standalone='yes'?>
-      <singleorder>
-        <mode>status</mode>
-        <okey>#{self.external_order_id}</okey>
-      </singleorder>}
-      url = URI.parse(Rails.application.config.axiomus_url)
-      post_params = { 'data' => xml }
-      resp = Net::HTTP.post_form(url, post_params)
-      puts resp
-      
-      doc = REXML::Document.new(resp.body)
-      status = doc.elements['response/status']
-      return "#{status.text} (#{status.attributes['code']})"
+    if not self.external_order_id
+      return 'Заказ не передан в Аксиомус (нет идентификатора)'
+    end
+    xml = %{<?xml version='1.0' standalone='yes'?>
+    <singleorder>
+      <mode>status</mode>
+      <okey>#{self.external_order_id}</okey>
+    </singleorder>}
+    url = URI.parse(Rails.application.config.axiomus_url)
+    post_params = { 'data' => xml }
+    resp = Net::HTTP.post_form(url, post_params)
+    puts resp
+    
+    doc = REXML::Document.new(resp.body)
+    status = doc.elements['response/status']
+    code = status.attributes['code'].to_i
+    
+    case code
+      when DELIVERED
+        self.update_attribute(:sent_at, Time.now) if not self.sent_at
+        self.update_attribute(:payed_at, Time.now) if not self.payed_at
+      when CANCELED
+        self.update_attribute(:canceled_at, Time.now) if not self.canceled_at
+    end
+    
+    return "#{status.text} (#{code})"
   end
   
   def delivery_status
-    "<span class='error'>Не передан в Аксиомус</span>" if not self.external_order_id
+    return "<span class='error'>Не передан в Аксиомус</span>" if not self.external_order_id
+    return "<span class='error'>Отменён</span>" if self.canceled?
+    return "<span class='sent'>Доставлен</span>" if self.sent?
   end
   
+  def payment_status
+    "<span class='sent'>Оплачен</span>" if self.payed?
+  end
  
   def cancel
     raise NotImplementedError

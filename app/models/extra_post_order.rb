@@ -27,24 +27,7 @@ class ExtraPostOrder < Order
     if sa
       return sa
     else
-      if self.post_order && self.post_order.batch
-        sa = self.post_order.batch.sending_date
-        update_attribute(:sent_at, sa)
-        self.add_event :date => sa, :description => "Отправлен #{sa}"
-        
-        # Send notification email
-        if self.email
-          begin
-            Postman.sent_order_email(self).deliver
-          rescue
-            print "\n====Email sending error====\n"
-          end
-        end
-        
-        return sa
-      else
-        return nil
-      end
+      return self.update_sent_at
     end
   end
   
@@ -53,16 +36,7 @@ class ExtraPostOrder < Order
     if pa
       return pa
     else
-      if self.post_order && self.post_order.payment
-        payment = self.post_order.payment
-        pa = payment.date
-        update_attribute(:payed_at, pa)
-        self.add_event :date => pa, :description => "Оплачено #{payment.sum} руб., №#{payment.num}, КГП #{payment.kgp}"
-        
-        return pa
-      else
-        return nil
-      end
+      return self.update_payed_at
     end
   end
   
@@ -79,6 +53,11 @@ class ExtraPostOrder < Order
       self.update_attribute(:canceled_at, Time.now())
       true
     end
+  end
+  
+  def update_sent_and_payed_attributes
+    update_sent_at
+    update_payed_at
   end
   
   
@@ -170,6 +149,50 @@ class ExtraPostOrder < Order
       return 'Отсутствует связанный заказ в системе ЭкстраПочта'
     end
   end
+  
+
+protected
+  
+  def update_sent_at
+    sa = read_attribute(:sent_at)
+    return sa if sa
+
+    if self.post_order && self.post_order.batch
+      sa = self.post_order.batch.sending_date
+      update_attribute(:sent_at, sa)
+      self.add_event :date => sa, :description => "Отправлен #{sa}"
+      
+      # Send notification email
+      if self.email
+        begin
+          Postman.sent_order_email(self).deliver
+        rescue
+          print "\n====Email sending error====\n"
+        end
+      end
+      
+      return sa
+    else
+      return nil
+    end
+  end
+  
+  def update_payed_at
+    pa = read_attribute(:payed_at)
+    return pa if pa
+    
+    if self.post_order && self.post_order.payment
+      payment = self.post_order.payment
+      pa = payment.date
+      update_attribute(:payed_at, pa)
+      self.add_event :date => pa, :description => "Оплачено #{payment.sum} руб., №#{payment.num}, КГП #{payment.kgp}"
+      
+      return pa
+    else
+      return nil
+    end
+  end
+
 
   
 private
@@ -219,5 +242,6 @@ private
       return nil
     end
   end
+  
 
 end

@@ -238,8 +238,8 @@ class OrdersController < ApplicationController
         create_order(params)
         format.html { redirect_to(done_url, :notice => 'Заказ успешно зарегистрирован.'); flash[:order_id] = @order.id }
       rescue => bang
-        puts "Exception in order_controller.create: #{bang}"
-        puts bang.backtrace.join("\n")
+        logger.error "Exception in order_controller.create: #{bang}"
+        logger.error bang.backtrace.join("\n")
         format.html { render :action => "new" }
       end
     end
