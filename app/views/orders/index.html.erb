@@ -1,6 +1,13 @@
 <h1 id="orders_header">Заказы <span class="gray">(<%= @orders_size %>)</span></h1>
+
 <p id="orders_notice"><%= flash[:notice] %></p>
+
+
 <br class="clear" />
+<%= form_tag '/orders', :method => :get, :id => :hideclosed_form do %>
+<%= check_box_tag :hideclosed, 'yes', params[:hideclosed] %> Скрыть завершённые заказы
+<% end %>
+
 
 <fieldset id="orders_filter" class="<%= 'filter_active' if params['do_filter'] %>">
 <legend>Фильтр</legend>
@@ -92,4 +99,9 @@ function doTotalOrdersTimer() {
 }
 
 doTotalOrdersTimer();
+
+$('#hideclosed').change(function(event) {
+  this.parentNode.submit();
+});
+
 </script>

@@ -94,8 +94,14 @@ class OrdersController < ApplicationController
     else
       # Some other button (on of the two Resets) or no button were pressed.
       # Just give everything we've got.
-      @orders = Order.paginate :page => params[:page], :per_page => 10
-      @orders_size = @total_orders_num
+      if params[:hideclosed]
+        @orders = Order.where("sent_at isnull or payed_at isnull")
+        @orders_size = @orders.size
+        @orders = @orders.to_a().paginate :page => params[:page], :per_page => 10
+      else
+        @orders = Order.paginate :page => params[:page], :per_page => 10
+        @orders_size = @total_orders_num
+      end
     end
     
 
