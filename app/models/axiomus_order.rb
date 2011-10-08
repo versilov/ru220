@@ -94,10 +94,10 @@ class AxiomusOrder < Order
     code = status.attributes['code'].to_i
     
     case code
-      when DELIVERED
+      when DeliveryStatus::DELIVERED
         self.update_attribute(:sent_at, Time.now) if not self.sent_at
         self.update_attribute(:payed_at, Time.now) if not self.payed_at
-      when CANCELED
+      when DeliveryStatus::CANCELED
         self.update_attribute(:canceled_at, Time.now) if not self.canceled_at
     end
     

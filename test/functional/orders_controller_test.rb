@@ -160,6 +160,9 @@ class OrdersControllerTest < ActionController::TestCase
     end
     assert_redirected_to done_url
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+    
+    @order = Order.find(flash[:order_id].to_i)
+    puts @order.inspect
 
   end
   
