@@ -128,6 +128,14 @@ class OrdersControllerTest < ActionController::TestCase
     assert_equal city, post_index.city
   end
   
+  test 'should search index' do
+    xhr :get, :search_index
+    assert_response :success
+    indexes = JSON.parse @response.body
+    assert indexes.respond_to? :to_ary
+    assert indexes.size == 0
+  end
+  
   # COD orders with quantity greater, than 2,
   # should be split in not-more-than-two-items orders
   test 'should split big order in two' do
@@ -162,8 +170,6 @@ class OrdersControllerTest < ActionController::TestCase
     assert flash[:order_id] > 0, "order id is promoted to next page (done)"
     
     @order = Order.find(flash[:order_id].to_i)
-    puts @order.inspect
-
   end
   
   test 'should not split courier order' do

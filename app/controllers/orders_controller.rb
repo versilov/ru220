@@ -345,8 +345,12 @@ class OrdersController < ApplicationController
   # Returns indexes, that start with the given sequence
   def search_index
     part_of_index = params[:term]
-    indexes = PostIndex.where('"index" like ?', part_of_index + '%').select('"index", region, city').collect { |pi| {:value => pi.index, :label => pi.index + '-' + pi.city! } }
-    puts indexes
+    indexes = []
+    
+    if part_of_index
+      indexes = PostIndex.where('"index" like ?', part_of_index + '%').select('"index", region, city').collect { |pi| {:value => pi.index, :label => pi.index + '-' + pi.city! } }
+    end
+
     respond_to do |format|
       format.html { render :text => indexes.to_json }
     end
