@@ -181,8 +181,13 @@ class Order < ActiveRecord::Base
   end
   
   def delivery_status
-    "<span class='sent'>Отправлен</span><br /><span class='sent_date'>#{self.sent_at.to_date}</span>" if self.sent?
-    "<span class='error'>Возврат</span><br /><span class='sent_date'>#{self.returned_at.to_date}</span>" if self.returned?
+    if self.returned?
+      "<span class='error'>Возврат</span><br /><span class='sent_date'>#{self.returned_at.to_date}</span>"
+    elsif self.sent?
+      "<span class='sent'>Отправлен</span><br /><span class='sent_date'>#{self.sent_at.to_date}</span>"
+    else
+      ""
+    end
   end
   
   def payment_status
