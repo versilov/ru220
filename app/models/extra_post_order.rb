@@ -18,6 +18,10 @@ class ExtraPostOrder < Order
       self.sent_at != nil
   end
   
+  def returned?
+    self.returned_at != nil
+  end
+  
   # Return the time of order departure towards client
   # If this field is nil, then sent_at attribute of remote
   # delivery service object is requested and copied to the local object.
@@ -61,7 +65,7 @@ class ExtraPostOrder < Order
   end
   
   def has_errors?
-    not self.canceled_at and not self.external_order_id
+    (not self.canceled_at and not self.external_order_id) or self.returned?
   end
   
   
@@ -137,6 +141,8 @@ class ExtraPostOrder < Order
   def status
     if self.canceled?
       return "Отменён"
+    elsif self.returned?
+      return "Возврат"
     elsif self.post_order
       begin
         st = ''

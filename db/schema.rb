@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110827123524) do
+ActiveRecord::Schema.define(:version => 20111101202315) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -66,9 +66,10 @@ ActiveRecord::Schema.define(:version => 20110827123524) do
     t.string   "delivery_type"
     t.datetime "payed_at"
     t.datetime "sent_at"
-    t.string   "type", :default => "Order", :null => false
+    t.string   "type",                            :default => "Order", :null => false
     t.string   "external_order_id", :limit => 64
     t.datetime "canceled_at"
+    t.datetime "returned_at"
   end
 
   create_table "post_indices", :id => false, :force => true do |t|

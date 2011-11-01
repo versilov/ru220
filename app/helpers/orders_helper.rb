@@ -9,12 +9,12 @@ module OrdersHelper
   def order_row_class(order)
     if order.payed_at
       "delivered"
+    elsif order.has_errors?
+      "errorneus"
     elsif order.sent_at
       "sent_order"
     elsif order.canceled_at
       "canceled"
-    elsif order.has_errors?
-      "errorneus"
     else
       ""
     end
