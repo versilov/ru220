@@ -110,6 +110,10 @@ class AxiomusOrder < Order
     return "<span class='sent'>Доставлен</span>" if self.sent?
   end
   
+  def has_errors?
+    not self.external_order_id
+  end
+  
   def payment_status
     "<span class='sent'>Оплачен</span>" if self.payed?
   end

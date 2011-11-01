@@ -524,8 +524,20 @@ input.readonly {
   padding: 5px 7px;
 }
 
-#orders .line_odd td {
-  background-color: #ddd;
+#orders .sent_order td {
+  background-color: #ffa;
+}
+
+#orders .canceled td {
+  background-color: #ccc;
+}
+
+#orders .delivered td {
+  background-color: #afa;
+}
+
+#orders .errorneus td {
+  background-color: #faa;
 }
 
 #orders .client-name {

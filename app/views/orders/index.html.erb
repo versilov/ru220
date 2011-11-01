@@ -44,7 +44,7 @@
   </tr>
 
 <% @orders.each do |order| %>
-  <tr class="<%= cycle('line_odd', 'line_even') %> <%= 'canceled' if order.canceled? %>">
+  <tr class="<%= order_row_class(order)%>">
     <td><strong class="order_id"><%= order.id %></strong></td>
     <td><nobr><%= order.created_at.to_date %></nobr></td>
     <td><%= order.city! %></td>

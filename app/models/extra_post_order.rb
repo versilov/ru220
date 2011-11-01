@@ -60,6 +60,10 @@ class ExtraPostOrder < Order
     update_payed_at
   end
   
+  def has_errors?
+    not self.canceled_at and not self.external_order_id
+  end
+  
   
   
   def send_to_delivery
@@ -120,8 +124,10 @@ class ExtraPostOrder < Order
       http.request(req)
     }
     
-      
+    y resp
+    
     doc = Nokogiri::HTML(resp.body)
+    y doc.css('body')
     doc.css('table.pagetext').first
   rescue SocketError
       STDERR.puts "Could not reach www.russianpost.ru"

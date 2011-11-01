@@ -188,6 +188,10 @@ class Order < ActiveRecord::Base
     "<span class='sent'>Оплачен</span><br /><span class='sent_date'>#{self.payed_at.to_date}</span>" if self.payed?
   end
   
+  def has_errors?
+    false
+  end
+  
 end
 
 
