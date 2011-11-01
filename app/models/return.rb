@@ -5,7 +5,7 @@ class Return < ActiveResource::Base
   
   def order
      po = PostOrder.find(self.post_order_id)
-     Order.find_by_external_order_id(po.id)
+     Order.find_by_external_order_id(po.id.to_s)
    rescue
      nil
   end
