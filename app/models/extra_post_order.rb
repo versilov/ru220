@@ -128,11 +128,13 @@ class ExtraPostOrder < Order
       http.request(req)
     }
     
-    y resp
+    if resp['Content-Encoding'] == 'gzip'
+      body = Zlib::GzipReader.new(StringIO.new(resp.body)).read
+    else
+      body = resp.body
+    end
     
-    doc = Nokogiri::HTML(resp.body)
-    y doc.css('body')
-    doc.css('table.pagetext').first
+    Nokogiri::HTML(body).css('table.pagetext').first
   rescue SocketError
       STDERR.puts "Could not reach www.russianpost.ru"
       return ""
