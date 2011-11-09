@@ -99,4 +99,13 @@ class OrderTest < ActiveSupport::TestCase
       assert_equal "08-08-2008".to_date, order.order_events.last.created_at.to_date
     end
   end
+  
+  test 'discount' do
+    order = orders(:one)
+    price1 = order.total_price
+    
+    order.discount = 0.95
+    
+    assert_equal price1*0.95, order.total_price
+  end
 end

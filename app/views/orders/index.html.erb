@@ -37,6 +37,7 @@
     <th width="80px"><%= t('.date') %></th>
     <th width="100px"><%= t('.city') %></th>
     <th width="270x"><%= t('.client') %>/<%= t('.address') %></th>
+    <th width="120px"><%= t('.source') %></th>
     <th width="120px"><%= t('.pay_type') %></th>
     <th width="120px"><%= t('.delivery_type') %></th>
     <th width="90px"><%= t('.quantity') %>/<%= t('.total_price') %></th>
@@ -51,6 +52,9 @@
     <td>
       <div class="client-name"><%= order.client %></div>
       <div class="address"><%= order.address %></div>
+    </td>
+    <td>
+      <%= order.source %>
     </td>
     <td>
       <%= order.pay_type %><br />

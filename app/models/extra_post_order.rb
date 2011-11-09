@@ -227,7 +227,7 @@ private
       po.value = 1.0
       po.payment = 0.0
     elsif  self.pay_type == Order::PaymentType::COD
-      po.value = po.payment = product.price*quantity
+      po.value = po.payment = product.price*self.discount*quantity
     else
       raise "Неизвестный тип оплаты: #{self.pay_type}"
     end

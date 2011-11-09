@@ -14,6 +14,7 @@ ru:
       id: №
       date: Дата
       client: Ф.И.О. получателя
+      source: Источник
       index: Индекс
       region: Регион
       phone: Телефон
@@ -34,6 +35,7 @@ ru:
       address: Адрес
       email: Эл. почта
       status: Статус
+      source: Источник
       post_num: ШПИ
       pay_type: Оплата
       delivery_type: Доставка
@@ -86,6 +88,8 @@ ru:
     image_url: URL картинки
     price: Цена
     quantity: Количество
+    source: Откуда узнали о нас?
+    discount: Скидка 5%
 
     
     

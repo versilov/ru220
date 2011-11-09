@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111101202315) do
+ActiveRecord::Schema.define(:version => 20111109053427) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(:version => 20111101202315) do
     t.string   "external_order_id", :limit => 64
     t.datetime "canceled_at"
     t.datetime "returned_at"
+    t.string   "source"
+    t.decimal  "discount",                        :default => 1.0,     :null => false
   end
 
   create_table "post_indices", :id => false, :force => true do |t|

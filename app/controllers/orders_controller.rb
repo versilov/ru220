@@ -163,7 +163,8 @@ class OrdersController < ApplicationController
   end
   
   def create_order2(params, quantity=0)
-    
+
+
     if params[:order][:delivery_type] == Order::DeliveryType::POSTAL
       order = ExtraPostOrder.new(params[:order])
     elsif params[:order][:delivery_type] == Order::DeliveryType::COURIER
@@ -182,6 +183,12 @@ class OrdersController < ApplicationController
     
     if quantity == 0
       quantity = order.quantity
+    end
+    
+    if params[:discount] and current_user
+      order.discount = 0.95 # 5% discount
+    else
+      order.discount = 1.0
     end
     
     if not order.save

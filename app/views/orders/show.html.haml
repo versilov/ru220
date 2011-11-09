@@ -27,6 +27,10 @@
       %fieldset.order_show
         %legend Заказ
         
+        %strong= t('.source') + ':'
+        = @order.source
+        %br
+        
         - if @order.postal? and @order.post_num
           %strong= t('.post_num') + ':'
           = @order.post_num

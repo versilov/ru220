@@ -37,6 +37,7 @@ class AxiomusOrder < Order
     checksum_source = "#{uid}#{total_SKU}#{self.total_quantity}#{self.total_price.to_i}#{date} #{start_time}#{cache}/#{cheque}/#{selsize}"
     checksum = Digest::MD5.hexdigest(checksum_source)
     
+    
     xml = Builder::XmlMarkup.new :indent => 2
     xml.instruct! :xml, :version => '1.0', :standalone => 'yes'
     xml.singleorder do
@@ -48,7 +49,7 @@ class AxiomusOrder < Order
         xml.hidden_desc ""
         xml.services :cash => cache, :cheque => cheque, :selsize => selsize
         xml.items do
-          xml.item :name => 'Энергосберегатель', :weight => 0.200, :quantity => self.total_quantity, :price => self.line_items[0].product.price, :bundling => 1
+          xml.item :name => 'Энергосберегатель', :weight => 0.200, :quantity => self.total_quantity, :price => self.line_items[0].product.price*self.discount, :bundling => 1
         end
       end
     end

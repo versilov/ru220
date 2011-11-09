@@ -14,6 +14,7 @@ one:
   sent_at: nil
   payed_at: nil
   type: ExtraPostOrder
+  discount: 1.0
 
 
 two:
