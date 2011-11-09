@@ -32,8 +32,23 @@ class OrdersControllerTest < ActionController::TestCase
     fresh_order = Order.find(flash[:order_id].to_i)
     assert_not_nil fresh_order
     assert_equal 1.0, fresh_order.discount    # no discount by default
-
   end
+  
+  test "should create order with newlines in address" do
+    order_attrs = @order.attributes
+    order_attrs[:quantity] = 1
+    order_attrs['address'] += "\nnew lline\nnewline\n"
+    assert_difference('Order.count', 1) do
+      post :create, :order => order_attrs, :delivery_time => @delivery_attrs
+    end
+    assert_redirected_to done_url
+    assert flash[:order_id] > 0, "order id is promoted to next page (done)"
+    
+    fresh_order = Order.find(flash[:order_id].to_i)
+    assert_not_nil fresh_order
+    assert_equal nil, fresh_order.address =~ /[\n\r]/
+  end
+
   
   test 'should create order with discount' do
     order_attrs = @order.attributes

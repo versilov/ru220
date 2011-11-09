@@ -191,6 +191,10 @@ class OrdersController < ApplicationController
       order.discount = 1.0
     end
     
+    # String new line characters from user input
+    order.address = order.address.gsub(/[\n\r]/, ' ') if order.address
+
+    
     if not order.save
       @order = order
       raise RuntimeError, 'Could not save new order' + @order.errors.to_s

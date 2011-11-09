@@ -35,6 +35,7 @@ class Order < ActiveRecord::Base
     end
   end
   
+  
   has_many :line_items, :dependent => :destroy
   has_many :order_events, :dependent => :destroy
   
@@ -66,7 +67,7 @@ class Order < ActiveRecord::Base
   validates :delivery_type, :inclusion => DELIVERY_TYPES
   validates_with IndexValidator
   
-    # Returns city name, event if it's stored in the region field (as for capitals)
+  # Returns city name, event if it's stored in the region field (as for capitals)
   def city!
     if self.city.length > 0
       return self.city
