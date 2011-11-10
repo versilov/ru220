@@ -338,7 +338,9 @@ class OrdersController < ApplicationController
       csv << ['DATE', 'INDEX', 'REGION', 'AREA', 'CITY', 'ADRESAT', 'PHONE']
       
       Order.all.each do |order|
-        csv << [order.created_at, order.index, order.region, order.area, order.city, order.client, order.phone]
+        unless order.canceled?
+          csv << [order.created_at, order.index, order.region, order.area, order.city, order.client, order.phone]
+        end
       end
     end
     
