@@ -8,7 +8,7 @@ class ExtraPostOrder < Order
     
     begin
       PostOrder.find(self.external_order_id.to_i)
-    rescue ActiveResource::ResourceNotFound
+    rescue Exception
       return nil
     end
   end

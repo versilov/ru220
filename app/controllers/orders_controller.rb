@@ -4,6 +4,7 @@ require 'net/http'
 require 'rexml/document'
 require 'nokogiri'
 require 'erb'
+require 'csv'
 
 
 class OrdersController < ApplicationController
@@ -329,6 +330,27 @@ class OrdersController < ApplicationController
     end
   end
   
+  
+  def all_orders_csv
+     # Return CSV file with all orders
+    
+    csv_string = CSV.generate :col_sep => ';' do |csv|
+      csv << ['DATE', 'INDEX', 'REGION', 'AREA', 'CITY', 'ADRESAT', 'PHONE']
+      
+      Order.all.each do |order|
+        csv << [order.created_at, order.index, order.region, order.area, order.city, order.client, order.phone]
+      end
+    end
+    
+    csv_file_name = 'all_orders.csv'
+    
+    ic = Iconv.new('WINDOWS-1251', 'UTF-8')
+    csv_string = ic.iconv(csv_string)
+    
+    send_data csv_string,
+            :type => 'text/csv; charset=windows-1251; header=present',
+            :disposition => "attachment; filename=#{csv_file_name}"
+  end
   
   
   # returns region, area and city by postal index

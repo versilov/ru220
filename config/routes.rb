@@ -39,6 +39,7 @@ Ru220::Application.routes.draw do
   match 'parseindex' => 'orders#parse_index'
   match 'searchindex' => 'orders#search_index'
   match 'totalordersnum' => 'orders#total_orders_num'
+  match 'all_orders_csv/' => 'orders#all_orders_csv', :as => :all_orders_csv, :method => :get
   
   
   

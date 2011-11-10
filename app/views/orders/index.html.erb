@@ -2,6 +2,7 @@
 
 <p id="orders_notice"><%= flash[:notice] %></p>
 
+<%= link_to 'Скачать все заказы', all_orders_csv_path, :id => :all_orders_link %>
 
 <br class="clear" />
 <%= form_tag '/orders', :method => :get, :id => :hideclosed_form do %>
