@@ -74,7 +74,7 @@
   </fieldset>
   
   <div id="price">
-    Цена: <strong><%= number_to_currency(Product.find(1).price) %></strong> <span id="old">2 495 руб.</span>
+    Цена: <strong><%= number_to_currency(Product.find(1).price) %></strong> <span id="old"></span>
   </div>
   
   
@@ -90,7 +90,7 @@
   <div class="field">
     <%= f.label :quantity %><br />
     <%= f.select :quantity, 1..10 %>&nbsp;шт.
-    <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*Product.find(1).price.to_i %></span> руб.</span>
+    <span id="order_total">Итого:  <span id="order_total_sum"><%= @order.quantity*(@order.discount*Product.find(1).price).to_i %></span> руб.</span>
   </div>
 </fieldset>
 
@@ -109,13 +109,25 @@
   </div>
   
   </fieldset>
-  
+
+  <script type="text/javascript">
+    function update_price(event) {
+      if (event.srcElement.value == 'BigBuzzy') {
+        // Change price
+        $('#price > strong').text('1 225 руб.');
+        $('#price #old').text('2 450 руб.');
+        $('#order_quantity').change();
+      }
+    }
+  </script>
+
+
   
   <fieldset class="new_order_fieldset">
     <legend>Дополнительно</legend>
     <div class="field">
       <%= f.label :source %><br />
-      <%= f.select :source, ['', 'Бегущая строка', 'Антенна', 'Аргументы и Факты', 'Комсомольская Правда', 'Квитанция за квартплату', 'Телевизор', 'Интернет', 'Знакомые подсказали', 'Другое'], :placeholder => 'Выберите одно из значений' %>
+      <%= f.select :source, ['', 'Бегущая строка', 'Антенна', 'Аргументы и Факты', 'Комсомольская Правда', 'Квитанция за квартплату', 'Телевизор', 'Интернет', 'Знакомые подсказали', 'BigBuzzy', 'Другое'], { :placeholder => 'Выберите одно из значений'}, { :onchange => "update_price(event)" } %>
     </div>
     <%- if current_user %>
     <div class="field">
@@ -184,7 +196,10 @@
 
   $('#order_quantity').change( function(event) {
     var quantity = event.target.value;
-    $('#order_total_sum').text(<%= Product.find(1).price %>*quantity);
+    var price = <%= Product.find(1).price %>;
+    
+    if ($('#order_source').val() == 'BigBuzzy') { price = price/2; }
+    $('#order_total_sum').text(price*quantity);
   });
   
   $('#order_delivery_type').change( function(event) {

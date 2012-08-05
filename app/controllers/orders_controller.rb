@@ -179,7 +179,7 @@ class OrdersController < ApplicationController
       order.from = @delivery_time.from
       order.to = @delivery_time.to
     else
-      raise"Unknown delivery type: #{order.delivery_type}"
+      raise "Unknown delivery type: #{order.delivery_type}"
     end
     
     if quantity == 0
@@ -190,6 +190,10 @@ class OrdersController < ApplicationController
       order.discount = 0.95 # 5% discount
     else
       order.discount = 1.0
+    end
+
+    if order.source == 'BigBuzzy'
+      order.discount = 0.5
     end
     
     # String new line characters from user input

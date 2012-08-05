@@ -65,7 +65,7 @@ class Order < ActiveRecord::Base
   validates :index, :length => { :is => 6, :allow_blank => true },  :numericality => { :on => :save, :only_integer => true, :allow_nil => true }
   validates :pay_type, :inclusion => PAYMENT_TYPES
   validates :delivery_type, :inclusion => DELIVERY_TYPES
-  validates_with IndexValidator
+  # validates_with IndexValidator
   
   # Returns city name, event if it's stored in the region field (as for capitals)
   def city!
