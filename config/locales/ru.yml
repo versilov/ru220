@@ -15,6 +15,7 @@ ru:
       date: Дата
       client: Ф.И.О. получателя
       source: Источник
+      coupon: Номер купона
       index: Индекс
       region: Регион
       phone: Телефон
@@ -36,6 +37,7 @@ ru:
       email: Эл. почта
       status: Статус
       source: Источник
+      coupon: Номер купона
       post_num: ШПИ
       pay_type: Оплата
       delivery_type: Доставка
@@ -89,6 +91,7 @@ ru:
     price: Цена
     quantity: Количество
     source: Откуда узнали о нас?
+    coupon: Номер купона
     discount: Скидка 5%
 
     

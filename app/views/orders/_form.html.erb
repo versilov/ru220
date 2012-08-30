@@ -125,6 +125,11 @@
   
   <fieldset class="new_order_fieldset">
     <legend>Дополнительно</legend>
+
+    <div class="field">
+      <%= f.label :coupon %><br />
+      <%= f.text_field :coupon %>
+    </div>
     <div class="field">
       <%= f.label :source %><br />
       <%= f.select :source, ['', 'Бегущая строка', 'Антенна', 'Аргументы и Факты', 'Комсомольская Правда', 'Квитанция за квартплату', 'Телевизор', 'Интернет', 'Знакомые подсказали', 'BigBuzzy', 'Другое'], { :placeholder => 'Выберите одно из значений'}, { :onchange => "update_price(event)" } %>

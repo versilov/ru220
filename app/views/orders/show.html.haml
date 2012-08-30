@@ -30,6 +30,11 @@
         %strong= t('.source') + ':'
         = @order.source
         %br
+
+        - if @order.coupon
+          %strong= t('.coupon') + ':'
+          = @order.coupon
+          %br
         
         - if @order.postal? and @order.post_num
           %strong= t('.post_num') + ':'
