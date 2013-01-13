@@ -294,6 +294,7 @@ private
   rescue Exception => e
     puts "=========== Error sending to ExtraPost =========="
     p e.to_s
+    throw e
   end  
 
 end
