@@ -47,7 +47,7 @@ Ru220::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  config.extrapost_site = 'http://extrapost2.heroku.com/'
+  config.extrapost_site = 'http://extrapost2.herokuapp.com'
   
   # Axiomus delivery config
   config.axiomus_uid = 825
