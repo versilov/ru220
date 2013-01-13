@@ -24,7 +24,7 @@ Ru220::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  config.extrapost_site = 'http://localhost:7000/'
+  config.extrapost_site = 'http://extrapost2.herokuapp.com'
   
   # Axiomus delivery config
   config.axiomus_uid = 92
