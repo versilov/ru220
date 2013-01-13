@@ -347,7 +347,7 @@ h1#new_order_header {
 }
 
 form#new_order {
-  margin-top: -40px;
+  margin-top: 0px;
 }
 
 fieldset {
