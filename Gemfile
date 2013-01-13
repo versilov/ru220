@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.19'
+gem 'rails', '3.2.11'
 gem 'rake'
 
 # Bundle edge Rails instead:
@@ -10,10 +10,12 @@ gem 'pg'
 gem 'haml'
 gem 'jquery-rails'
 gem 'unicode'
-gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate', '~> 3.0'
 gem 'nokogiri'
 
 gem 'exception_notification'
+
+
 
 # Use unicorn as the web server
 # gem 'unicorn'

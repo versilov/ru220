@@ -277,12 +277,13 @@ private
     epo.price = product.price*self.discount*quantity
 
     epli = ExtraPost2LineItem.new
-    epli.product_sku = product.sku
+    epli.product_sku = "sd02" #product.sku
     epli.product_title = product.title
     epli.quantity = quantity
     epli.price = product.price 
     epli.prefix_options[:order_id] = epo.id
 
+    epo.line_items = {}
     epo.line_items.store(epli.__id__, epli.attributes)
 
     epo.save!

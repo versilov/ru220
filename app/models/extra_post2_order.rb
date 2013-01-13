@@ -14,6 +14,8 @@ class ExtraPost2Order < ActiveResource::Base
 
   # These are legacy methods for backwards compatibility, to be reworked later
   def batch
+    return nil
+    
     if not self.batch_id
       nil
     else
@@ -22,6 +24,7 @@ class ExtraPost2Order < ActiveResource::Base
   end
   
   def payment
-    PostPayment.find(:first, :params => { :post_order_id => self.id })
+    # PostPayment.find(:first, :params => { :post_order_id => self.id })
+    nil
   end  
 end

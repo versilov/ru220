@@ -11,7 +11,6 @@ Ru220::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = false
-  config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
   
   config.log_level = :debug
