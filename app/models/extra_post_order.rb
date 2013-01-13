@@ -7,7 +7,7 @@ class ExtraPostOrder < Order
     end
     
     begin
-      PostOrder.find(self.external_order_id.to_i)
+      ExtraPost2Order.find(self.external_order_id.to_i)
     rescue Exception
       return nil
     end
@@ -75,7 +75,7 @@ class ExtraPostOrder < Order
       return true # Already registered in external delivery system.
     end
     
-    po = create_post_order(self.total_quantity, self.line_items[0].product)
+    po = send_new_order_to_extrapost(self.total_quantity, self.line_items[0].product)
     
     if po
       self.update_attribute(:external_order_id, po.id)
@@ -228,6 +228,7 @@ private
       po.payment = 0.0
     elsif  self.pay_type == Order::PaymentType::COD
       po.value = po.payment = product.price*self.discount*quantity
+      puts "\n\n\n\nself.discount == #{self.discount}, po.value == #{po.value}\n\n\n\n\n"
     else
       raise "Неизвестный тип оплаты: #{self.pay_type}"
     end
@@ -256,6 +257,42 @@ private
       return nil
     end
   end
-  
+
+
+  def send_new_order_to_extrapost(quantity, product)
+
+    puts "==== Start sending order to ExtraPost ====="
+    # Create ExtraPostOrder
+    epo = ExtraPost2Order.new
+    epo.store_domain = '220ru.ru' # Set order store by domain
+    epo.zip = self.index
+    epo.region = self.region
+    epo.town = self.city
+    epo.address = self.address
+    epo.name = self.client
+    epo.email = self.email
+    epo.phone = self.phone
+    epo.comment = "РБЛ#{self.id}"
+    epo.identifier = self.id
+    epo.price = product.price*self.discount*quantity
+
+    epli = ExtraPost2LineItem.new
+    epli.product_sku = product.sku
+    epli.product_title = product.title
+    epli.quantity = quantity
+    epli.price = product.price 
+    epli.prefix_options[:order_id] = epo.id
+
+    epo.line_items.store(epli.__id__, epli.attributes)
+
+    epo.save!
+
+    puts "====== Finished sending order to ExtraPost ====="
+
+    return epo
+  rescue Exception => e
+    puts "=========== Error sending to ExtraPost =========="
+    p e.to_s
+  end  
 
 end
