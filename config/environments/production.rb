@@ -64,10 +64,10 @@ Ru220::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.extrastore.ru",
-    :port                 => 2525,
-    :user_name            => 'smtp@extrastore.ru',
-    :password             => 'rubysmtp',
+    :address              => "smtp.mastermail.ru",
+    :port                 => 25,
+    :user_name            => 'administrator@versilov.ru',
+    :password             => '6nsoldermant',
     :authentication       => :login
   }
 end
